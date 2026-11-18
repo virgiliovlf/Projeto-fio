@@ -20,9 +20,23 @@ INDICADORES_RESUMO = [
 def gerar_diagnostico_ia():
     api_key = os.environ.get("GEMINI_API_KEY", "").strip()
     if not api_key:
-        raise RuntimeError("GEMINI_API_KEY está vazia ou não foi configurada nos Secrets.")
+        raise RuntimeError("GEMINI_API_KEY está vazia nos Secrets.")
 
     client = genai.Client(api_key=api_key)
+
+    # Descobre automaticamente os modelos disponíveis para a sua chave
+    modelos_disponiveis = []
+    try:
+        for m in client.models.list():
+            nome = m.name.replace("models/", "")
+            if "gemini" in nome and "embedding" not in nome and "imagen" not in nome:
+                modelos_disponiveis.append(nome)
+    except Exception as e:
+        print(f"Aviso ao listar modelos: {e}")
+
+    # Garante que gemini-3.8-flash seja o primeiro da fila
+    modelos = ["gemini-3.8-flash"] + [m for m in modelos_disponiveis if m != "gemini-3.8-flash"]
+    print(f"Modelos encontrados na conta: {modelos}")
 
     prompt = f"""
     Você é um auditor técnico de governança e transparência pública analisando os indicadores da Fiocruz (Ciclo 2025 - Portaria nº 571/2026).
@@ -36,13 +50,12 @@ def gerar_diagnostico_ia():
     {json.dumps(INDICADORES_RESUMO, ensure_ascii=False)}
     """
 
-    modelos = ["gemini-3.8-flash", "gemini-2.0-flash", "gemini-3.1-pro-preview"]
     response = None
     modelo_usado = ""
-    ultimo_erro = ""
 
-    for modelo in modelos:
-        for tentativa in range(2):
+    # Tenta até 5 rodadas com pausa de 15s entre cada falha 503
+    for rodada in range(5):
+        for modelo in modelos:
             try:
                 response = client.models.generate_content(
                     model=modelo,
@@ -55,14 +68,14 @@ def gerar_diagnostico_ia():
                 modelo_usado = modelo
                 break
             except Exception as e:
-                ultimo_erro = str(e)
-                print(f"Erro em {modelo} (tentativa {tentativa+1}): {ultimo_erro}")
-                time.sleep(3)
+                print(f"[Rodada {rodada+1}] {modelo} indisponível: {e}")
         if response:
             break
+        print("Aguardando 15 segundos para alívio do servidor...")
+        time.sleep(15)
 
     if not response:
-        raise RuntimeError(f"Todos os modelos falharam. Último erro: {ultimo_erro}")
+        raise RuntimeError("Servidores do Google sobrecarregados após 5 rodadas. Tente rodar novamente em alguns minutos.")
 
     resultado_ia = json.loads(response.text)
     payload = {
@@ -73,7 +86,7 @@ def gerar_diagnostico_ia():
 
     with open(OUTPUT_IA_JSON, "w", encoding="utf-8") as f:
         json.dump(payload, f, ensure_ascii=False, indent=2)
-    print(f"Sucesso! Ficheiro gravado via {modelo_usado}.")
+    print(f"Sucesso! Ficheiro parecer_ia.json gravado via {modelo_usado}.")
 
 if __name__ == "__main__":
     gerar_diagnostico_ia()
