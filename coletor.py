@@ -18,10 +18,9 @@ INDICADORES_RESUMO = [
 ]
 
 def gerar_diagnostico_ia():
-    api_key = os.environ.get("GEMINI_API_KEY")
+    api_key = os.environ.get("GEMINI_API_KEY", "").strip()
     if not api_key:
-        print("Aviso: GEMINI_API_KEY não configurada. Mantendo arquivo padrão.")
-        return
+        raise RuntimeError("GEMINI_API_KEY está vazia ou não foi configurada nos Secrets.")
 
     client = genai.Client(api_key=api_key)
 
@@ -37,12 +36,13 @@ def gerar_diagnostico_ia():
     {json.dumps(INDICADORES_RESUMO, ensure_ascii=False)}
     """
 
-    modelos = ["gemini-3.8-flash", "gemini-3.1-pro-preview"]
+    modelos = ["gemini-3.8-flash", "gemini-2.0-flash", "gemini-3.1-pro-preview"]
     response = None
     modelo_usado = ""
+    ultimo_erro = ""
 
     for modelo in modelos:
-        for tentativa in range(3):
+        for tentativa in range(2):
             try:
                 response = client.models.generate_content(
                     model=modelo,
@@ -55,14 +55,14 @@ def gerar_diagnostico_ia():
                 modelo_usado = modelo
                 break
             except Exception as e:
-                print(f"Tentativa {tentativa+1} falhou no modelo {modelo}: {e}")
-                time.sleep(5)
+                ultimo_erro = str(e)
+                print(f"Erro em {modelo} (tentativa {tentativa+1}): {ultimo_erro}")
+                time.sleep(3)
         if response:
             break
 
     if not response:
-        print("Servidores da API temporariamente ocupados; mantendo parecer_ia.json atual sem quebrar o workflow.")
-        return
+        raise RuntimeError(f"Todos os modelos falharam. Último erro: {ultimo_erro}")
 
     resultado_ia = json.loads(response.text)
     payload = {
@@ -73,7 +73,7 @@ def gerar_diagnostico_ia():
 
     with open(OUTPUT_IA_JSON, "w", encoding="utf-8") as f:
         json.dump(payload, f, ensure_ascii=False, indent=2)
-    print(f"Parecer de IA gerado com sucesso via {modelo_usado}!")
+    print(f"Sucesso! Ficheiro gravado via {modelo_usado}.")
 
 if __name__ == "__main__":
     gerar_diagnostico_ia()
