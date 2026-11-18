@@ -38,7 +38,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Segoe UI',Aptos
 .subbanner{background:#e3eef2;border-bottom:1px solid var(--line);padding:7px 28px;font-size:11px;color:var(--blue);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
 .container{max-width:1540px;margin:0 auto;padding:18px 26px 36px}
 
-.filter-bar{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-bottom:16px;box-shadow:0 2px 8px rgba(11,52,72,.04);display:grid;grid-template-columns:1.3fr 1.3fr 1fr 0.9fr 0.7fr auto;gap:12px;align-items:end}
+.filter-bar{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(11,52,72,.04);display:grid;grid-template-columns:1.3fr 1.3fr 1fr 0.9fr 0.7fr auto;gap:12px;align-items:end}
 .f-group label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:5px}
 .f-group select,.f-group input{width:100%;height:36px;border:1px solid #c5d5dc;border-radius:6px;padding:0 10px;font-size:12px;color:var(--ink);background:#fbfdfe}
 .f-group select:focus,.f-group input:focus{outline:none;border-color:var(--teal-bright);background:#fff}
@@ -48,6 +48,15 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Segoe UI',Aptos
 .btn-primary:hover{background:var(--navy)}
 .btn-ghost{background:#f0f5f7;color:var(--navy);border:1px solid #c5d5dc}
 .btn-ghost:hover{background:#e2ecef}
+
+/* Estilo da Barra de Eixos Estratégicos */
+.axis-bar{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
+.axis-pill{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 12px;text-align:center;cursor:pointer;transition:.15s;box-shadow:0 2px 6px rgba(11,52,72,.02)}
+.axis-pill:hover{border-color:var(--teal-bright);background:#f7fcfd;transform:translateY(-1px)}
+.axis-pill.active{background:var(--navy);border-color:var(--navy);color:#fff}
+.axis-pill.active .axis-title,.axis-pill.active .axis-count{color:#fff}
+.axis-title{font-size:11px;font-weight:700;color:var(--navy);display:block;line-height:1.2}
+.axis-count{font-size:11px;font-weight:600;color:var(--muted);display:block;margin-top:2px}
 
 .kpi-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}
 .kpi-card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px;position:relative;overflow:hidden;box-shadow:0 2px 8px rgba(11,52,72,.04)}
@@ -139,6 +148,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
 
 @media(max-width:1100px){
   .filter-bar{grid-template-columns:repeat(2,1fr)}
+  .axis-bar{grid-template-columns:repeat(2,1fr)}
   .kpi-strip{grid-template-columns:repeat(2,1fr)}
   .viz-grid-main,.viz-grid-sub{grid-template-columns:1fr}
   .chain-grid{grid-template-columns:repeat(4,1fr)}
@@ -202,6 +212,30 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
     <div class="f-actions">
       <button class="btn btn-primary" onclick="renderAll()">Filtrar</button>
       <button class="btn btn-ghost" onclick="resetFilters()">Limpar</button>
+    </div>
+  </section>
+
+  <!-- Barra de Navegação por Eixos Estratégicos (Estilo Observatório Fiocruz) -->
+  <section class="axis-bar" id="axisBarContainer">
+    <div class="axis-pill active" onclick="filtrarPorEixo('')">
+      <span class="axis-title">Todos os Eixos</span>
+      <span class="axis-count">7 indicadores</span>
+    </div>
+    <div class="axis-pill" onclick="filtrarPorEixo('Pesquisa e desenvolvimento tecnológico')">
+      <span class="axis-title">Pesquisa e P&D</span>
+      <span class="axis-count">2 indicadores</span>
+    </div>
+    <div class="axis-pill" onclick="filtrarPorEixo('Produção e inovação em saúde')">
+      <span class="axis-title">Desenvolvimento Tecnológico</span>
+      <span class="axis-count">3 indicadores</span>
+    </div>
+    <div class="axis-pill" onclick="filtrarPorEixo('Educação e formação profissional')">
+      <span class="axis-title">Educação</span>
+      <span class="axis-count">1 indicador</span>
+    </div>
+    <div class="axis-pill" onclick="filtrarPorEixo('Serviços de referência, assistência e vigilância')">
+      <span class="axis-title">Serviços / Coleções</span>
+      <span class="axis-count">1 indicador</span>
     </div>
   </section>
 
@@ -604,6 +638,15 @@ function initControls() {
   renderAll();
 }
 
+function filtrarPorEixo(atividadeFim) {
+  el('fActivity').value = atividadeFim;
+  document.querySelectorAll('.axis-pill').forEach(pill => pill.classList.remove('active'));
+  if (event && event.currentTarget) {
+    event.currentTarget.classList.add('active');
+  }
+  renderAll();
+}
+
 function getFilteredData() {
   const act = el('fActivity').value;
   const ind = el('fIndicator').value;
@@ -835,6 +878,9 @@ function closeModal() {
 function resetFilters() {
   ['fActivity', 'fIndicator', 'fRepro', 'fPolarity'].forEach(id => el(id).value = '');
   el('searchInput').value = '';
+  document.querySelectorAll('.axis-pill').forEach(pill => pill.classList.remove('active'));
+  const firstPill = document.querySelector('.axis-pill');
+  if (firstPill) firstPill.classList.add('active');
   focusedIndicatorId = null;
   renderAll();
 }
