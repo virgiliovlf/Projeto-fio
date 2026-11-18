@@ -37,7 +37,7 @@ def gerar_diagnostico_ia():
     """
 
     response = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model="gemini-3.8-flash",
         contents=prompt,
         config=types.GenerateContentConfig(
             response_mime_type="application/json",
@@ -48,13 +48,13 @@ def gerar_diagnostico_ia():
     resultado_ia = json.loads(response.text)
     payload = {
         "gerado_em": datetime.now().strftime("%d/%m/%Y %H:%M"),
-        "modelo": "Gemini 2.5 Flash (Auditoria Determinística)",
+        "modelo": "Gemini 3.8 Flash (Auditoria Determinística)",
         "analise": resultado_ia
     }
 
     with open(OUTPUT_IA_JSON, "w", encoding="utf-8") as f:
         json.dump(payload, f, ensure_ascii=False, indent=2)
-    print("Parecer de IA gerado com sucesso em data/parecer_ia.json")
+    print("Parecer de IA gerado com sucesso em parecer_ia.json")
 
 if __name__ == "__main__":
     gerar_diagnostico_ia()
