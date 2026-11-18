@@ -26,12 +26,12 @@ jobs:
       - name: Executar coletor e auditoria de IA
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-        run: python scripts/coletor.py
+        run: python coletor.py
 
       - name: Salvar alterações no repositório
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add data/
+          git add parecer_ia.json
           git commit -m "Atualização automática dos indicadores e parecer IA" || exit 0
           git push
