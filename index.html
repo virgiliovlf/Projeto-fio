@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Observatório Fiocruz | Painel Integrado de Indicadores de Desempenho</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 :root{
   --navy:#0b3448;
@@ -87,18 +88,6 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Segoe UI',Aptos
 .pill.no{background:var(--red)}
 .pill.yes{background:var(--green)}
 
-.chain-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;margin-top:10px}
-.chain-step{border-radius:7px;padding:12px 6px;text-align:center;border:1px solid var(--line);background:#f6fafb;transition:.2s}
-.chain-step .st-num{font-size:9px;font-weight:800;color:var(--muted);margin-bottom:4px}
-.chain-step .st-name{font-size:11px;font-weight:700;color:var(--navy);margin-bottom:4px}
-.chain-step .st-status{font-size:10px;font-weight:700}
-.chain-step.ok{background:#e7f5ef;border-color:#b2decb}
-.chain-step.ok .st-status{color:var(--green)}
-.chain-step.part{background:#fef6e7;border-color:#f3d59b}
-.chain-step.part .st-status{color:#b8740e}
-.chain-step.miss{background:#fdeceb;border-color:#efb9b3}
-.chain-step.miss .st-status{color:var(--red)}
-
 .donut-box{display:flex;align-items:center;gap:22px;padding-top:6px}
 .canvas-donut{width:155px!important;height:155px!important}
 .legend-list{display:grid;gap:8px;font-size:12px}
@@ -131,7 +120,6 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
   .filter-bar{grid-template-columns:repeat(2,1fr)}
   .kpi-strip{grid-template-columns:repeat(2,1fr)}
   .viz-grid-main,.viz-grid-sub{grid-template-columns:1fr}
-  .chain-grid{grid-template-columns:repeat(4,1fr)}
 }
 </style>
 </head>
@@ -271,255 +259,146 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
     </div>
   </section>
 
+  <!-- NOVA TRILHA INTERATIVA DE RASTREABILIDADE (Produto Técnico-Tecnológico) -->
+  <section class="card shadow-sm border-0 p-4 mb-4 bg-white rounded-3">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-3">
+      <div>
+        <h2 class="card-title m-0">Trilha Pública de Rastreabilidade do Indicador</h2>
+        <p class="card-subtitle m-0" id="subtitulo-trilha">Inspecionando indicador estratégico da Fiocruz</p>
+      </div>
+      <div class="d-flex align-items-center gap-3">
+        <div class="input-group input-group-sm" style="width: 250px;">
+          <label class="input-group-text bg-light text-secondary fw-semibold" for="seletor-indicador-trilha">Indicador</label>
+          <select class="form-select form-select-sm" id="seletor-indicador-trilha" onchange="mudarIndicadorTrilha(this.value)">
+            <option value="pesquisa">Produtividade em pesquisa</option>
+            <option value="plataformas">Atendimento às plataformas tecnológicas</option>
+            <option value="colecoes">Atendimento de serviços das coleções biológicas</option>
+            <option value="bio">Atendimento às demandas de biofármacos</option>
+            <option value="arv">Atendimento à demanda por antirretrovirais</option>
+            <option value="med">Atendimento à demanda por medicamentos do MS</option>
+            <option value="edu" selected>Matrículas por modalidade</option>
+          </select>
+        </div>
+        <span class="badge bg-light text-dark border px-3 py-2 fw-semibold" id="badge-completude-trilha">
+          50% Rastreável (2 Disponíveis · 4 Parciais · 2 Lacunas)
+        </span>
+      </div>
+    </div>
+
+    <!-- 8 Cartões dos Elos Metodológicos -->
+    <div class="row row-cols-1 row-cols-md-8 g-2 mb-4" id="trilha-cards-container" style="display:grid; grid-template-columns:repeat(8, 1fr); gap:8px;">
+      <!-- Gerado dinamicamente via JS -->
+    </div>
+
+    <!-- Caixa de Diagnóstico Dinâmico do Elo Selecionado -->
+    <div class="card border-0 rounded-3 p-3 text-white" id="painel-diagnostico-elo" style="background-color: #1e3a5f;">
+      <div class="d-flex align-items-center gap-2 mb-2">
+        <span class="badge bg-warning text-dark fw-bold px-2 py-1" id="elo-badge-status">Lacuna Documental</span>
+        <h5 class="m-0 fw-bold" id="elo-titulo-painel" style="font-size:14px;">Diagnóstico do Elo Selecionado — Elo 6: Denominador</h5>
+      </div>
+      <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:12px; margin-top:8px;" class="text-light small">
+        <div style="border-right: 1px solid #495057; padding-right: 10px;">
+          <strong class="text-warning d-block mb-1">Evidência Encontrada</strong>
+          <span id="elo-evidencia">Ausente nos painéis públicos do Observatório.</span>
+        </div>
+        <div style="border-right: 1px solid #495057; padding-right: 10px;">
+          <strong class="text-warning d-block mb-1">Impacto na Reprodutibilidade</strong>
+          <span id="elo-impacto">Impede recalcular a taxa de atendimento por modalidade de ensino.</span>
+        </div>
+        <div>
+          <strong class="text-warning d-block mb-1">Recomendação Técnica (Cogeplan)</strong>
+          <span id="elo-recomendacao">Publicar a previsão anual pactuada junto à tabela de matrículas.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Legenda Metodológica de Rodapé -->
+    <div class="d-flex justify-content-center align-items-center gap-4 mt-3 pt-3 border-top text-muted small flex-wrap">
+      <span><i class="fas fa-circle text-success me-1"></i> <strong>Disponível:</strong> Dado aberto e exportável</span>
+      <span><i class="fas fa-circle text-warning me-1"></i> <strong>Parcial:</strong> Dado agregado sem memória completa</span>
+      <span><i class="fas fa-circle text-danger me-1"></i> <strong>Lacuna:</strong> Componente não publicado</span>
+    </div>
+  </section>
+
+  <!-- Seção Inferior: Catálogo e Rosca de Completude -->
   <section class="viz-grid-sub">
-   <!-- NOVA TRILHA INTERATIVA DE RASTREABILIDADE (Produto Técnico-Tecnológico) -->
-<div class="card shadow-sm border-0 p-4 mb-4 bg-white rounded-3">
-  <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-3">
-    <div>
-      <h4 class="fw-bold text-dark m-0">Trilha Pública de Rastreabilidade do Indicador</h4>
-      <p class="text-muted small m-0" id="subtitulo-trilha">Inspecionando indicador estratégico da Fiocruz</p>
-    </div>
-    <div class="d-flex align-items-center gap-3">
-      <div class="input-group input-group-sm" style="width: 250px;">
-        <label class="input-group-text bg-light text-secondary fw-semibold" for="seletor-indicador-trilha">Indicador</label>
-        <select class="form-select form-select-sm" id="seletor-indicador-trilha" onchange="mudarIndicadorTrilha(this.value)">
-          <option value="pesquisa">Produtividade em pesquisa</option>
-          <option value="plataformas">Atendimento às plataformas tecnológicas</option>
-          <option value="colecoes">Atendimento de serviços das coleções biológicas</option>
-          <option value="bio">Atendimento às demandas de biofármacos</option>
-          <option value="arv">Atendimento à demanda por antirretrovirais</option>
-          <option value="med">Atendimento à demanda por medicamentos do MS</option>
-          <option value="edu" selected>Matrículas por modalidade</option>
-        </select>
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">Catálogo Analítico e Fichas Metodológicas</h2>
+          <p class="card-subtitle">Consulta de parâmetros, fontes e recomendações estruturadas</p>
+        </div>
+        <span class="badge-info">Visão Detalhada</span>
       </div>
-      <span class="badge bg-light text-dark border px-3 py-2 fw-semibold" id="badge-completude-trilha">
-        50% Rastreável (2 Disponíveis · 4 Parciais · 2 Lacunas)
-      </span>
+      <div class="catalog-toolbar">
+        <input type="text" id="searchInput" class="search-box" placeholder="Pesquisar indicador, eixo ou gargalo..." oninput="renderAll()">
+      </div>
+      <div style="overflow-x:auto;max-height:380px">
+        <table class="table-clean">
+          <thead>
+            <tr>
+              <th>Indicador</th>
+              <th>Atividade-Fim</th>
+              <th>Meta</th>
+              <th>Apurado</th>
+              <th>Ating.</th>
+              <th>Repro.</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="catalogBody"></tbody>
+        </table>
+      </div>
     </div>
-  </div>
 
-  <!-- 8 Cartões dos Elo Metodológicos -->
-  <div class="row row-cols-1 row-cols-md-8 g-2 mb-4" id="trilha-cards-container">
-    <!-- Gerado dinamicamente via JS -->
-  </div>
-
-  <!-- Caixa de Diagnóstico Dinâmico do Elo Selecionado -->
-  <div class="card border-0 rounded-3 p-3 text-white" id="painel-diagnostico-elo" style="background-color: #1e3a5f;">
-    <div class="d-flex align-items-center gap-2 mb-2">
-      <span class="badge bg-warning text-dark fw-bold px-2 py-1" id="elo-badge-status">Lacuna Documental</span>
-      <h5 class="m-0 fw-bold" id="elo-titulo-painel">Diagnóstico do Elo Selecionado — Elo 6: Denominador</h5>
-    </div>
-    <div class="row row-cols-1 row-cols-md-3 g-3 mt-1 text-light small">
-      <div class="col border-end border-secondary">
-        <strong class="text-warning d-block mb-1">Evidência Encontrada</strong>
-        <span id="elo-evidencia">Ausente nos painéis públicos do Observatório.</span>
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">Maturidade Documental Global</h2>
+          <p class="card-subtitle">Distribuição do preenchimento dos 8 elos nos indicadores monitorados</p>
+        </div>
+        <span class="badge-info">Completude</span>
       </div>
-      <div class="col border-end border-secondary">
-        <strong class="text-warning d-block mb-1">Impacto na Reprodutibilidade</strong>
-        <span id="elo-impacto">Impede recalcular a taxa de atendimento por modalidade de ensino.</span>
-      </div>
-      <div class="col">
-        <strong class="text-warning d-block mb-1">Recomendação Técnica (Cogeplan)</strong>
-        <span id="elo-recomendacao">Publicar a previsão anual pactuada junto à tabela de matrículas.</span>
+      <div class="donut-box">
+        <div style="position:relative;width:155px;height:155px;flex-shrink:0">
+          <canvas id="donutChart" class="canvas-donut"></canvas>
+          <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;pointer-events:none">
+            <span style="font-size:24px;font-weight:800;color:var(--navy);line-height:1" id="donutCenter">59%</span>
+            <span style="font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase">Global</span>
+          </div>
+        </div>
+        <div class="legend-list">
+          <div class="legend-row"><span class="dot" style="background:#2f8f6f"></span><span><strong>Disponível:</strong> Dados abertos e verificáveis</span></div>
+          <div class="legend-row"><span class="dot" style="background:#e69b28"></span><span><strong>Parcial:</strong> Dados agregados ou parciais</span></div>
+          <div class="legend-row"><span class="dot" style="background:#c95244"></span><span><strong>Lacuna:</strong> Componentes ausentes publicamente</span></div>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
+</main>
 
-  <!-- Legenda Metodológica de Rodapé -->
-  <div class="d-flex justify-content-center align-items-center gap-4 mt-3 pt-3 border-top text-muted small flex-wrap">
-    <span><i class="fas fa-circle text-success me-1"></i> <strong>Disponível:</strong> Dado aberto e exportável</span>
-    <span><i class="fas fa-circle text-warning me-1"></i> <strong>Parcial:</strong> Dado agregado sem memória completa</span>
-    <span><i class="fas fa-circle text-danger me-1"></i> <strong>Lacuna:</strong> Componente não publicado</span>
+<!-- Modal de Ficha Metodológica -->
+<div class="modal" id="methodModal">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <div>
+        <span class="fiocruz-badge" style="background:#ffffff20;color:#fff;border:none">FICHA METODOLÓGICA</span>
+        <h2 id="mTitle">Detalhes do Indicador</h2>
+      </div>
+      <button class="modal-close" onclick="closeModal()">Fechar ✕</button>
+    </div>
+    <div class="modal-content" id="mContent"></div>
   </div>
 </div>
 
-<!-- SCRIPT DE COMPORTAMENTO DA TRILHA INTERATIVA -->
+<footer>
+  <p><strong>Observatório Fiocruz · Painel Integrado de Indicadores de Desempenho Institucional (Ciclo 2025)</strong><br>
+  Desenvolvido como Produto Técnico-Tecnológico no âmbito do Mestrado em Administração (Programa de Pós-Graduação em Administração — Universidade Potiguar / UnP).<br>
+  Orientação: Profa. Dra. Joyce Mariella Medeiros Cavalcanti. Autor: Virgílio Leandro Freitas (Fiocruz Ceará).</p>
+</footer>
+
+<!-- SCRIPT COMPLETO DE DADOS E LÓGICA DO PAINEL -->
 <script>
-const dadosTrilha = {
-  pesquisa: {
-    nome: "Produtividade em pesquisa",
-    completude: "75% Rastreável (4 Disponíveis · 2 Parciais · 2 Lacunas)",
-    elos: [
-      { id: 1, nome: "Fórmula", subtitulo: "Regra de cálculo", status: "disponivel", evidencia: "Definida na Portaria nº 571/2026.", impacto: "Nenhum no cálculo teórico.", recomendacao: "Manter especificação atual." },
-      { id: 2, nome: "Fonte", subtitulo: "Sistema origem", status: "disponivel", evidencia: "Base de pessoal e fomento Fiocruz.", impacto: "Nenhum.", recomendacao: "Preservar integridade do repositório." },
-      { id: 3, nome: "Meta", subtitulo: "Pactuação anual", status: "disponivel", evidencia: "Registrada no contrato de gestão.", impacto: "Nenhum.", recomendacao: "Manter transparência da meta." },
-      { id: 4, nome: "Resultado", subtitulo: "Valor apurado", status: "disponivel", evidencia: "Divulgado no relatório de gestão consolidado.", impacto: "Nenhum.", recomendacao: "Manter formato atual." },
-      { id: 5, nome: "Numerador", subtitulo: "Entregas brutas", status: "parcial", evidencia: "Divulgado de forma agregada por unidade.", impacto: "Dificulta auditoria granular por laboratório.", recomendacao: "Abrir dados por unidade executoras." },
-      { id: 6, nome: "Denominador", subtitulo: "Base de referência", status: "lacuna", evidencia: "Denominador funcional não exportável com os mesmos filtros.", impacto: "Impossibilita recálculo idêntico externo.", recomendacao: "Publicar a série histórica agregada de servidores ativos." },
-      { id: 7, nome: "Filtros", subtitulo: "Recorte temporal", status: "parcial", evidencia: "Filtros aplicados descritos de forma sumária.", impacto: "Margem de divergência em recortes retroativos.", recomendacao: "Documentar os parâmetros exatos de extração." },
-      { id: 8, nome: "Memória", subtitulo: "Microdados", status: "lacuna", evidencia: "Ausência de base legível (.csv/.json) com o detalhamento.", impacto: "Exige replicação por estimativa.", recomendacao: "Disponibilizar o caderno metodológico completo." }
-    ]
-  },
-  plataformas: {
-    nome: "Atendimento às plataformas tecnológicas",
-    completude: "50% Rastreável (2 Disponíveis · 4 Parciais · 2 Lacunas)",
-    elos: [
-      { id: 1, nome: "Fórmula", subtitulo: "Regra de cálculo", status: "disponivel", evidencia: "Taxa de atendimento de solicitações.", impacto: "Clareza na formulação matemática.", recomendacao: "Manter padrão." },
-      { id: 2, nome: "Fonte", subtitulo: "Sistema origem", status: "parcial", evidencia: "Plataforma interna de gestão de serviços.", impacto: "Sem acesso direto externo.", recomendacao: "Integrar com portal de dados abertos." },
-      { id: 3, nome: "Meta", subtitulo: "Pactuação anual", status: "disponivel", evidencia: "Metas fixadas no plano anual.", impacto: "Nenhum.", recomendacao: "Manter." },
-      { id: 4, nome: "Resultado", subtitulo: "Valor apurado", status: "parcial", evidencia: "Percentual global divulgado (117,10%).", impacto: "Falta detalhamento por plataforma.", recomendacao: "Apresentar desagregação por unidade." },
-      { id: 5, nome: "Numerador", subtitulo: "Atendimentos", status: "parcial", evidencia: "Volume informado sem listagem de demandas.", impacto: "Restringe verificação de duplicidades.", recomendacao: "Publicar extrato anonimizado de demandas." },
-      { id: 6, nome: "Denominador", subtitulo: "Solicitações", status: "lacuna", evidencia: "Sem painel público com total de solicitações.", impacto: "Impossibilita validar o quociente.", recomendacao: "Disponibilizar numerador e denominador abertos." },
-      { id: 7, nome: "Filtros", subtitulo: "Recorte temporal", status: "parcial", evidencia: "Considera o ano civil do ciclo.", impacto: "Sem corte mensal disponível.", recomendacao: "Inserir série temporal mensal." },
-      { id: 8, nome: "Memória", subtitulo: "Microdados", status: "lacuna", evidencia: "Ausente em base aberta acessível.", impacto: "Opacidade na auditoria externa.", recomendacao: "Criar repositório público de metadados." }
-    ]
-  },
-  colecoes: {
-    nome: "Atendimento de serviços das coleções biológicas",
-    completude: "50% Rastreável (2 Disponíveis · 4 Parciais · 2 Lacunas)",
-    elos: [
-      { id: 1, nome: "Fórmula", subtitulo: "Regra de cálculo", status: "disponivel", evidencia: "Atendimento de amostras e insumos.", impacto: "Nenhum.", recomendacao: "Manter." },
-      { id: 2, nome: "Fonte", subtitulo: "Sistema origem", status: "parcial", evidencia: "Sistemas próprios das Coleções Biológicas.", impacto: "Sistemas descentralizados.", recomendacao: "Unificar repositório institucional." },
-      { id: 3, nome: "Meta", subtitulo: "Pactuação anual", status: "disponivel", evidencia: "Acordo de metas institucional.", impacto: "Nenhum.", recomendacao: "Manter." },
-      { id: 4, nome: "Resultado", subtitulo: "Valor apurado", status: "parcial", evidencia: "Atingimento de 130,14% reportado.", impacto: "Falta detalhamento por coleção.", recomendacao: "Publicar tabela por tipo de acervo." },
-      { id: 5, nome: "Numerador", subtitulo: "Serviços prestados", status: "parcial", evidencia: "Somatório anual divulgado.", impacto: "Sem rastreio de institutos requisitantes.", recomendacao: "Detalhar perfil dos usuários." },
-      { id: 6, nome: "Denominador", subtitulo: "Demanda total", status: "lacuna", evidencia: "Serviços demandados ausentes em base aberta.", impacto: "Impossível calcular taxa real de atendimento.", recomendacao: "Abrir o consolidado anual de solicitações." },
-      { id: 7, nome: "Filtros", subtitulo: "Recorte temporal", status: "parcial", evidencia: "Anual consolidado.", impacto: "Sem sazonalidade visível.", recomendacao: "Adicionar filtro quadrimestral." },
-      { id: 8, nome: "Memória", subtitulo: "Microdados", status: "lacuna", evidencia: "Inexistente em formato processável.", impacto: "Não reproduzível externamente.", recomendacao: "Publicar em .CSV no portal Fiocruz." }
-    ]
-  },
-  bio: {
-    nome: "Atendimento às demandas de biofármacos",
-    completude: "62% Rastreável (3 Disponíveis · 3 Parciais · 2 Lacunas)",
-    elos: [
-      { id: 1, nome: "Fórmula", subtitulo: "Regra de cálculo", status: "disponivel", evidencia: "Volume fornecido vs. pactuado.", impacto: "Nenhum.", recomendacao: "Manter." },
-      { id: 2, nome: "Fonte", subtitulo: "Sistema origem", status: "disponivel", evidencia: "Bio-Manguinhos / Farmanguinhos.", impacto: "Nenhum.", recomendacao: "Manter." },
-      { id: 3, nome: "Meta", subtitulo: "Pactuação anual", status: "parcial", evidencia: "Previsão pactuada em cronogramas internos.", impacto: "Desalinhamento com painel público.", recomendacao: "Integrar programação anual ao painel." },
-      { id: 4, nome: "Resultado", subtitulo: "Valor apurado", status: "disponivel", evidencia: "Atingimento de 104,44% verificado.", impacto: "Nenhum.", recomendacao: "Manter." },
-      { id: 5, nome: "Numerador", subtitulo: "Lotes entregues", status: "disponivel", evidencia: "Registros de expedição oficiais.", impacto: "Nenhum.", recomendacao: "Manter." },
-      { id: 6, nome: "Denominador", subtitulo: "Demanda MS", status: "parcial", evidencia: "Pautas do Ministério da Saúde parciais.", impacto: "Visibilidade restrita de lotes em atraso.", recomendacao: "Vincular pautas de entrega às remessas." },
-      { id: 7, nome: "Filtros", subtitulo: "Recorte temporal", status: "parcial", evidencia: "Calendário de entregas oficial.", impacto: "Sem rastreio por lote fabril.", recomendacao: "Incluir rastreabilidade por lote." },
-      { id: 8, nome: "Memória", subtitulo: "Microdados", status: "lacuna", evidencia: "Detalhes logísticos protegidos por sigilo comercial.", impacto: "Parcialmente justificável por propriedade industrial.", recomendacao: "Publicar dados agregados de entrega." }
-    ]
-  },
-  arv: {
-    nome: "Atendimento à demanda por antirretrovirais",
-    completude: "62% Rastreável (3 Disponíveis · 3 Parciais · 2 Lacunas)",
-    elos: [
-      { id: 1, nome: "Fórmula", subtitulo: "Regra de cálculo", status: "disponivel", evidencia: "Atendimento 100% da pauta.", impacto: "Nenhum.", recomendacao: "Manter." },
-      { id: 2, nome: "Fonte", subtitulo: "Sistema origem", status: "disponivel", evidencia: "Complexo Industrial da Saúde.", impacto: "Nenhum.", recomendacao: "Manter." },
-      { id: 3, nome: "Meta", subtitulo: "Pactuação anual", status: "disponivel", evidencia: "Acordo de fornecimento estratégico.", impacto: "Nenhum.", recomendacao: "Manter." },
-      { id: 4, nome: "Resultado", subtitulo: "Valor apurado", status: "disponivel", evidencia: "100,00% de atendimento reportado.", impacto: "Nenhum.", recomendacao: "Manter." },
-      { id: 5, nome: "Numerador", subtitulo: "Entregas efetivas", status: "parcial", evidencia: "Relatórios de expedição ao SUS.", impacto: "Sem detalhamento por unidade federativa.", recomendacao: "Divulgar distribuição por estado." },
-      { id: 6, nome: "Denominador", subtitulo: "Pautas requisitadas", status: "parcial", evidencia: "Requisições oficiais do DLOG/MS.", impacto: "Pautas/requisições não integradas no mesmo ambiente.", recomendacao: "Integrar pautas e entregas no mesmo painel." },
-      { id: 7, nome: "Filtros", subtitulo: "Recorte temporal", status: "parcial", evidencia: "Ciclo anual.", impacto: "Sem visão mensal de abastecimento.", recomendacao: "Adicionar painel de estoque estratégico." },
-      { id: 8, nome: "Memória", subtitulo: "Microdados", status: "lacuna", evidencia: "Ausência de base aberta detalhada.", impacto: "Impossibilidade de auditoria de lotes críticos.", recomendacao: "Publicar extrato de atendimento logístico." }
-    ]
-  },
-  med: {
-    nome: "Atendimento à demanda por medicamentos do MS",
-    completude: "62% Rastreável (3 Disponíveis · 3 Parciais · 2 Lacunas)",
-    elos: [
-      { id: 1, nome: "Fórmula", subtitulo: "Regra de cálculo", status: "disponivel", evidencia: "Atendimento de portfólio estratégico.", impacto: "Nenhum.", recomendacao: "Manter." },
-      { id: 2, nome: "Fonte", subtitulo: "Sistema origem", status: "disponivel", evidencia: "Unidades produtivas Fiocruz.", impacto: "Nenhum.", recomendacao: "Manter." },
-      { id: 3, nome: "Meta", subtitulo: "Pactuação anual", status: "disponivel", evidencia: "Plano de Produção Nacional.", impacto: "Nenhum.", recomendacao: "Manter." },
-      { id: 4, nome: "Resultado", subtitulo: "Valor apurado", status: "disponivel", evidencia: "102,11% de atendimento alcançado.", impacto: "Nenhum.", recomendacao: "Manter." },
-      { id: 5, nome: "Numerador", subtitulo: "Unidades entregues", status: "disponivel", evidencia: "Balanço de expedição anual.", impacto: "Nenhum.", recomendacao: "Manter." },
-      { id: 6, nome: "Denominador", subtitulo: "Quantidades requisitadas", status: "parcial", evidencia: "Quantidades requisitadas ausentes do painel público.", impacto: "Dificulta verificação de desabastecimento.", recomendacao: "Incluir a memória de cálculo das pautas." },
-      { id: 7, nome: "Filtros", subtitulo: "Recorte temporal", status: "parcial", evidencia: "Consolidado anual.", impacto: "Falta granularidade trimestral.", recomendacao: "Apresentar prazos médios de entrega." },
-      { id: 8, nome: "Memória", subtitulo: "Microdados", status: "lacuna", evidencia: "Inexistência de repositório aberto por medicamento.", impacto: "Opacidade sobre itens críticos.", recomendacao: "Publicar base aberta por princípio ativo." }
-    ]
-  },
-  edu: {
-    nome: "Matrículas por modalidade",
-    completude: "50% Rastreável (2 Disponíveis · 4 Parciais · 2 Lacunas)",
-    elos: [
-      { id: 1, nome: "Fórmula", subtitulo: "Regra de cálculo", status: "disponivel", evidencia: "Soma de discentes ativos por modalidade.", impacto: "Clareza conceitual.", recomendacao: "Manter." },
-      { id: 2, nome: "Fonte", subtitulo: "Sistema origem", status: "disponivel", evidencia: "SIGA / Secretaria Acadêmica Fiocruz.", impacto: "Fonte oficial validada.", recomendacao: "Manter." },
-      { id: 3, nome: "Meta", subtitulo: "Pactuação anual", status: "parcial", evidencia: "Previsão pactuada não integrada.", impacto: "Desconexão entre meta e realizado.", recomendacao: "Apresentar metas por modalidade." },
-      { id: 4, nome: "Resultado", subtitulo: "Valor apurado", status: "parcial", evidencia: "Total de matrículas ativas reportado.", impacto: "Sem detalhamento por unidade de ensino.", recomendacao: "Desagregar por Escola/Instituto." },
-      { id: 5, nome: "Numerador", subtitulo: "Alunos matriculados", status: "parcial", evidencia: "Relatório acadêmico agregado.", impacto: "Sem identificação de evasão.", recomendacao: "Incluir taxa de retenção." },
-      { id: 6, nome: "Denominador", subtitulo: "Vagas ofertadas", status: "lacuna", evidencia: "Capacidade instalada não publicada no painel.", impacto: "Impossibilita calcular taxa de ocupação de vagas.", recomendacao: "Publicar o total de vagas oferecidas por edital." },
-      { id: 7, nome: "Filtros", subtitulo: "Recorte temporal", status: "parcial", evidencia: "Ano letivo vigente.", impacto: "Falta recorte por semestre.", recomendacao: "Detalhar por período letivo." },
-      { id: 8, nome: "Memória", subtitulo: "Microdados", status: "lacuna", evidencia: "Ausência de boletim estatístico aberto (.csv).", impacto: "Incompatível com reprodução externa total.", recomendacao: "Disponibilizar base estatística anonimizada." }
-    ]
-  }
-};
-
-let eloAtivoGlobal = null;
-
-function mudarIndicadorTrilha(chave) {
-  const dados = dadosTrilha[chave];
-  if (!dados) return;
-
-  document.getElementById("subtitulo-trilha").innerText = `Inspecionando: ${dados.nome}`;
-  document.getElementById("badge-completude-trilha").innerText = dados.completude;
-
-  const container = document.getElementById("trilha-cards-container");
-  container.innerHTML = "";
-
-  dados.elos.forEach((elo, index) => {
-    let bgCard = "bg-light border";
-    let textStatus = "text-secondary";
-    let badgeClass = "bg-secondary";
-    let statusLabel = "Disponível";
-
-    if (elo.status === "disponivel") {
-      bgCard = "bg-success bg-opacity-10 border-success";
-      textStatus = "text-success fw-bold";
-      badgeClass = "bg-success";
-      statusLabel = "Disponível";
-    } else if (elo.status === "parcial") {
-      bgCard = "bg-warning bg-opacity-10 border-warning";
-      textStatus = "text-dark fw-bold";
-      badgeClass = "bg-warning text-dark";
-      statusLabel = "Parcial";
-    } else if (elo.status === "lacuna") {
-      bgCard = "bg-danger bg-opacity-10 border-danger";
-      textStatus = "text-danger fw-bold";
-      badgeClass = "bg-danger";
-      statusLabel = "Lacuna";
-    }
-
-    const col = document.createElement("div");
-    col.className = "col";
-    col.innerHTML = `
-      <div class="card h-100 ${bgCard} p-2 text-center rounded-3 shadow-sm cursor-pointer elo-card-item" 
-           onclick="selecionarEloTrilha('${chave}', ${index})" style="cursor: pointer; transition: transform 0.2s;">
-        <div class="small text-uppercase fw-bold text-muted" style="font-size: 0.65rem;">Elo ${elo.id}</div>
-        <div class="fw-bold text-dark mb-1" style="font-size: 0.8rem;">${elo.nome}</div>
-        <div class="text-muted mb-2" style="font-size: 0.65rem; line-height: 1.1;">(${elo.subtitulo})</div>
-        <span class="badge ${badgeClass} text-uppercase" style="font-size: 0.6rem;">${statusLabel}</span>
-      </div>
-    `;
-    container.appendChild(col);
-  });
-
-  // Seleciona o primeiro elo por defeito
-  selecionarEloTrilha(chave, 0);
-}
-
-function selecionarEloTrilha(chave, indexElo) {
-  const elo = dadosTrilha[chave].elos[indexElo];
-  eloAtivoGlobal = elo;
-
-  document.getElementById("elo-titulo-painel").innerText = `Diagnóstico do Elo Selecionado — Elo ${elo.id}: ${elo.nome} (${elo.subtitulo})`;
-  document.getElementById("elo-evidencia").innerText = elo.evidencia;
-  document.getElementById("elo-impacto").innerText = elo.impacto;
-  document.getElementById("elo-recomendacao").innerText = elo.recomendacao;
-
-  const badgeStatus = document.getElementById("elo-badge-status");
-  if (elo.status === "disponivel") {
-    badgeStatus.className = "badge bg-success text-white fw-bold px-2 py-1";
-    badgeStatus.innerText = "Elo Disponível";
-    document.getElementById("painel-diagnostico-elo").style.backgroundColor = "#198754";
-  } else if (elo.status === "parcial") {
-    badgeStatus.className = "badge bg-warning text-dark fw-bold px-2 py-1";
-    badgeStatus.innerText = "Restrição / Parcial";
-    document.getElementById("painel-diagnostico-elo").style.backgroundColor = "#fd7e14";
-  } else {
-    badgeStatus.className = "badge bg-danger text-white fw-bold px-2 py-1";
-    badgeStatus.innerText = "Lacuna Documental";
-    document.getElementById("painel-diagnostico-elo").style.backgroundColor = "#dc3545";
-  }
-}
-
-// Inicializa ao carregar a página
-document.addEventListener("DOMContentLoaded", () => {
-  mudarIndicadorTrilha("edu");
-});
-</script>
-
 const INDICATORS_DATA = [
   {
     id: 'pesquisa',
@@ -644,7 +523,7 @@ const INDICATORS_DATA = [
     numerator: 'Parcial: fornecimento pode estar disponível por produto.',
     denominator: 'Pautas/requisições não integradas.',
     filters: 'Parcial.',
-    memory: 'Não centralizada publicamente.',
+    memory: 'Not centralizada publicamente.',
     responsible: 'Área de produção / Cogeplan.',
     periodicity: 'Anual.',
     polarity: 'Maior melhor',
@@ -705,233 +584,52 @@ const INDICATORS_DATA = [
   }
 ];
 
-const CHAIN_STEPS = [
-  '1. Fórmula', '2. Fonte', '3. Meta', '4. Resultado',
-  '5. Numerador', '6. Denominador', '7. Filtros', '8. Memória'
-];
-
-let donutInstance = null;
-let focusedIndicatorId = null;
-
-const el = id => document.getElementById(id);
-const fmtPct = v => v == null ? '—' : v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%';
-
-async function carregarParecerIA() {
-  try {
-    const res = await fetch('parecer_ia.json');
-    if (!res.ok) return;
-    const dados = await res.json();
-    if (dados.analise && dados.analise.sintese_executiva) {
-      el('iaSintese').textContent = dados.analise.sintese_executiva;
-      el('iaMeta').textContent = `Última auditoria automatizada: ${dados.gerado_em}`;
-      el('iaModel').textContent = dados.modelo || 'Auditoria IA';
-      INDICATORS_DATA.forEach(ind => {
-        if (dados.analise.recomendacoes_por_id && dados.analise.recomendacoes_por_id[ind.id]) {
-          ind.iaRecomendacao = dados.analise.recomendacoes_por_id[ind.id];
-        }
-      });
-    }
-  } catch (e) {
-    // Mantém o texto padrão caso rode localmente sem servidor
-  }
-}
-
-function initControls() {
-  const activities = [...new Set(INDICATORS_DATA.map(d => d.activity))];
-  el('fActivity').innerHTML = '<option value="">Todas as atividades-fim</option>' + activities.map(a => `<option value="${a}">${a}</option>`).join('');
-  el('fIndicator').innerHTML = '<option value="">Todos os indicadores</option>' + INDICATORS_DATA.map(i => `<option value="${i.id}">${i.name}</option>`).join('');
-  carregarParecerIA();
-  renderAll();
-}
-
-function getFilteredData() {
-  const act = el('fActivity').value;
-  const ind = el('fIndicator').value;
-  const rep = el('fRepro').value;
-  const pol = el('fPolarity').value;
-  const q = el('searchInput').value.trim().toLowerCase();
-
-  return INDICATORS_DATA.filter(item =>
-    (!act || item.activity === act) &&
-    (!ind || item.id === ind) &&
-    (!rep || item.repro === rep) &&
-    (!pol || item.polarity === pol) &&
-    (!q || (item.name + ' ' + item.activity + ' ' + item.bottleneck).toLowerCase().includes(q))
-  );
-}
-
-function calcCompleteness(item) {
-  let score = 0;
-  item.states.forEach(s => {
-    if (s === 'ok') score += 1;
-    else if (s === 'part') score += 0.5;
-  });
-  return (score / 8) * 100;
-}
-
-function renderAll() {
-  const data = getFilteredData();
-  const numeric = data.filter(d => d.att != null);
-
-  el('kpiTotal').textContent = data.length;
-  el('kpiAvg').textContent = numeric.length ? fmtPct(numeric.reduce((acc, d) => acc + d.att, 0) / numeric.length) : '—';
-  el('kpiPartial').textContent = data.filter(d => d.repro === 'Parcial').length;
-  el('kpiNo').textContent = data.filter(d => d.repro === 'Não reproduzível').length;
-
-  const avgComp = data.length ? Math.round(data.reduce((acc, d) => acc + calcCompleteness(d), 0) / data.length) : 0;
-  el('kpiComp').textContent = avgComp + '%';
-
-  el('bulletContainer').innerHTML = numeric.length ? numeric.map(d => {
-    const pctWidth = Math.min((d.att / 160) * 100, 100);
-    const barColor = d.repro === 'Parcial' ? 'var(--teal)' : 'var(--blue)';
-    return `
-      <div class="bullet-item">
-        <div class="bullet-label">${d.name}<small>${d.activity}</small></div>
-        <div class="bullet-track">
-          <div class="bullet-fill" style="width:${pctWidth}%;background:${barColor}"></div>
-          <div class="bullet-target" title="Meta pactuada: 100%"></div>
-        </div>
-        <div class="bullet-val">${fmtPct(d.att)}</div>
-      </div>`;
-  }).join('') : '<div style="padding:20px;color:var(--muted);font-size:12px">Nenhum indicador numérico no filtro atual.</div>';
-
-  el('matrixBody').innerHTML = data.map(d => `
-    <tr style="cursor:pointer" onclick="selectChain('${d.id}')">
-      <td><strong>${d.name}</strong></td>
-      <td><span class="pill ${d.repro === 'Parcial' ? 'partial' : 'no'}">${d.repro}</span></td>
-      <td>${d.bottleneck}</td>
-    </tr>
-  `).join('');
-
-  el('catalogBody').innerHTML = data.length ? data.map(d => `
-    <tr style="cursor:pointer" onclick="selectChain('${d.id}')">
-      <td><strong>${d.name}</strong></td>
-      <td>${d.activity}</td>
-      <td>${d.metaLabel}</td>
-      <td>${d.actualLabel}</td>
-      <td><strong>${fmtPct(d.att)}</strong></td>
-      <td><span class="pill ${d.repro === 'Parcial' ? 'partial' : 'no'}">${d.repro}</span></td>
-      <td><button class="btn-ficha" onclick="event.stopPropagation();openModal('${d.id}')">Ficha metodológica</button></td>
-    </tr>
-  `).join('') : '<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--muted)">Nenhum registro encontrado.</td></tr>';
-
-  const targetItem = data.length === 1 ? data[0] : (data.find(d => d.id === focusedIndicatorId) || data[0] || null);
-  renderChain(targetItem);
-  renderDonut(data, avgComp);
-}
-
-function selectChain(id) {
-  focusedIndicatorId = id;
-  const item = INDICATORS_DATA.find(d => d.id === id);
-  renderChain(item);
-}
-
-function renderChain(item) {
-  if (!item) {
-    el('chainSubtitle').textContent = 'Nenhum indicador disponível no filtro.';
-    el('chainContainer').innerHTML = CHAIN_STEPS.map(s => `<div class="chain-step"><div class="st-name">${s}</div><div class="st-status">—</div></div>`).join('');
-    return;
-  }
-  el('chainSubtitle').innerHTML = `Inspecionando: <strong>${item.name}</strong> (${item.activity})`;
-  const labels = { ok: 'Disponível', part: 'Parcial', miss: 'Lacuna' };
-  el('chainContainer').innerHTML = CHAIN_STEPS.map((step, idx) => {
-    const st = item.states[idx];
-    return `
-      <div class="chain-step ${st}">
-        <div class="st-num">ELO ${idx + 1}</div>
-        <div class="st-name">${step.split('. ')[1]}</div>
-        <div class="st-status">${labels[st]}</div>
-      </div>`;
-  }).join('');
-}
-
-function renderDonut(data, avgComp) {
-  let okCount = 0, partCount = 0, missCount = 0;
-  data.forEach(d => d.states.forEach(s => {
-    if (s === 'ok') okCount++;
-    else if (s === 'part') partCount++;
-    else missCount++;
-  }));
-
-  el('donutCenter').textContent = avgComp + '%';
-  const ctx = el('donutChart').getContext('2d');
-  if (donutInstance) donutInstance.destroy();
-
-  donutInstance = new Chart(ctx, {
-    type: 'doughnut',
-    data: {
-      labels: ['Disponível', 'Parcial', 'Lacuna'],
-      datasets: [{
-        data: data.length ? [okCount, partCount, missCount] : [0, 0, 1],
-        backgroundColor: ['#2f8f6f', '#e69b28', '#c95244'],
-        borderWidth: 2,
-        borderColor: '#ffffff'
-      }]
-    },
-    options: {
-      cutout: '68%',
-      plugins: { legend: { display: false } },
-      animation: { duration: 300 }
-    }
-  });
-}
-
-function openModal(id) {
-  const x = INDICATORS_DATA.find(d => d.id === id);
-  if (!x) return;
-  el('mTitle').textContent = x.name;
-  el('mContent').innerHTML = `
-    <div class="m-grid">
-      <div class="m-box"><label>Atividade-Fim</label><p>${x.activity}</p></div>
-      <div class="m-box"><label>Polaridade e Periodicidade</label><p>${x.polarity} · ${x.periodicity}</p></div>
-      <div class="m-box full"><label>Propósito do Indicador</label><p>${x.purpose}</p></div>
-      <div class="m-box full"><label>Interpretação Gerencial</label><p>${x.interpretation}</p></div>
-      <div class="m-box full"><label>Fórmula de Cálculo</label><div class="formula-code">${x.formula}</div></div>
-      <div class="m-box"><label>Meta Pactuada (Ciclo 2025)</label><p><strong>${x.metaLabel}</strong></p></div>
-      <div class="m-box"><label>Resultado Apurado (Portaria nº 571/2026)</label><p><strong>${x.actualLabel}</strong> (Atingimento: ${fmtPct(x.att)})</p></div>
-      <div class="m-box"><label>Numerador (Disponibilidade)</label><p>${x.numerator}</p></div>
-      <div class="m-box"><label>Denominador (Disponibilidade)</label><p>${x.denominator}</p></div>
-      <div class="m-box"><label>Filtros e Regras de Negócio</label><p>${x.filters}</p></div>
-      <div class="m-box"><label>Memória de Cálculo</label><p>${x.memory}</p></div>
-      <div class="m-box full"><label>Limitações de Reprodutibilidade</label><p>${x.limitations}</p></div>
-      <div class="m-box full"><label>Fontes Documentais</label><p>${x.source}</p></div>
-      <div class="m-box full solution-box"><label>Recomendação de Governança e Dados Abertos (IA / Produto Técnico)</label><p>${x.iaRecomendacao || 'Publicar, em repositório aberto integrado ao Observatório, a base processável (.CSV/.JSON), numerador, denominador, dicionário de filtros, data de extração e script reprodutível de cálculo.'}</p></div>
-    </div>
-  `;
-  el('methodModal').classList.add('open');
-}
-
-function closeModal() {
-  el('methodModal').classList.remove('open');
-}
-
-function resetFilters() {
-  ['fActivity', 'fIndicator', 'fRepro', 'fPolarity'].forEach(id => el(id).value = '');
-  el('searchInput').value = '';
-  focusedIndicatorId = null;
-  renderAll();
-}
-
-function exportCSV() {
-  const headers = ['ID', 'Indicador', 'Atividade_Fim', 'Meta', 'Apurado', 'Atingimento_Pct', 'Reprodutibilidade', 'Gargalo', 'Formula'];
-  const rows = getFilteredData().map(d => [
-    d.id, `"${d.name}"`, `"${d.activity}"`, `"${d.metaLabel}"`, `"${d.actualLabel}"`,
-    d.att != null ? d.att.toFixed(2) : '', `"${d.repro}"`, `"${d.bottleneck}"`, `"${d.formula}"`
-  ]);
-  const csvContent = "data:text/csv;charset=utf-8,﻿" + [headers.join(';'), ...rows.map(r => r.join(';'))].join('\n');
-  const encodedUri = encodeURI(csvContent);
-  const link = document.createElement("a");
-  link.setAttribute("href", encodedUri);
-  link.setAttribute("download", "indicadores_fiocruz_ciclo2025.csv");
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-}
-
-window.onclick = e => { if (e.target === el('methodModal')) closeModal(); };
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
-initControls();
-</script>
-</body>
-</html>
+const dadosTrilha = {
+  pesquisa: {
+    nome: "Produtividade em pesquisa",
+    completude: "75% Rastreável (4 Disponíveis · 2 Parciais · 2 Lacunas)",
+    elos: [
+      { id: 1, nome: "Fórmula", subtitulo: "Regra de cálculo", status: "disponivel", evidencia: "Definida na Portaria nº 571/2026.", impacto: "Nenhum no cálculo teórico.", recomendacao: "Manter especificação atual." },
+      { id: 2, nome: "Fonte", subtitulo: "Sistema origem", status: "disponivel", evidencia: "Base de pessoal e fomento Fiocruz.", impacto: "Nenhum.", recomendacao: "Preservar integridade do repositório." },
+      { id: 3, nome: "Meta", subtitulo: "Pactuação anual", status: "disponivel", evidencia: "Registrada no contrato de gestão.", impacto: "Nenhum.", recomendacao: "Manter transparência da meta." },
+      { id: 4, nome: "Resultado", subtitulo: "Valor apurado", status: "disponivel", evidencia: "Divulgado no relatório de gestão consolidado.", impacto: "Nenhum.", recomendacao: "Manter formato atual." },
+      { id: 5, nome: "Numerador", subtitulo: "Entregas brutas", status: "parcial", evidencia: "Divulgado de forma agregada por unidade.", impacto: "Dificulta auditoria granular por laboratório.", recomendacao: "Abrir dados por unidade executoras." },
+      { id: 6, nome: "Denominador", subtitulo: "Base de referência", status: "lacuna", evidencia: "Denominador funcional não exportável com os mesmos filtros.", impacto: "Impossibilita recálculo idêntico externo.", recomendacao: "Publicar a série histórica agregada de servidores ativos." },
+      { id: 7, nome: "Filtros", subtitulo: "Recorte temporal", status: "parcial", evidencia: "Filtros aplicados descritos de forma sumária.", impacto: "Margem de divergência em recortes retroativos.", recomendacao: "Documentar os parâmetros exatos de extração." },
+      { id: 8, nome: "Memória", subtitulo: "Microdados", status: "lacuna", evidencia: "Ausência de base legível (.csv/.json) com o detalhamento.", impacto: "Exige replicação por estimativa.", recomendacao: "Disponibilizar o caderno metodológico completo." }
+    ]
+  },
+  plataformas: {
+    nome: "Atendimento às plataformas tecnológicas",
+    completude: "50% Rastreável (2 Disponíveis · 4 Parciais · 2 Lacunas)",
+    elos: [
+      { id: 1, nome: "Fórmula", subtitulo: "Regra de cálculo", status: "disponivel", evidencia: "Taxa de atendimento de solicitações.", impacto: "Clareza na formulação matemática.", recomendacao: "Manter padrão." },
+      { id: 2, nome: "Fonte", subtitulo: "Sistema origem", status: "parcial", evidencia: "Plataforma interna de gestão de serviços.", impacto: "Sem acesso direto externo.", recomendacao: "Integrar com portal de dados abertos." },
+      { id: 3, nome: "Meta", subtitulo: "Pactuação anual", status: "disponivel", evidencia: "Metas fixadas no plano anual.", impacto: "Nenhum.", recomendacao: "Manter." },
+      { id: 4, nome: "Resultado", subtitulo: "Valor apurado", status: "parcial", evidencia: "Percentual global divulgado (117,10%).", impacto: "Falta detalhamento por plataforma.", recomendacao: "Apresentar desagregação por unidade." },
+      { id: 5, nome: "Numerador", subtitulo: "Atendimentos", status: "parcial", evidencia: "Volume informado sem listagem de demandas.", impacto: "Restringe verificação de duplicidades.", recomendacao: "Publicar extrato anonimizado de demandas." },
+      { id: 6, nome: "Denominador", subtitulo: "Solicitações", status: "lacuna", evidencia: "Sem painel público com total de solicitações.", impacto: "Impossibilita validar o quociente.", recomendacao: "Disponibilizar numerador e denominador abertos." },
+      { id: 7, nome: "Filtros", subtitulo: "Recorte temporal", status: "parcial", evidencia: "Considera o ano civil do ciclo.", impacto: "Sem corte mensal disponível.", recomendacao: "Inserir série temporal mensal." },
+      { id: 8, nome: "Memória", subtitulo: "Microdados", status: "lacuna", evidencia: "Ausente em base aberta acessível.", impacto: "Opacidade na auditoria externa.", recomendacao: "Criar repositório público de metadados." }
+    ]
+  },
+  colecoes: {
+    nome: "Atendimento de serviços das coleções biológicas",
+    completude: "50% Rastreável (2 Disponíveis · 4 Parciais · 2 Lacunas)",
+    elos: [
+      { id: 1, nome: "Fórmula", subtitulo: "Regra de cálculo", status: "disponivel", evidencia: "Atendimento de amostras e insumos.", impacto: "Nenhum.", recomendacao: "Manter." },
+      { id: 2, nome: "Fonte", subtitulo: "Sistema origem", status: "parcial", evidencia: "Sistemas próprios das Coleções Biológicas.", impacto: "Sistemas descentralizados.", recomendacao: "Unificar repositório institucional." },
+      { id: 3, nome: "Meta", subtitulo: "Pactuação anual", status: "disponivel", evidencia: "Acordo de metas institucional.", impacto: "Nenhum.", recomendacao: "Manter." },
+      { id: 4, nome: "Resultado", subtitulo: "Valor apurado", status: "parcial", evidencia: "Atingimento de 130,14% reportado.", impacto: "Falta detalhamento por coleção.", recomendacao: "Publicar tabela por tipo de acervo." },
+      { id: 5, nome: "Numerador", subtitulo: "Serviços prestados", status: "parcial", evidencia: "Somatório anual divulgado.", impacto: "Sem rastreio de institutos requisitantes.", recomendacao: "Detalhar perfil dos usuários." },
+      { id: 6, nome: "Denominador", subtitulo: "Demanda total", status: "lacuna", evidencia: "Serviços demandados ausentes em base aberta.", impacto: "Impossível calcular taxa real de atendimento.", recomendacao: "Abrir o consolidado anual de solicitações." },
+      { id: 7, nome: "Filtros", subtitulo: "Recorte temporal", status: "parcial", evidencia: "Anual consolidado.", impacto: "Sem sazonalidade visível.", recomendacao: "Adicionar filtro quadrimestral." },
+      { id: 8, nome: "Memória", subtitulo: "Microdados", status: "lacuna", evidencia: "Inexistente em formato processável.", impacto: "Não reproduzível externamente.", recomendacao: "Publicar em .CSV no portal Fiocruz." }
+    ]
+  },
+  bio: {
+    nome: "Atendimento às demandas de biofármacos",
+    completude: "62% Rastreável (3 Disponíveis · 3 Parciais · 2 Lacunas)",
+    elos: [
+      { id: 1, nome: "Fórmula", subtitulo: "Regra de cálculo", status: "disponivel", evidencia: "Volume fornecido vs. pactuado.", impacto: "Nenhum.", recomendacao: "Manter." },
+      { id: 2
