@@ -88,9 +88,12 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Segoe UI',Aptos
 .pill.yes{background:var(--green)}
 
 .chain-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;margin-top:10px}
-.chain-step{border-radius:7px;padding:12px 6px;text-align:center;border:1px solid var(--line);background:#f6fafb;transition:.2s}
+.chain-step{border-radius:7px;padding:12px 6px;text-align:center;border:1px solid var(--line);background:#f6fafb;transition:.2s;cursor:pointer;position:relative}
+.chain-step:hover{transform:translateY(-2px);box-shadow:0 4px 10px rgba(11,52,72,.08)}
+.chain-step.active-elo{outline:2.5px solid var(--navy);outline-offset:1px;background:#fff}
 .chain-step .st-num{font-size:9px;font-weight:800;color:var(--muted);margin-bottom:4px}
-.chain-step .st-name{font-size:11px;font-weight:700;color:var(--navy);margin-bottom:4px}
+.chain-step .st-name{font-size:11px;font-weight:700;color:var(--navy);margin-bottom:3px}
+.chain-step .st-desc{display:block;font-size:9px;color:var(--muted);margin-bottom:5px;line-height:1.15}
 .chain-step .st-status{font-size:10px;font-weight:700}
 .chain-step.ok{background:#e7f5ef;border-color:#b2decb}
 .chain-step.ok .st-status{color:var(--green)}
@@ -98,10 +101,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Segoe UI',Aptos
 .chain-step.part .st-status{color:#b8740e}
 .chain-step.miss{background:#fdeceb;border-color:#efb9b3}
 .chain-step.miss .st-status{color:var(--red)}
-.chain-step{cursor:pointer;position:relative}
-.chain-step:hover{transform:translateY(-2px);box-shadow:0 4px 10px rgba(11,52,72,.08)}
-.chain-step.active-elo{outline:2.5px solid var(--navy);outline-offset:1px;background:#fff}
-.chain-step .st-desc{display:block;font-size:9px;color:var(--muted);margin-bottom:5px;line-height:1.15}
+
 .elo-detail-box{margin-top:12px;border-radius:7px;padding:12px 14px;background:#f7fafb;border:1px solid var(--line);border-left:4px solid var(--navy);font-size:12px}
 .elo-detail-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;flex-wrap:wrap}
 .elo-detail-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
@@ -142,6 +142,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
   .kpi-strip{grid-template-columns:repeat(2,1fr)}
   .viz-grid-main,.viz-grid-sub{grid-template-columns:1fr}
   .chain-grid{grid-template-columns:repeat(4,1fr)}
+  .elo-detail-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -291,13 +292,14 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
         <span class="badge-info">8 Elos Metodológicos</span>
       </div>
       <div class="chain-grid" id="chainContainer"></div>
-    <div id="eloDetailBox" class="elo-detail-box" style="display:none"></div>
-<div class="elo-legend">
-  <span><strong style="color:var(--green)">● Disponível:</strong> Dado aberto e exportável</span>
-  <span><strong style="color:#b8740e">● Parcial:</strong> Dado agregado sem desagregação completa</span>
-  <span><strong style="color:var(--red)">● Lacuna:</strong> Componente ausente dos painéis públicos</span>
-  <span style="margin-left:auto;font-style:italic">Clique em qualquer elo acima para inspecionar a evidência</span>
-</div>
+      <div id="eloDetailBox" class="elo-detail-box" style="display:none"></div>
+      <div class="elo-legend">
+        <span><strong style="color:var(--green)">● Disponível:</strong> Dado aberto e exportável</span>
+        <span><strong style="color:#b8740e">● Parcial:</strong> Dado agregado sem desagregação completa</span>
+        <span><strong style="color:var(--red)">● Lacuna:</strong> Componente ausente dos painéis públicos</span>
+        <span style="margin-left:auto;font-style:italic">Clique em qualquer elo acima para inspecionar a evidência</span>
+      </div>
+    </div>
 
     <div class="card">
       <div class="card-header">
@@ -557,6 +559,18 @@ const CHAIN_STEPS = [
 
 let donutInstance = null;
 let focusedIndicatorId = null;
+let selectedEloIndex = 5;
+
+const ELO_META = [
+  { sub: 'Regra de cálculo', field: 'formula', impactoOk: 'Fórmula oficial publicada e auditável.', impactoBad: 'Regra matemática não formalizada.' },
+  { sub: 'Sistema de origem', field: 'source', impactoOk: 'Origem documental e normativa identificada.', impactoBad: 'Fonte primária não rastreada.' },
+  { sub: 'Pactuação anual', field: 'metaLabel', impactoOk: 'Meta pactuada divulgada para comparação.', impactoBad: 'Meta desagregada não integrada ao painel.' },
+  { sub: 'Valor apurado', field: 'actualLabel', impactoOk: 'Resultado oficial publicado na Portaria nº 571/2026.', impactoBad: 'Apuração divulgada apenas de forma consolidada.' },
+  { sub: 'Entregas / eventos', field: 'numerator', impactoOk: 'Numerador aberto e verificável.', impactoBad: 'Restringe a conferência granular do volume realizado.' },
+  { sub: 'Base de referência', field: 'denominator', impactoOk: 'Denominador aberto nos mesmos filtros.', impactoBad: 'Impede recalcular o indicador de forma independente.' },
+  { sub: 'Recorte e filtros', field: 'filters', impactoOk: 'Parâmetros de extração reproduzíveis.', impactoBad: 'Gera margem de divergência em consultas retroativas.' },
+  { sub: 'Memória / base aberta', field: 'memory', impactoOk: 'Memória de cálculo e microdados disponíveis.', impactoBad: 'Exige reconstrução manual por fontes secundárias.' }
+];
 
 const el = id => document.getElementById(id);
 const fmtPct = v => v == null ? '—' : v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%';
@@ -575,6 +589,7 @@ async function carregarParecerIA() {
           ind.iaRecomendacao = dados.analise.recomendacoes_por_id[ind.id];
         }
       });
+      renderAll();
     }
   } catch (e) {
     // Mantém o texto padrão caso rode localmente sem servidor
@@ -670,20 +685,6 @@ function selectChain(id) {
   const item = INDICATORS_DATA.find(d => d.id === id);
   renderChain(item);
 }
-
-function renderChain(item) {
-  let selectedEloIndex = 5; // Inicia destacando o Elo 6 (Denominador), principal gargalo
-
-const ELO_META = [
-  { sub: 'Regra de cálculo', field: 'formula', impactoOk: 'Fórmula oficial publicada e auditável.', impactoBad: 'Regra matemática não formalizada.' },
-  { sub: 'Sistema de origem', field: 'source', impactoOk: 'Origem documental e normativa identificada.', impactoBad: 'Fonte primária não rastreada.' },
-  { sub: 'Pactuação anual', field: 'metaLabel', impactoOk: 'Meta pactuada divulgada para comparação.', impactoBad: 'Meta desagregada não integrada ao painel.' },
-  { sub: 'Valor apurado', field: 'actualLabel', impactoOk: 'Resultado oficial publicado na Portaria nº 571/2026.', impactoBad: 'Apuração divulgada apenas de forma consolidada.' },
-  { sub: 'Entregas / eventos', field: 'numerator', impactoOk: 'Numerador aberto e verificável.', impactoBad: 'Restringe a conferência granular do volume realizado.' },
-  { sub: 'Base de referência', field: 'denominator', impactoOk: 'Denominador aberto nos mesmos filtros.', impactoBad: 'Impede recalcular o indicador de forma independente.' },
-  { sub: 'Recorte e filtros', field: 'filters', impactoOk: 'Parâmetros de extração reproduzíveis.', impactoBad: 'Gera margem de divergência em consultas retroativas.' },
-  { sub: 'Memória / base aberta', field: 'memory', impactoOk: 'Memória de cálculo e microdados disponíveis.', impactoBad: 'Exige reconstrução manual por fontes secundárias.' }
-];
 
 function renderChain(item) {
   const detailBox = el('eloDetailBox');
@@ -844,7 +845,7 @@ function exportCSV() {
     d.id, `"${d.name}"`, `"${d.activity}"`, `"${d.metaLabel}"`, `"${d.actualLabel}"`,
     d.att != null ? d.att.toFixed(2) : '', `"${d.repro}"`, `"${d.bottleneck}"`, `"${d.formula}"`
   ]);
-  const csvContent = "data:text/csv;charset=utf-8,﻿" + [headers.join(';'), ...rows.map(r => r.join(';'))].join('\n');
+  const csvContent = "data:text/csv;charset=utf-8,\uFEFF" + [headers.join(';'), ...rows.map(r => r.join(';'))].join('\n');
   const encodedUri = encodeURI(csvContent);
   const link = document.createElement("a");
   link.setAttribute("href", encodedUri);
