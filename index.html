@@ -77,13 +77,14 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Segoe UI',Aptos
 .card-subtitle{font-size:11px;color:var(--muted);margin:3px 0 0}
 .badge-info{font-size:10px;font-weight:700;background:var(--soft);color:var(--blue);padding:4px 8px;border-radius:4px;white-space:nowrap}
 
-.bullet-list{display:grid;gap:13px;margin-top:6px;max-height:420px;overflow-y:auto;padding-right:4px}
+.bullet-list{display:grid;gap:15px;margin-top:14px;max-height:420px;overflow-y:auto;padding:6px 4px 4px 0}
 .bullet-item{display:grid;grid-template-columns:220px 1fr 72px;align-items:center;gap:12px;font-size:12px}
 .bullet-label{font-weight:600;color:var(--ink);line-height:1.25}
 .bullet-label small{display:block;font-size:10px;color:var(--muted);font-weight:400}
 .bullet-track{height:20px;background:#e8eff2;border-radius:4px;position:relative}
 .bullet-fill{height:100%;border-radius:4px;transition:width .4s ease}
-.bullet-target{position:absolute;left:62.5%;top:-4px;bottom:-4px;width:2.5px;background:var(--navy);z-index:2}
+/* Linha de 100% posicionada exatamente em 40% da trilha (escala total = 250%, logo 100/250 = 40%) */
+.bullet-target{position:absolute;left:40%;top:-4px;bottom:-4px;width:2.5px;background:var(--navy);z-index:2}
 .bullet-target::after{content:"100%";position:absolute;top:-14px;left:-11px;font-size:9px;font-weight:800;color:var(--navy)}
 .bullet-val{text-align:right;font-weight:800;font-size:13px;color:var(--navy)}
 
@@ -192,6 +193,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
       <label>Grau de Reprodutibilidade</label>
       <select id="fRepro">
         <option value="">Todos os graus</option>
+        <option value="Disponível">Disponível</option>
         <option value="Parcial">Parcial</option>
         <option value="Não reproduzível">Não reproduzível</option>
       </select>
@@ -255,22 +257,22 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
     </div>
     <div class="kpi-card good">
       <div class="kpi-top"><span>Atingimento Médio</span><span>META = 100%</span></div>
-      <div class="kpi-val" id="kpiAvg">127,5%</div>
+      <div class="kpi-val" id="kpiAvg">127,48%</div>
       <div class="kpi-sub">Média dos 15 indicadores da Portaria</div>
     </div>
     <div class="kpi-card warn">
       <div class="kpi-top"><span>Reprodução Parcial</span><span>RESTRIÇÃO</span></div>
-      <div class="kpi-val" id="kpiPartial">11</div>
+      <div class="kpi-val" id="kpiPartial">12</div>
       <div class="kpi-sub">Denominador ou filtro parcial</div>
     </div>
     <div class="kpi-card bad">
       <div class="kpi-top"><span>Não Reproduzíveis</span><span>OPACIDADE</span></div>
-      <div class="kpi-val" id="kpiNo">4</div>
+      <div class="kpi-val" id="kpiNo">2</div>
       <div class="kpi-sub">Sem base pública de cálculo</div>
     </div>
     <div class="kpi-card">
       <div class="kpi-top"><span>Completude Documental</span><span>RASTREIO</span></div>
-      <div class="kpi-val" id="kpiComp">55%</div>
+      <div class="kpi-val" id="kpiComp">61%</div>
       <div class="kpi-sub">Disponibilidade dos 8 campos-chave</div>
     </div>
   </section>
@@ -285,7 +287,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
       <span class="badge-info" id="iaModel">Auditoria Determinística</span>
     </div>
     <p id="iaSintese" style="margin:0; font-size:12.5px; line-height:1.55; color:var(--ink)">
-      A análise do conjunto completo de 15 indicadores da Portaria nº 571/2026 demonstra excelente desempenho quantitativo médio (127,5%), destacando-se em áreas como inovação, economia de pregões e atendimento assistencial. Contudo, persiste a opacidade em métricas descentralizadas e coleções biológicas, exigindo a abertura dos microdados subjacentes.
+      A análise do conjunto completo de 15 indicadores da Portaria nº 571/2026 demonstra excelente desempenho quantitativo médio (127,48%), destacando-se em áreas como economia de pregões (242,40%), visitação ao Museu da Vida (178,43%) e produtividade científica (149,19%). Contudo, persiste a opacidade em métricas descentralizadas e coleções biológicas, exigindo a abertura dos microdados subjacentes.
     </p>
   </section>
 
@@ -294,7 +296,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
       <div class="card-header">
         <div>
           <h2 class="card-title">Execução e Atingimento Reconstruído das Metas</h2>
-          <p class="card-subtitle">Comparativo percentual entre resultado apurado e meta pactuada (linha vertical = 100%)</p>
+          <p class="card-subtitle">Comparativo percentual entre resultado apurado e meta pactuada (linha vertical = 100%, escala = 250%)</p>
         </div>
         <span class="badge-info">15 indicadores oficiais</span>
       </div>
@@ -353,7 +355,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
       <div class="donut-box">
         <div style="position:relative;width:155px;height:155px">
           <canvas id="donutChart" class="canvas-donut"></canvas>
-          <div id="donutCenter" style="position:absolute;inset:0;display:grid;place-items:center;font-size:22px;font-weight:800;color:var(--navy);pointer-events:none">55%</div>
+          <div id="donutCenter" style="position:absolute;inset:0;display:grid;place-items:center;font-size:22px;font-weight:800;color:var(--navy);pointer-events:none">61%</div>
         </div>
         <div class="legend-list">
           <div class="legend-row"><span class="dot" style="background:var(--green)"></span><strong>Disponível integralmente</strong> (Fórmula, Fonte, Meta, Resultado)</div>
@@ -427,7 +429,7 @@ const INDICATORS_DATA = [
     interpretation: 'Valores maiores indicam maior razão de artigos por servidor elegível no quadriênio.',
     limitations: 'O total de artigos pode ser consultado publicamente, mas a população funcional elegível, com os mesmos filtros do cálculo oficial, não está claramente exportável.',
     numerator: 'Artigos publicados em revistas indexadas.',
-    denominator: 'Servidores públicos com função de pesquisa ( quadriênio ).',
+    denominator: 'Servidores públicos com função de pesquisa (quadriênio).',
     filters: 'Período de 4 anos e bases bibliográficas oficiais.',
     memory: 'Não centralizada publicamente.',
     responsible: 'Área de pesquisa / Cogeplan.',
@@ -901,8 +903,9 @@ function renderAll() {
   el('kpiComp').textContent = avgComp + '%';
 
   el('bulletContainer').innerHTML = numeric.length ? numeric.map(d => {
-    const pctWidth = Math.min((d.att / 260) * 100, 100);
-    const barColor = d.repro === 'Parcial' ? 'var(--teal)' : 'var(--blue)';
+    /* Escala máxima = 250%, alinhando exatamente com left:40% (100 / 250 = 0.40) */
+    const pctWidth = Math.min((d.att / 250) * 100, 100);
+    const barColor = d.repro === 'Disponível' ? 'var(--green)' : (d.repro === 'Parcial' ? 'var(--teal)' : 'var(--blue)');
     return `
       <div class="bullet-item">
         <div class="bullet-label" title="${d.name}">${d.name}<small>${d.activity}</small></div>
@@ -914,25 +917,31 @@ function renderAll() {
       </div>`;
   }).join('') : '<div style="padding:20px;color:var(--muted);font-size:12px">Nenhum indicador numérico no filtro atual.</div>';
 
-  el('matrixBody').innerHTML = data.map(d => `
-    <tr style="cursor:pointer" onclick="selectChain('${d.id}')">
-      <td><strong>${d.name}</strong></td>
-      <td><span class="pill ${d.repro === 'Parcial' ? 'partial' : 'no'}">${d.repro}</span></td>
-      <td>${d.bottleneck}</td>
-    </tr>
-  `).join('');
+  el('matrixBody').innerHTML = data.map(d => {
+    const pillClass = d.repro === 'Disponível' ? 'yes' : (d.repro === 'Parcial' ? 'partial' : 'no');
+    return `
+      <tr style="cursor:pointer" onclick="selectChain('${d.id}')">
+        <td><strong>${d.name}</strong></td>
+        <td><span class="pill ${pillClass}">${d.repro}</span></td>
+        <td>${d.bottleneck}</td>
+      </tr>
+    `;
+  }).join('');
 
-  el('catalogBody').innerHTML = data.length ? data.map(d => `
-    <tr style="cursor:pointer" onclick="selectChain('${d.id}')">
-      <td><strong>${d.name}</strong></td>
-      <td>${d.activity}</td>
-      <td>${d.metaLabel}</td>
-      <td>${d.actualLabel}</td>
-      <td><strong>${fmtPct(d.att)}</strong></td>
-      <td><span class="pill ${d.repro === 'Parcial' ? 'partial' : 'no'}">${d.repro}</span></td>
-      <td><button class="btn-ficha" onclick="event.stopPropagation();openModal('${d.id}')">Ficha metodológica</button></td>
-    </tr>
-  `).join('') : '<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--muted)">Nenhum registro encontrado.</td></tr>';
+  el('catalogBody').innerHTML = data.length ? data.map(d => {
+    const pillClass = d.repro === 'Disponível' ? 'yes' : (d.repro === 'Parcial' ? 'partial' : 'no');
+    return `
+      <tr style="cursor:pointer" onclick="selectChain('${d.id}')">
+        <td><strong>${d.name}</strong></td>
+        <td>${d.activity}</td>
+        <td>${d.metaLabel}</td>
+        <td>${d.actualLabel}</td>
+        <td><strong>${fmtPct(d.att)}</strong></td>
+        <td><span class="pill ${pillClass}">${d.repro}</span></td>
+        <td><button class="btn-ficha" onclick="event.stopPropagation();openModal('${d.id}')">Ficha metodológica</button></td>
+      </tr>
+    `;
+  }).join('') : '<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--muted)">Nenhum registro encontrado.</td></tr>';
 
   const targetItem = data.length === 1 ? data[0] : (data.find(d => d.id === focusedIndicatorId) || data[0] || null);
   renderChain(targetItem);
