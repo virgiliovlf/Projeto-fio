@@ -1,16 +1,16 @@
 {
-  "gerado_em": "Ciclo 2025 (Portaria nº 571/2026)",
-  "modelo": "Gemini 2.5 Flash · Auditoria Documental",
+  "gerado_em": "18/11/2026 16:10",
+  "modelo": "gemini-3.1-flash-lite (Auditoria Determinística)",
   "analise": {
-    "sintese_executiva": "Os indicadores estratégicos da Fiocruz no ciclo 2025 registram elevado desempenho operacional, alcançando média de 117,2% nas metas quantificáveis (Portaria nº 571/2026). Contudo, a auditoria de transparência ativa revela assimetria entre a divulgação do resultado final e a abertura de seus componentes primários: 5 indicadores possuem reprodutibilidade apenas parcial e 2 são não reproduzíveis externamente, em razão da não publicação conjunta dos denominadores, pautas pactuadas e memórias de cálculo.",
+    "sintese_executiva": "O ciclo 2025 da Fiocruz apresenta um desempenho quantitativo robusto, com um atingimento médio de 117,2% que sugere alta eficiência operacional. Contudo, a transparência pública é severamente comprometida pela natureza dos dados, visto que 5 indicadores são apenas parcialmente reproduzíveis e 2 são totalmente não reproduzíveis. Essa discrepância entre a entrega de resultados e a auditabilidade externa indica uma fragilidade estrutural nos sistemas de informação da Cogeplan. É imperativo que a instituição priorize a integração de bases e a abertura de painéis para alinhar a governança aos princípios de transparência ativa.",
     "recomendacoes_por_id": {
-      "pesquisa": "Publicar a série histórica agregada de servidores ativos elegíveis no cargo/função de pesquisa por unidade, permitindo recompor o denominador quadrienal.",
-      "plataformas": "Disponibilizar em base aberta o volume anual de solicitações recebidas (denominador) e atendidas (numerador) pela Rede de Plataformas.",
-      "colecoes": "Abrir o consolidado anual de serviços demandados e atendidos pelas Coleções Biológicas em formato processável (.CSV).",
-      "bio": "Integrar a coluna de programação anual pactuada ao painel público de fornecimento de biofármacos.",
-      "arv": "Publicar as quantidades requisitadas nas pautas do Ministério da Saúde no mesmo conjunto de dados das entregas realizadas.",
-      "med": "Incluir a memória de cálculo das pautas requisitadas pelo Ministério da Saúde junto aos dados de fornecimento de medicamentos.",
-      "edu": "Apresentar as metas pactuadas por modalidade de ensino na mesma tabela pública que reporta as matrículas registradas."
+      "pesquisa": "Padronizar os filtros de extração do denominador funcional para garantir a paridade entre os sistemas internos e a base pública. Implementar uma rotina de exportação automatizada que replique fielmente a lógica de cálculo utilizada na apuração.",
+      "plataformas": "Desenvolver e publicar um painel de BI que exponha publicamente o numerador e o denominador utilizados no cálculo. Garantir que os dados brutos sejam acessíveis para conferência externa em formato aberto.",
+      "colecoes": "Integrar os registros de serviços demandados e atendidos em uma base de dados pública unificada. Estabelecer um fluxo de atualização contínua que permita a verificação do atingimento em tempo real.",
+      "bio": "Integrar a programação anual de biofármacos ao painel de fornecimento existente para permitir o rastreio completo da meta. Eliminar a fragmentação de dados entre o planejamento e a execução.",
+      "arv": "Consolidar as pautas e requisições de antirretrovirais em um ambiente único de dados. Assegurar que a interface pública reflita a totalidade das demandas processadas pela instituição.",
+      "med": "Incluir as quantidades requisitadas pelo Ministério da Saúde no painel público de acompanhamento. Garantir que o histórico de demandas seja auditável e comparável com as entregas realizadas.",
+      "edu": "Integrar a previsão pactuada diretamente aos registros acadêmicos para permitir o cálculo automático do atingimento. Eliminar a necessidade de cruzamentos manuais externos para a validação dos indicadores."
     }
   }
 }
