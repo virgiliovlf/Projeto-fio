@@ -4,7 +4,7 @@ from datetime import datetime
 from google import genai
 from google.genai import types
 
-OUTPUT_IA_JSON = "data/parecer_ia.json"
+OUTPUT_IA_JSON = "parecer_ia.json"
 
 INDICADORES_RESUMO = [
     {"id": "pesquisa", "nome": "Produtividade em pesquisa", "atingimento": "149,19%", "repro": "Parcial", "gargalo": "Denominador funcional não exportável com os mesmos filtros"},
@@ -52,7 +52,6 @@ def gerar_diagnostico_ia():
         "analise": resultado_ia
     }
 
-    os.makedirs("data", exist_ok=True)
     with open(OUTPUT_IA_JSON, "w", encoding="utf-8") as f:
         json.dump(payload, f, ensure_ascii=False, indent=2)
     print("Parecer de IA gerado com sucesso em data/parecer_ia.json")
