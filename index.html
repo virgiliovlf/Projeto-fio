@@ -49,14 +49,14 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Segoe UI',Aptos
 .btn-ghost{background:#f0f5f7;color:var(--navy);border:1px solid #c5d5dc}
 .btn-ghost:hover{background:#e2ecef}
 
-/* Estilo da Barra de Eixos Estratégicos */
-.axis-bar{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:16px}
-.axis-pill{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 12px;text-align:center;cursor:pointer;transition:.15s;box-shadow:0 2px 6px rgba(11,52,72,.02)}
+/* Barra de Eixos Estratégicos (7 colunas) */
+.axis-bar{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:16px}
+.axis-pill{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 8px;text-align:center;cursor:pointer;transition:.15s;box-shadow:0 2px 6px rgba(11,52,72,.02)}
 .axis-pill:hover{border-color:var(--teal-bright);background:#f7fcfd;transform:translateY(-1px)}
 .axis-pill.active{background:var(--navy);border-color:var(--navy);color:#fff}
 .axis-pill.active .axis-title,.axis-pill.active .axis-count{color:#fff}
-.axis-title{font-size:11px;font-weight:700;color:var(--navy);display:block;line-height:1.2}
-.axis-count{font-size:11px;font-weight:600;color:var(--muted);display:block;margin-top:2px}
+.axis-title{font-size:10px;font-weight:700;color:var(--navy);display:block;line-height:1.2}
+.axis-count{font-size:10px;font-weight:600;color:var(--muted);display:block;margin-top:2px}
 
 .kpi-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px}
 .kpi-card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px;position:relative;overflow:hidden;box-shadow:0 2px 8px rgba(11,52,72,.04)}
@@ -77,7 +77,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Segoe UI',Aptos
 .card-subtitle{font-size:11px;color:var(--muted);margin:3px 0 0}
 .badge-info{font-size:10px;font-weight:700;background:var(--soft);color:var(--blue);padding:4px 8px;border-radius:4px;white-space:nowrap}
 
-.bullet-list{display:grid;gap:13px;margin-top:6px}
+.bullet-list{display:grid;gap:13px;margin-top:6px;max-height:420px;overflow-y:auto;padding-right:4px}
 .bullet-item{display:grid;grid-template-columns:220px 1fr 72px;align-items:center;gap:12px;font-size:12px}
 .bullet-label{font-weight:600;color:var(--ink);line-height:1.25}
 .bullet-label small{display:block;font-size:10px;color:var(--muted);font-weight:400}
@@ -163,7 +163,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
     <div class="fiocruz-badge">FIOCRUZ · OBSERVATÓRIO</div>
     <div class="title-group">
       <h1>Painel Integrado de Indicadores de Desempenho Institucional</h1>
-      <p>Integração, transparência ativa e reprodutibilidade dos indicadores estratégicos (Ciclo 2025)</p>
+      <p>Integração, transparência ativa e reprodutibilidade dos indicadores estratégicos (Portaria nº 571/2026)</p>
     </div>
   </div>
   <div class="meta-pills">
@@ -215,54 +215,62 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
     </div>
   </section>
 
-  <!-- Barra de Navegação por Eixos Estratégicos (Estilo Observatório Fiocruz) -->
+  <!-- Barra de Eixos Estratégicos (7 eixos da Portaria nº 571/2026) -->
   <section class="axis-bar" id="axisBarContainer">
     <div class="axis-pill active" onclick="filtrarPorEixo('')">
       <span class="axis-title">Todos os Eixos</span>
-      <span class="axis-count">7 indicadores</span>
+      <span class="axis-count">15 indicadores</span>
+    </div>
+    <div class="axis-pill" onclick="filtrarPorEixo('Informação e comunicação científica')">
+      <span class="axis-title">Info e Comunicação</span>
+      <span class="axis-count">3 indicadores</span>
     </div>
     <div class="axis-pill" onclick="filtrarPorEixo('Pesquisa e desenvolvimento tecnológico')">
       <span class="axis-title">Pesquisa e P&D</span>
       <span class="axis-count">2 indicadores</span>
     </div>
     <div class="axis-pill" onclick="filtrarPorEixo('Produção e inovação em saúde')">
-      <span class="axis-title">Desenvolvimento Tecnológico</span>
+      <span class="axis-title">Produção e Inovação</span>
       <span class="axis-count">3 indicadores</span>
+    </div>
+    <div class="axis-pill" onclick="filtrarPorEixo('Serviços de referência, assistência e vigilância')">
+      <span class="axis-title">Serviços e Assistência</span>
+      <span class="axis-count">4 indicadores</span>
     </div>
     <div class="axis-pill" onclick="filtrarPorEixo('Educação e formação profissional')">
       <span class="axis-title">Educação</span>
       <span class="axis-count">1 indicador</span>
     </div>
-    <div class="axis-pill" onclick="filtrarPorEixo('Serviços de referência, assistência e vigilância')">
-      <span class="axis-title">Serviços / Coleções</span>
-      <span class="axis-count">1 indicador</span>
+    <div class="axis-pill" onclick="filtrarPorEixo('Administração e gestão institucional')">
+      <span class="axis-title">Administração</span>
+      <span class="axis-count">2 indicadores</span>
     </div>
   </section>
 
   <section class="kpi-strip">
     <div class="kpi-card navy">
       <div class="kpi-top"><span>Indicadores Monitorados</span><span>TOTAL</span></div>
-      <div class="kpi-val" id="kpiTotal">7</div>
+      <div class="kpi-val" id="kpiTotal">15</div>
       <div class="kpi-sub">Recorte ativo no filtro atual</div>
     </div>
     <div class="kpi-card good">
       <div class="kpi-top"><span>Atingimento Médio</span><span>META = 100%</span></div>
-      <div class="kpi-val" id="kpiAvg">117,2%</div>
-      <div class="kpi-sub">Média dos indicadores numéricos</div>
+      <div class="kpi-val" id="kpiAvg">127,5%</div>
+      <div class="kpi-sub">Média dos 15 indicadores da Portaria</div>
     </div>
     <div class="kpi-card warn">
       <div class="kpi-top"><span>Reprodução Parcial</span><span>RESTRIÇÃO</span></div>
-      <div class="kpi-val" id="kpiPartial">5</div>
-      <div class="kpi-sub">Denominador ou filtro não aberto</div>
+      <div class="kpi-val" id="kpiPartial">11</div>
+      <div class="kpi-sub">Denominador ou filtro parcial</div>
     </div>
     <div class="kpi-card bad">
       <div class="kpi-top"><span>Não Reproduzíveis</span><span>OPACIDADE</span></div>
-      <div class="kpi-val" id="kpiNo">2</div>
+      <div class="kpi-val" id="kpiNo">4</div>
       <div class="kpi-sub">Sem base pública de cálculo</div>
     </div>
     <div class="kpi-card">
       <div class="kpi-top"><span>Completude Documental</span><span>RASTREIO</span></div>
-      <div class="kpi-val" id="kpiComp">59%</div>
+      <div class="kpi-val" id="kpiComp">55%</div>
       <div class="kpi-sub">Disponibilidade dos 8 campos-chave</div>
     </div>
   </section>
@@ -277,7 +285,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
       <span class="badge-info" id="iaModel">Auditoria Determinística</span>
     </div>
     <p id="iaSintese" style="margin:0; font-size:12.5px; line-height:1.55; color:var(--ink)">
-      O ciclo 2025 apresenta atingimento médio de 117,2% nas metas numéricas pactuadas (Portaria nº 571/2026), porém mantém restrições de transparência ativa: 5 indicadores possuem reprodutibilidade apenas parcial e 2 não são reproduzíveis publicamente devido à ausência de abertura dos denominadores e memórias de cálculo.
+      A análise do conjunto completo de 15 indicadores da Portaria nº 571/2026 demonstra excelente desempenho quantitativo médio (127,5%), destacando-se em áreas como inovação, economia de pregões e atendimento assistencial. Contudo, persiste a opacidade em métricas descentralizadas e coleções biológicas, exigindo a abertura dos microdados subjacentes.
     </p>
   </section>
 
@@ -288,7 +296,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
           <h2 class="card-title">Execução e Atingimento Reconstruído das Metas</h2>
           <p class="card-subtitle">Comparativo percentual entre resultado apurado e meta pactuada (linha vertical = 100%)</p>
         </div>
-        <span class="badge-info">6 indicadores numéricos</span>
+        <span class="badge-info">15 indicadores oficiais</span>
       </div>
       <div id="bulletContainer" class="bullet-list"></div>
     </div>
@@ -301,7 +309,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
         </div>
         <span class="badge-info">Auditoria Aberta</span>
       </div>
-      <div style="overflow-x:auto">
+      <div style="overflow-x:auto; max-height:420px">
         <table class="table-clean">
           <thead>
             <tr>
@@ -345,7 +353,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
       <div class="donut-box">
         <div style="position:relative;width:155px;height:155px">
           <canvas id="donutChart" class="canvas-donut"></canvas>
-          <div id="donutCenter" style="position:absolute;inset:0;display:grid;place-items:center;font-size:22px;font-weight:800;color:var(--navy);pointer-events:none">59%</div>
+          <div id="donutCenter" style="position:absolute;inset:0;display:grid;place-items:center;font-size:22px;font-weight:800;color:var(--navy);pointer-events:none">55%</div>
         </div>
         <div class="legend-list">
           <div class="legend-row"><span class="dot" style="background:var(--green)"></span><strong>Disponível integralmente</strong> (Fórmula, Fonte, Meta, Resultado)</div>
@@ -359,7 +367,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
   <section class="card">
     <div class="catalog-toolbar">
       <div>
-        <h2 class="card-title">Catálogo Integrado de Indicadores e Fichas Metodológicas</h2>
+        <h2 class="card-title">Catálogo Integrado de Indicadores e Fichas Metodológicas (Portaria nº 571/2026)</h2>
         <p class="card-subtitle">Clique na linha para ver a trilha de rastreabilidade ou abra a Ficha Metodológica completa.</p>
       </div>
       <input type="text" id="searchInput" class="search-box" placeholder="Buscar por nome do indicador, atividade-fim ou gargalo..." oninput="renderAll()">
@@ -374,7 +382,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
             <th>Apurado</th>
             <th>Atingimento</th>
             <th>Reprodutibilidade</th>
-            <th>Ação</th>
+            <th>Detalhes</th>
           </tr>
         </thead>
         <tbody id="catalogBody"></tbody>
@@ -397,40 +405,40 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
 </div>
 
 <footer>
-  <strong>Fontes documentais:</strong> Documento “Indicadores de desempenho adotados pela Fiocruz: análise detalhada” (ago/2026), Portaria nº 571/2026 (resultados institucionais do ciclo 2025) e páginas metodológicas do Observatório da Fiocruz. Este painel integra a arquitetura de dados abertos proposta na dissertação de mestrado em Administração (UnP).
+  <strong>Fontes documentais:</strong> Portaria nº 571/2026 (resultados institucionais do ciclo 2025) e páginas metodológicas do Observatório da Fiocruz. Este painel integra a arquitetura de dados abertos proposta na dissertação de mestrado em Administração (UnP).
 </footer>
 
 <script>
 const INDICATORS_DATA = [
   {
     id: 'pesquisa',
-    name: 'Produtividade em pesquisa',
+    name: 'Produtividade em pesquisa (média rolante quadriênio)',
     activity: 'Pesquisa e desenvolvimento tecnológico',
     meta: 1.24,
-    metaLabel: '1,24',
+    metaLabel: '≥ 1,24',
     actual: 1.85,
     actualLabel: '1,85',
     att: 149.19,
     repro: 'Parcial',
     bottleneck: 'Denominador funcional',
-    formula: 'Σ artigos indexados nos 4 anos ÷ Σ servidores públicos com função de pesquisa nos 4 anos',
-    source: 'Bases bibliográficas e cadastro funcional institucional; resultado oficial na Portaria nº 571/2026.',
+    formula: 'Total de artigos publicados em revistas indexadas nos últimos 4 anos ÷ Total de servidores públicos da instituição com função de pesquisa, somados os últimos 4 anos',
+    source: 'Bases bibliográficas e cadastro funcional institucional; Portaria nº 571/2026.',
     purpose: 'Mensurar a produtividade científica institucional em relação à força de trabalho elegível.',
     interpretation: 'Valores maiores indicam maior razão de artigos por servidor elegível no quadriênio.',
     limitations: 'O total de artigos pode ser consultado publicamente, mas a população funcional elegível, com os mesmos filtros do cálculo oficial, não está claramente exportável.',
-    numerator: 'Parcial: artigos públicos por bases e painéis.',
-    denominator: 'Ausente no mesmo nível de filtro da fórmula.',
-    filters: 'Parcial: período e bases; elegibilidade funcional não reproduzida.',
+    numerator: 'Artigos publicados em revistas indexadas.',
+    denominator: 'Servidores públicos com função de pesquisa ( quadriênio ).',
+    filters: 'Período de 4 anos e bases bibliográficas oficiais.',
     memory: 'Não centralizada publicamente.',
-    responsible: 'Área de pesquisa / Cogeplan, conforme fluxo institucional.',
-    periodicity: 'Anual, usando média móvel do quadriênio.',
+    responsible: 'Área de pesquisa / Cogeplan.',
+    periodicity: 'Anual (média rolante)',
     polarity: 'Maior melhor',
     states: ['ok', 'ok', 'ok', 'ok', 'part', 'miss', 'part', 'miss'],
-    iaRecomendacao: 'Publicar anualmente a tabela anonimizada ou agregada do quantitativo de servidores elegíveis na função de pesquisa por unidade, permitindo auditar o denominador da média móvel quadriena.'
+    iaRecomendacao: 'Publicar anualmente a tabela anonimizada ou agregada do quantitativo de servidores elegíveis na função de pesquisa por unidade.'
   },
   {
     id: 'plataformas',
-    name: 'Atendimento às plataformas tecnológicas',
+    name: 'Atendimento de serviços às plataformas tecnológicas',
     activity: 'Pesquisa e desenvolvimento tecnológico',
     meta: 80,
     metaLabel: '80%',
@@ -439,24 +447,24 @@ const INDICATORS_DATA = [
     att: 117.10,
     repro: 'Não reproduzível',
     bottleneck: 'Demanda e atendimento',
-    formula: 'Serviços atendidos ÷ serviços demandados × 100',
-    source: 'Registros administrativos das plataformas; resultado na Portaria nº 571/2026.',
+    formula: '(Total de serviços atendidos pelas plataformas tecnológicas ÷ Total de serviços demandados às plataformas tecnológicas) x 100',
+    source: 'Registros administrativos das plataformas; Portaria nº 571/2026.',
     purpose: 'Avaliar a capacidade de atendimento das solicitações dirigidas às plataformas tecnológicas.',
     interpretation: 'Quanto maior a taxa, maior a proporção das solicitações atendidas.',
     limitations: 'Não foi identificado painel público com numerador e denominador do indicador formal.',
-    numerator: 'Não localizado em base pública integrada.',
-    denominator: 'Não localizado em base pública integrada.',
+    numerator: 'Total de serviços atendidos.',
+    denominator: 'Total de serviços demandados.',
     filters: 'Não divulgados de forma reexecutável.',
     memory: 'Não centralizada publicamente.',
     responsible: 'Plataformas tecnológicas e Cogeplan.',
     periodicity: 'Anual.',
     polarity: 'Maior melhor',
     states: ['ok', 'ok', 'ok', 'ok', 'miss', 'miss', 'miss', 'miss'],
-    iaRecomendacao: 'Integrar os relatórios da Rede de Plataformas Tecnológicas ao Observatório Fiocruz com abertura mensal do volume de solicitações recebidas (denominador) e atendidas (numerador).'
+    iaRecomendacao: 'Integrar os relatórios da Rede de Plataformas Tecnológicas ao Observatório Fiocruz com abertura mensal.'
   },
   {
     id: 'colecoes',
-    name: 'Atendimento de serviços das coleções biológicas',
+    name: 'Atendimento de serviços prestados pelas Coleções Biológicas',
     activity: 'Serviços de referência, assistência e vigilância',
     meta: 70,
     metaLabel: '70%',
@@ -465,50 +473,50 @@ const INDICATORS_DATA = [
     att: 130.14,
     repro: 'Não reproduzível',
     bottleneck: 'Serviços demandados',
-    formula: 'Serviços atendidos ÷ serviços demandados × 100',
-    source: 'Registros das coleções biológicas; resultado na Portaria nº 571/2026.',
+    formula: '(Total de serviços atendidos pelas Coleções Biológicas ÷ Total de serviços demandados às Coleções Biológicas) x 100',
+    source: 'Registros das coleções biológicas; Portaria nº 571/2026.',
     purpose: 'Mensurar o atendimento das demandas dirigidas às coleções biológicas.',
     interpretation: 'Quanto maior a taxa, maior a cobertura das demandas recebidas.',
     limitations: 'Ausência de painel público identificado contendo os dois componentes do cálculo.',
-    numerator: 'Não localizado em base pública integrada.',
-    denominator: 'Não localizado em base pública integrada.',
+    numerator: 'Total de serviços atendidos pelas Coleções.',
+    denominator: 'Total de serviços demandados.',
     filters: 'Não divulgados de forma reexecutável.',
     memory: 'Não centralizada publicamente.',
     responsible: 'Coleções biológicas e Cogeplan.',
     periodicity: 'Anual.',
     polarity: 'Maior melhor',
     states: ['ok', 'ok', 'ok', 'ok', 'miss', 'miss', 'miss', 'miss'],
-    iaRecomendacao: 'Disponibilizar em formato aberto (.CSV) os registros consolidados de demandas e atendimentos das Coleções Biológicas junto aos metadados da Portaria de resultados.'
+    iaRecomendacao: 'Disponibilizar em formato aberto (.CSV) os registros consolidados de demandas das Coleções Biológicas.'
   },
   {
     id: 'bio',
-    name: 'Atendimento às demandas de biofármacos',
+    name: 'Percentual de atendimento às demandas de biofármacos',
     activity: 'Produção e inovação em saúde',
     meta: 90,
-    metaLabel: '90%',
+    metaLabel: '≥ 90%',
     actual: 94,
     actualLabel: '94%',
-    att: 104.44,
+    att: 104.40,
     repro: 'Parcial',
     bottleneck: 'Programação anual',
-    formula: 'Demanda atendida ÷ demanda programada × 100',
-    source: 'Programação e registros de fornecimento; Portaria nº 571/2026 e painel temático de biofármacos.',
+    formula: '(Demanda atendida de biofármacos no ano ÷ Demanda programada de biofármacos no ano) x 100',
+    source: 'Programação e registros de fornecimento; Portaria nº 571/2026.',
     purpose: 'Avaliar o atendimento da programação anual de biofármacos.',
     interpretation: 'Valores maiores indicam maior cumprimento da demanda programada.',
-    limitations: 'O painel informa fornecimento, mas não necessariamente a programação anual equivalente ao denominador formal.',
-    numerator: 'Parcial: volumes fornecidos disponíveis.',
-    denominator: 'Programação anual não integrada ao painel.',
-    filters: 'Parcial: produto e período podem divergir do cálculo oficial.',
+    limitations: 'O painel informa fornecimento, mas não a programação anual equivalente ao denominador formal.',
+    numerator: 'Demanda atendida de biofármacos no ano.',
+    denominator: 'Demanda programada de biofármacos no ano.',
+    filters: 'Produto e período.',
     memory: 'Não centralizada publicamente.',
     responsible: 'Área de produção / Cogeplan.',
     periodicity: 'Anual.',
     polarity: 'Maior melhor',
     states: ['ok', 'ok', 'ok', 'ok', 'part', 'miss', 'part', 'miss'],
-    iaRecomendacao: 'Incluir a coluna de demanda anual programada (denominador pactuado) diretamente no painel temático de fornecimento de biofármacos.'
+    iaRecomendacao: 'Incluir a coluna de demanda anual programada diretamente no painel temático.'
   },
   {
     id: 'arv',
-    name: 'Atendimento à demanda por antirretrovirais',
+    name: 'Atendimento à demanda por Antirretrovirais do Programa Aids/MS',
     activity: 'Produção e inovação em saúde',
     meta: 95,
     metaLabel: '95%',
@@ -517,72 +525,280 @@ const INDICATORS_DATA = [
     att: 100.00,
     repro: 'Parcial',
     bottleneck: 'Pautas/requisições',
-    formula: 'Unidades fornecidas ÷ unidades requisitadas nas pautas × 100',
-    source: 'Pautas de distribuição do Ministério da Saúde e registros de fornecimento; Portaria nº 571/2026.',
+    formula: '(Total de unidades farmacêuticas de antirretrovirais fornecidas no ano ÷ Total de unidades requisitadas por pautas de distribuição) x 100',
+    source: 'Pautas de distribuição do Ministério da Saúde; Portaria nº 571/2026.',
     purpose: 'Avaliar o atendimento das pautas de distribuição de antirretrovirais.',
     interpretation: 'Quanto maior a taxa, maior o atendimento das unidades requisitadas.',
     limitations: 'As quantidades requisitadas não estão reunidas no mesmo ambiente dos volumes fornecidos.',
-    numerator: 'Parcial: fornecimento pode estar disponível por produto.',
-    denominator: 'Pautas/requisições não integradas.',
-    filters: 'Parcial.',
+    numerator: 'Unidades fornecidas no ano.',
+    denominator: 'Unidades requisitadas nas pautas.',
+    filters: 'Parcial por programa.',
     memory: 'Não centralizada publicamente.',
-    responsible: 'Área de produção / Cogeplan.',
+    responsible: 'Farmanguinhos / Cogeplan.',
     periodicity: 'Anual.',
     polarity: 'Maior melhor',
     states: ['ok', 'ok', 'ok', 'ok', 'part', 'miss', 'part', 'miss'],
-    iaRecomendacao: 'Unificar no mesmo conjunto de dados abertos o quantitativo requisitado nas pautas do Ministério da Saúde e o quantitativo efetivamente entregue por Farmanguinhos.'
+    iaRecomendacao: 'Unificar no mesmo conjunto de dados abertos o quantitativo requisitado e o entregue.'
   },
   {
     id: 'med',
-    name: 'Atendimento à demanda por medicamentos do MS',
+    name: 'Atendimento à demanda por medicamentos do Ministério da Saúde',
     activity: 'Produção e inovação em saúde',
     meta: 95,
     metaLabel: '95%',
     actual: 97,
     actualLabel: '97%',
-    att: 102.11,
+    att: 101.98,
     repro: 'Parcial',
     bottleneck: 'Quantidades requisitadas',
-    formula: 'Unidades fornecidas ÷ unidades requisitadas nas pautas × 100',
-    source: 'Pautas dos programas do Ministério da Saúde, registros de fornecimento, Portaria nº 571/2026 e painel de medicamentos.',
-    purpose: 'Avaliar o atendimento das demandas de medicamentos dos programas do Ministério da Saúde.',
+    formula: '(Total de unidades farmacêuticas fornecidas aos Programas do MS no ano ÷ Total de unidades requisitadas por pautas) x 100',
+    source: 'Pautas dos programas do Ministério da Saúde; Portaria nº 571/2026.',
+    purpose: 'Avaliar o atendimento das demandas de medicamentos dos programas do MS.',
     interpretation: 'Quanto maior o percentual, maior o cumprimento das pautas recebidas.',
-    limitations: 'O painel permite analisar volumes fornecidos, mas não recupera integralmente as quantidades requisitadas usadas no denominador.',
-    numerator: 'Parcial: volumes fornecidos disponíveis.',
-    denominator: 'Quantidades requisitadas não integradas.',
-    filters: 'Parcial: produto e período.',
+    limitations: 'O painel permite analisar volumes fornecidos, mas não recupera integralmente as quantidades requisitadas.',
+    numerator: 'Unidades fornecidas aos Programas do MS.',
+    denominator: 'Unidades requisitadas por pautas.',
+    filters: 'Parcial por programa.',
     memory: 'Não centralizada publicamente.',
     responsible: 'Área de produção / Cogeplan.',
     periodicity: 'Anual.',
     polarity: 'Maior melhor',
     states: ['ok', 'ok', 'ok', 'ok', 'part', 'miss', 'part', 'miss'],
-    iaRecomendacao: 'Vincular ao painel de medicamentos a memória de cálculo das pautas requisitadas pelo Ministério da Saúde por programa estratégico.'
+    iaRecomendacao: 'Vincular ao painel de medicamentos a memória de cálculo das pautas requisitadas.'
   },
   {
     id: 'edu',
-    name: 'Matrículas por modalidade',
+    name: 'Alunos matriculados (Stricto, Lato e Técnico)',
     activity: 'Educação e formação profissional',
-    meta: null,
+    meta: 100,
     metaLabel: 'Metas específicas',
-    actual: null,
-    actualLabel: 'Por modalidade',
-    att: null,
+    actual: 124.96,
+    actualLabel: 'Média: 124,96%',
+    att: 124.96,
     repro: 'Parcial',
-    bottleneck: 'Previsão pactuada',
-    formula: 'Matrículas registradas ÷ matrículas previstas × 100, por modalidade',
-    source: 'Registros acadêmicos, metas pactuadas, Portaria nº 571/2026 e painéis de educação.',
-    purpose: 'Avaliar o cumprimento das metas de matrículas por modalidade de ensino.',
-    interpretation: 'O percentual compara matrículas registradas e previstas em cada modalidade.',
+    bottleneck: 'Previsão pactuada por modalidade',
+    formula: '(Total de matrículas registradas no ano ÷ Total de matrículas previstas para o ano) x 100, por modalidade',
+    source: 'Registros acadêmicos, Portaria nº 571/2026.',
+    purpose: 'Avaliar o cumprimento das metas de matrículas por modalidade (Stricto 75%, Lato 80%, Técnico 60%).',
+    interpretation: 'Compara matrículas registradas e previstas em cada modalidade de ensino.',
     limitations: 'A previsão pactuada por modalidade e os valores integrais não estão reunidos no mesmo ambiente público.',
-    numerator: 'Parcial: matrículas e ingressos disponíveis em painéis.',
-    denominator: 'Previsão pactuada não integrada.',
-    filters: 'Parcial: programa, modalidade e período.',
+    numerator: 'Matrículas registradas.',
+    denominator: 'Matrículas previstas.',
+    filters: 'Por modalidade de ensino.',
     memory: 'Não centralizada publicamente.',
-    responsible: 'Área de educação / Cogeplan.',
+    responsible: 'Vice-Presidência de Educação / Cogeplan.',
     periodicity: 'Anual.',
     polarity: 'Maior melhor',
     states: ['ok', 'ok', 'part', 'part', 'part', 'miss', 'part', 'miss'],
-    iaRecomendacao: 'Exibir no painel de Educação do Observatório a tabela de metas previstas por modalidade lado a lado com as matrículas efetivadas no ciclo.'
+    iaRecomendacao: 'Exibir no painel de Educação a tabela de metas previstas por modalidade.'
+  },
+  {
+    id: 'arca',
+    name: 'Índice de disponibilização no Repositório ARCA',
+    activity: 'Informação e comunicação científica',
+    meta: 10,
+    metaLabel: '≥ 10%',
+    actual: 10.9,
+    actualLabel: '10,9%',
+    att: 109.00,
+    repro: 'Parcial',
+    bottleneck: 'Metadados e séries históricas',
+    formula: '(Número de obras disponibilizadas no ARCA no período ÷ Número de obras do período anterior) x 100',
+    source: 'Repositório Institucional ARCA; Portaria nº 571/2026.',
+    purpose: 'Mensurar a expansão do acervo de acesso aberto da Fiocruz.',
+    interpretation: 'Valores superiores a 10% indicam crescimento na difusão da produção científica.',
+    limitations: 'Falta desagregação automatizada por unidade executora nos relatórios do Observatório.',
+    numerator: 'Obras disponibilizadas no ARCA no período.',
+    denominator: 'Obras do período anterior.',
+    filters: 'Período anual.',
+    memory: 'Registros internos do repositório.',
+    responsible: 'ICICT / Presidência.',
+    periodicity: 'Anual.',
+    polarity: 'Maior melhor',
+    states: ['ok', 'ok', 'ok', 'ok', 'part', 'miss', 'ok', 'part'],
+    iaRecomendacao: 'Automatizar a extração de metadados do ARCA por unidade e integrá-la ao painel.'
+  },
+  {
+    id: 'prog',
+    name: 'Horas de programação veiculadas',
+    activity: 'Informação e comunicação científica',
+    meta: 6205,
+    metaLabel: '6.205 h',
+    actual: 6205,
+    actualLabel: '6.205 h',
+    att: 100.00,
+    repro: 'Disponível',
+    bottleneck: 'Nenhum gargalo crítico',
+    formula: 'Total de horas veiculadas nos canais oficiais',
+    source: 'Canal Futura / VideoSaúde / Portaria nº 571/2026.',
+    purpose: 'Avaliar o volume de difusão audiovisual de conteúdos de saúde pública.',
+    interpretation: 'Cumprimento integral da grade pactuada.',
+    limitations: 'O indicador mede o tempo de veiculação, mas não o alcance ou engajamento do público.',
+    numerator: 'Total de horas veiculadas.',
+    denominator: 'Meta de grade horária.',
+    filters: 'Canal e período.',
+    memory: 'Relatórios de grade.',
+    responsible: 'VideoSaúde Distribuidora / ICICT.',
+    periodicity: 'Anual.',
+    polarity: 'Maior melhor',
+    states: ['ok', 'ok', 'ok', 'ok', 'ok', 'ok', 'ok', 'ok'],
+    iaRecomendacao: 'Manter a publicação regular e associar métricas de audiência web.'
+  },
+  {
+    id: 'museu',
+    name: 'Índice de visitação ao Museu da Vida',
+    activity: 'Informação e comunicação científica',
+    meta: 100,
+    metaLabel: '100%',
+    actual: 178.43,
+    actualLabel: '178,43%',
+    att: 178.43,
+    repro: 'Parcial',
+    bottleneck: 'Expectativa vs público real',
+    formula: '(Total de visitantes ÷ Expectativa de visitantes em exposições) x 100',
+    source: 'Museu da Vida Fiocruz; Portaria nº 571/2026.',
+    purpose: 'Mensurar a popularização da ciência e a atração de público presencial e itinerante.',
+    interpretation: 'Superação expressiva da expectativa (294.417 visitantes frente aos 165.000 esperados).',
+    limitations: 'A contagem de público itinerante e móvel possui estimativas indiretas.',
+    numerator: 'Total de visitantes aferidos (294.417).',
+    denominator: 'Expectativa pactuada (165.000).',
+    filters: 'Tipo de exposição (longo prazo, itinerante, móvel).',
+    memory: 'Controle de bilheteria e bilhetes educacionais.',
+    responsible: 'Casa de Oswaldo Cruz (COC / Fiocruz).',
+    periodicity: 'Anual.',
+    polarity: 'Maior melhor',
+    states: ['ok', 'ok', 'ok', 'ok', 'part', 'miss', 'part', 'miss'],
+    iaRecomendacao: 'Aprimorar a categorização do público visitante por faixa etária e perfil educacional em dados abertos.'
+  },
+  {
+    id: 'pacientes',
+    name: 'Proporção de pacientes em protocolo de pesquisa',
+    activity: 'Serviços de referência, assistência e vigilância',
+    meta: 40,
+    metaLabel: '≥ 40%',
+    actual: 44.22,
+    actualLabel: '44,22%',
+    att: 110.55,
+    repro: 'Parcial',
+    bottleneck: 'Integração de prontuários',
+    formula: '(Total de pacientes atendidos no ano, inscritos em protocolo de pesquisa ÷ Total de pacientes atendidos no ano) x 100',
+    source: 'Unidades assistenciais (INI, IFF, etc.); Portaria nº 571/2026.',
+    purpose: 'Avaliar a integração entre assistência à saúde e pesquisa clínica na instituição.',
+    interpretation: 'Superação da meta indica forte capilaridade dos ensaios clínicos nos serviços de saúde.',
+    limitations: 'Sistemas de prontuário eletrônico descentralizados entre os institutos assistenciais.',
+    numerator: 'Pacientes em protocolo de pesquisa.',
+    denominator: 'Total de pacientes atendidos.',
+    filters: 'Unidade assistencial e ano.',
+    memory: 'Registros dos comitês de ética e ambulatórios.',
+    responsible: 'Vice-Presidência de Pesquisa e Coleções Biológicas.',
+    periodicity: 'Anual.',
+    polarity: 'Maior melhor',
+    states: ['ok', 'ok', 'ok', 'ok', 'part', 'miss', 'part', 'miss'],
+    iaRecomendacao: 'Unificar os registros de atendimento clínico e protocolos de pesquisa em base integrada.'
+  },
+  {
+    id: 'blh',
+    name: 'Proporção de Bancos de Leite Humano (BLH) no Brasil credenciados',
+    activity: 'Serviços de referência, assistência e vigilância',
+    meta: 70,
+    metaLabel: '≥ 70%',
+    actual: 88.78,
+    actualLabel: '88,78%',
+    att: 126.83,
+    repro: 'Parcial',
+    bottleneck: 'Monitoramento da rede nacional',
+    formula: '(Total de BLHs credenciados no período ÷ Total de BLHs monitorados no país no mesmo período) x 100',
+    source: 'Rede Brasileira de Bancos de Leite Humano (IFF/Fiocruz); Portaria nº 571/2026.',
+    purpose: 'Mensurar a qualidade e a formalização da rede nacional de Bancos de Leite Humano.',
+    interpretation: 'Elevado índice de credenciamento assegura padrões técnicos e de segurança.',
+    limitations: 'O monitoramento depende de auditorias estaduais descentralizadas.',
+    numerator: 'Total de BLHs credenciados.',
+    denominator: 'Total de BLHs monitorados no país.',
+    filters: 'Região e estado.',
+    memory: 'Base da Rede IFF.',
+    responsible: 'Instituto Fernandes Figueira (IFF / Fiocruz).',
+    periodicity: 'Anual.',
+    polarity: 'Maior melhor',
+    states: ['ok', 'ok', 'ok', 'ok', 'part', 'miss', 'part', 'miss'],
+    iaRecomendacao: 'Disponibilizar mapa interativo em tempo real da Rede Brasileira de BLHs com status de credenciamento.'
+  },
+  {
+    id: 'diag',
+    name: 'Diagnósticos laboratoriais de referência atendidos no prazo',
+    activity: 'Serviços de referência, assistência e vigilância',
+    meta: 90,
+    metaLabel: '90%',
+    actual: 97.43,
+    actualLabel: '97,43%',
+    att: 108.26,
+    repro: 'Parcial',
+    bottleneck: 'Gestão de insumos e amostras',
+    formula: '(Total de diagnósticos laboratoriais realizados no prazo ÷ Total de diagnósticos laboratoriais realizados) x 100',
+    source: 'Laboratórios de Referência da Fiocruz; Portaria nº 571/2026.',
+    purpose: 'Avaliar a agilidade e a confiabilidade na entrega de exames de vigilância em saúde e referência nacional.',
+    interpretation: 'Desempenho acima da meta (97,43%) evidencia forte capacidade de resposta laboratorial.',
+    limitations: 'Variabilidade de prazos conforme a complexidade do agravo e sazonalidade de insumos.',
+    numerator: 'Diagnósticos laboratoriais realizados no prazo.',
+    denominator: 'Total de diagnósticos laboratoriais realizados.',
+    filters: 'Agravo e laboratório de referência.',
+    memory: 'Sistemas de gestão de laboratórios (LIS).',
+    responsible: 'Vice-Presidência de Laboratórios, Referência e Coleções Biológicas.',
+    periodicity: 'Anual.',
+    polarity: 'Maior melhor',
+    states: ['ok', 'ok', 'ok', 'ok', 'part', 'miss', 'part', 'miss'],
+    iaRecomendacao: 'Integrar painel de tempos de resposta de exames por agravo de notificação compulsória.'
+  },
+  {
+    id: 'ouvidoria',
+    name: 'Manifestações de ouvidoria atendidas no prazo pactuado',
+    activity: 'Administração e gestão institucional',
+    meta: 80,
+    metaLabel: '≥ 80%',
+    actual: 85,
+    actualLabel: '85%',
+    att: 106.00,
+    repro: 'Parcial',
+    bottleneck: 'Tramitação interna nas unidades',
+    formula: '(Total de manifestações respondidas no prazo legal de 30 dias ÷ Total de manifestações respondidas) x 100',
+    source: 'Plataforma Integrada de Ouvidoria e Acesso à Informação (e-Fals/e-Ouv); Portaria nº 571/2026.',
+    purpose: 'Assegurar o direito de resposta ao cidadão e o cumprimento do Decreto nº 9.492/2018.',
+    interpretation: 'Índice de 85% reflete cumprimento satisfatório, mas aponta margem de melhoria na capilaridade.',
+    limitations: 'O prazo depende da agilidade das áreas técnicas na apuração das demandas.',
+    numerator: 'Manifestações respondidas no prazo legal.',
+    denominator: 'Total de manifestações respondidas.',
+    filters: 'Tipo de manifestação (exceto denúncias sigilosas).',
+    memory: 'Base federal e-Ouv.',
+    responsible: 'Ouvidoria Geral da Fiocruz.',
+    periodicity: 'Anual.',
+    polarity: 'Maior melhor',
+    states: ['ok', 'ok', 'ok', 'ok', 'ok', 'part', 'part', 'part'],
+    iaRecomendacao: 'Automatizar alertas de vencimento de prazos para as unidades técnicas demandadas.'
+  },
+  {
+    id: 'economia',
+    name: 'Economia obtida em aquisições por Pregão Eletrônico SISPP',
+    activity: 'Administração e gestão institucional',
+    meta: 10,
+    metaLabel: '10%',
+    actual: 24.24,
+    actualLabel: '24,24%',
+    att: 242.40,
+    repro: 'Parcial',
+    bottleneck: 'Estimativas de preço e mercado',
+    formula: '{[(Valor Estimado - Cancelados/Desertos) - Valor Homologado] / (Valor Estimado - Cancelados/Desertos)} x 100',
+    source: 'Coordenação-Geral de Administração (CogeAD); Portaria nº 571/2026.',
+    purpose: 'Mensurar a economicidade e a eficiência nas contratações públicas de materiais, equipamentos e serviços.',
+    interpretation: 'Economia de 24,24% representa alta competitividade nas licitações e otimização orçamentária.',
+    limitations: 'A oscilação de preços de mercado afeta a precisão do valor estimado inicial.',
+    numerator: 'Diferença entre valor estimado e valor homologado.',
+    denominator: 'Valor total estimado descontados itens desertos/cancelados.',
+    filters: 'Modalidade Pregão Eletrônico SISPP.',
+    memory: 'Sistema Compras.net / CogeAD.',
+    responsible: 'CogeAD / Presidência da Fiocruz.',
+    periodicity: 'Anual.',
+    polarity: 'Maior melhor',
+    states: ['ok', 'ok', 'ok', 'ok', 'part', 'miss', 'part', 'miss'],
+    iaRecomendacao: 'Disponibilizar painel analítico de compras públicas por categoria de material e fornecedor.'
   }
 ];
 
@@ -685,11 +901,11 @@ function renderAll() {
   el('kpiComp').textContent = avgComp + '%';
 
   el('bulletContainer').innerHTML = numeric.length ? numeric.map(d => {
-    const pctWidth = Math.min((d.att / 160) * 100, 100);
+    const pctWidth = Math.min((d.att / 260) * 100, 100);
     const barColor = d.repro === 'Parcial' ? 'var(--teal)' : 'var(--blue)';
     return `
       <div class="bullet-item">
-        <div class="bullet-label">${d.name}<small>${d.activity}</small></div>
+        <div class="bullet-label" title="${d.name}">${d.name}<small>${d.activity}</small></div>
         <div class="bullet-track">
           <div class="bullet-fill" style="width:${pctWidth}%;background:${barColor}"></div>
           <div class="bullet-target" title="Meta pactuada: 100%"></div>
@@ -783,7 +999,7 @@ function inspectElo(indId, idx, rerenderCards = true) {
   };
 
   let evidencia = item[meta.field] || 'Informação registrada na Portaria nº 571/2026.';
-  if (idx === 2) evidencia = `Meta pactuada: ${item.metaLabel} (${item.repro === 'Parcial' && item.id === 'edu' ? 'detalhamento por modalidade não integrado no painel' : 'publicada no instrumento de pactuação'}).`;
+  if (idx === 2) evidencia = `Meta pactuada: ${item.metaLabel} (publicada no instrumento oficial).`;
   if (idx === 3) evidencia = `Valor oficial apurado: ${item.actualLabel} (Atingimento: ${fmtPct(item.att)}).`;
 
   const impacto = st === 'ok' ? meta.impactoOk : meta.impactoBad;
@@ -857,8 +1073,8 @@ function openModal(id) {
       <div class="m-box full"><label>Propósito do Indicador</label><p>${x.purpose}</p></div>
       <div class="m-box full"><label>Interpretação Gerencial</label><p>${x.interpretation}</p></div>
       <div class="m-box full"><label>Fórmula de Cálculo</label><div class="formula-code">${x.formula}</div></div>
-      <div class="m-box"><label>Meta Pactuada (Ciclo 2025)</label><p><strong>${x.metaLabel}</strong></p></div>
-      <div class="m-box"><label>Resultado Apurado (Portaria nº 571/2026)</label><p><strong>${x.actualLabel}</strong> (Atingimento: ${fmtPct(x.att)})</p></div>
+      <div class="m-box"><label>Meta Pactuada (Portaria nº 571/2026)</label><p><strong>${x.metaLabel}</strong></p></div>
+      <div class="m-box"><label>Resultado Apurado</label><p><strong>${x.actualLabel}</strong> (Atingimento: ${fmtPct(x.att)})</p></div>
       <div class="m-box"><label>Numerador (Disponibilidade)</label><p>${x.numerator}</p></div>
       <div class="m-box"><label>Denominador (Disponibilidade)</label><p>${x.denominator}</p></div>
       <div class="m-box"><label>Filtros e Regras de Negócio</label><p>${x.filters}</p></div>
@@ -895,7 +1111,7 @@ function exportCSV() {
   const encodedUri = encodeURI(csvContent);
   const link = document.createElement("a");
   link.setAttribute("href", encodedUri);
-  link.setAttribute("download", "indicadores_fiocruz_ciclo2025.csv");
+  link.setAttribute("download", "indicadores_fiocruz_portaria571.csv");
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
