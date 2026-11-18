@@ -547,7 +547,7 @@ const fmtPct = v => v == null ? '—' : v.toLocaleString('pt-BR', { minimumFract
 
 async function carregarParecerIA() {
   try {
-    const res = await fetch('data/parecer_ia.json');
+    const res = await fetch('parecer_ia.json');
     if (!res.ok) return;
     const dados = await res.json();
     if (dados.analise && dados.analise.sintese_executiva) {
