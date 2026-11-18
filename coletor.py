@@ -1,5 +1,6 @@
 import os
 import json
+import time
 from datetime import datetime
 from google import genai
 from google.genai import types
@@ -36,25 +37,43 @@ def gerar_diagnostico_ia():
     {json.dumps(INDICADORES_RESUMO, ensure_ascii=False)}
     """
 
-    response = client.models.generate_content(
-        model="gemini-3.8-flash",
-        contents=prompt,
-        config=types.GenerateContentConfig(
-            response_mime_type="application/json",
-            temperature=0.1
-        )
-    )
+    modelos = ["gemini-3.8-flash", "gemini-3.8-flash-lite"]
+    response = None
+    modelo_usado = ""
+
+    for modelo in modelos:
+        for tentativa in range(3):
+            try:
+                response = client.models.generate_content(
+                    model=modelo,
+                    contents=prompt,
+                    config=types.GenerateContentConfig(
+                        response_mime_type="application/json",
+                        temperature=0.1
+                    )
+                )
+                modelo_usado = modelo
+                break
+            except Exception as e:
+                print(f"Tentativa {tentativa+1} falhou no modelo {modelo}: {e}")
+                time.sleep(5)
+        if response:
+            break
+
+    if not response:
+        print("Servidores da API temporariamente ocupados; mantendo parecer_ia.json atual sem quebrar o workflow.")
+        return
 
     resultado_ia = json.loads(response.text)
     payload = {
         "gerado_em": datetime.now().strftime("%d/%m/%Y %H:%M"),
-        "modelo": "Gemini 3.8 Flash (Auditoria Determinística)",
+        "modelo": f"{modelo_usado} (Auditoria Determinística)",
         "analise": resultado_ia
     }
 
     with open(OUTPUT_IA_JSON, "w", encoding="utf-8") as f:
         json.dump(payload, f, ensure_ascii=False, indent=2)
-    print("Parecer de IA gerado com sucesso em parecer_ia.json")
+    print(f"Parecer de IA gerado com sucesso via {modelo_usado}!")
 
 if __name__ == "__main__":
     gerar_diagnostico_ia()
