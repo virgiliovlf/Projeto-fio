@@ -37,7 +37,7 @@ def gerar_diagnostico_ia():
     {json.dumps(INDICADORES_RESUMO, ensure_ascii=False)}
     """
 
-    modelos = ["gemini-3.8-flash", "gemini-3.8-flash-lite"]
+    modelos = ["gemini-3.8-flash", "gemini-3.8-flash-lite", "gemini-3.8-pro", "gemini-2.5-pro"]
     response = None
     modelo_usado = ""
 
