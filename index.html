@@ -98,6 +98,16 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Segoe UI',Aptos
 .chain-step.part .st-status{color:#b8740e}
 .chain-step.miss{background:#fdeceb;border-color:#efb9b3}
 .chain-step.miss .st-status{color:var(--red)}
+.chain-step{cursor:pointer;position:relative}
+.chain-step:hover{transform:translateY(-2px);box-shadow:0 4px 10px rgba(11,52,72,.08)}
+.chain-step.active-elo{outline:2.5px solid var(--navy);outline-offset:1px;background:#fff}
+.chain-step .st-desc{display:block;font-size:9px;color:var(--muted);margin-bottom:5px;line-height:1.15}
+.elo-detail-box{margin-top:12px;border-radius:7px;padding:12px 14px;background:#f7fafb;border:1px solid var(--line);border-left:4px solid var(--navy);font-size:12px}
+.elo-detail-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;flex-wrap:wrap}
+.elo-detail-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.elo-detail-col{background:#fff;border:1px solid #e3ecef;border-radius:6px;padding:9px 11px}
+.elo-detail-col strong{display:block;font-size:10px;text-transform:uppercase;color:var(--blue);letter-spacing:.4px;margin-bottom:4px}
+.elo-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;padding-top:8px;border-top:1px solid #edf2f5;font-size:10.5px;color:var(--muted)}
 
 .donut-box{display:flex;align-items:center;gap:22px;padding-top:6px}
 .canvas-donut{width:155px!important;height:155px!important}
@@ -281,7 +291,13 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
         <span class="badge-info">8 Elos Metodológicos</span>
       </div>
       <div class="chain-grid" id="chainContainer"></div>
-    </div>
+    <div id="eloDetailBox" class="elo-detail-box" style="display:none"></div>
+<div class="elo-legend">
+  <span><strong style="color:var(--green)">● Disponível:</strong> Dado aberto e exportável</span>
+  <span><strong style="color:#b8740e">● Parcial:</strong> Dado agregado sem desagregação completa</span>
+  <span><strong style="color:var(--red)">● Lacuna:</strong> Componente ausente dos painéis públicos</span>
+  <span style="margin-left:auto;font-style:italic">Clique em qualquer elo acima para inspecionar a evidência</span>
+</div>
 
     <div class="card">
       <div class="card-header">
@@ -656,22 +672,103 @@ function selectChain(id) {
 }
 
 function renderChain(item) {
+  let selectedEloIndex = 5; // Inicia destacando o Elo 6 (Denominador), principal gargalo
+
+const ELO_META = [
+  { sub: 'Regra de cálculo', field: 'formula', impactoOk: 'Fórmula oficial publicada e auditável.', impactoBad: 'Regra matemática não formalizada.' },
+  { sub: 'Sistema de origem', field: 'source', impactoOk: 'Origem documental e normativa identificada.', impactoBad: 'Fonte primária não rastreada.' },
+  { sub: 'Pactuação anual', field: 'metaLabel', impactoOk: 'Meta pactuada divulgada para comparação.', impactoBad: 'Meta desagregada não integrada ao painel.' },
+  { sub: 'Valor apurado', field: 'actualLabel', impactoOk: 'Resultado oficial publicado na Portaria nº 571/2026.', impactoBad: 'Apuração divulgada apenas de forma consolidada.' },
+  { sub: 'Entregas / eventos', field: 'numerator', impactoOk: 'Numerador aberto e verificável.', impactoBad: 'Restringe a conferência granular do volume realizado.' },
+  { sub: 'Base de referência', field: 'denominator', impactoOk: 'Denominador aberto nos mesmos filtros.', impactoBad: 'Impede recalcular o indicador de forma independente.' },
+  { sub: 'Recorte e filtros', field: 'filters', impactoOk: 'Parâmetros de extração reproduzíveis.', impactoBad: 'Gera margem de divergência em consultas retroativas.' },
+  { sub: 'Memória / base aberta', field: 'memory', impactoOk: 'Memória de cálculo e microdados disponíveis.', impactoBad: 'Exige reconstrução manual por fontes secundárias.' }
+];
+
+function renderChain(item) {
+  const detailBox = el('eloDetailBox');
   if (!item) {
     el('chainSubtitle').textContent = 'Nenhum indicador disponível no filtro.';
     el('chainContainer').innerHTML = CHAIN_STEPS.map(s => `<div class="chain-step"><div class="st-name">${s}</div><div class="st-status">—</div></div>`).join('');
+    if (detailBox) detailBox.style.display = 'none';
     return;
   }
-  el('chainSubtitle').innerHTML = `Inspecionando: <strong>${item.name}</strong> (${item.activity})`;
+
+  const okC = item.states.filter(s => s === 'ok').length;
+  const partC = item.states.filter(s => s === 'part').length;
+  const missC = item.states.filter(s => s === 'miss').length;
+  const pctItem = Math.round(((okC + partC * 0.5) / 8) * 100);
+
+  el('chainSubtitle').innerHTML = `Inspecionando: <strong>${item.name}</strong> (${item.activity}) · <strong>${pctItem}% rastreável</strong> (${okC} disponíveis, ${partC} parciais, ${missC} lacunas)`;
+
   const labels = { ok: 'Disponível', part: 'Parcial', miss: 'Lacuna' };
   el('chainContainer').innerHTML = CHAIN_STEPS.map((step, idx) => {
     const st = item.states[idx];
+    const activeCls = idx === selectedEloIndex ? ' active-elo' : '';
     return `
-      <div class="chain-step ${st}">
+      <div class="chain-step ${st}${activeCls}" onclick="inspectElo('${item.id}', ${idx})">
         <div class="st-num">ELO ${idx + 1}</div>
         <div class="st-name">${step.split('. ')[1]}</div>
+        <span class="st-desc">${ELO_META[idx].sub}</span>
         <div class="st-status">${labels[st]}</div>
       </div>`;
   }).join('');
+
+  inspectElo(item.id, selectedEloIndex, false);
+}
+
+function inspectElo(indId, idx, rerenderCards = true) {
+  selectedEloIndex = idx;
+  const item = INDICATORS_DATA.find(d => d.id === indId);
+  const detailBox = el('eloDetailBox');
+  if (!item || !detailBox) return;
+
+  if (rerenderCards) {
+    document.querySelectorAll('#chainContainer .chain-step').forEach((card, i) => {
+      card.classList.toggle('active-elo', i === idx);
+    });
+  }
+
+  const st = item.states[idx];
+  const meta = ELO_META[idx];
+  const stepName = CHAIN_STEPS[idx].split('. ')[1];
+  const statusMap = {
+    ok: { label: 'Elo Disponível', color: 'var(--green)' },
+    part: { label: 'Restrição / Parcial', color: '#b8740e' },
+    miss: { label: 'Lacuna Documental', color: 'var(--red)' }
+  };
+
+  let evidencia = item[meta.field] || 'Informação registrada na Portaria nº 571/2026.';
+  if (idx === 2) evidencia = `Meta pactuada: ${item.metaLabel} (${item.repro === 'Parcial' && item.id === 'edu' ? 'detalhamento por modalidade não integrado no painel' : 'publicada no instrumento de pactuação'}).`;
+  if (idx === 3) evidencia = `Valor oficial apurado: ${item.actualLabel} (Atingimento: ${fmtPct(item.att)}).`;
+
+  const impacto = st === 'ok' ? meta.impactoOk : meta.impactoBad;
+  const recomendacao = st === 'ok'
+    ? 'Manter a padronização e a publicação ativa deste componente.'
+    : (item.iaRecomendacao || 'Publicar o componente desagregado em formato aberto (.CSV/.JSON) no Observatório.');
+
+  detailBox.style.display = 'block';
+  detailBox.style.borderLeftColor = statusMap[st].color;
+  detailBox.innerHTML = `
+    <div class="elo-detail-head">
+      <strong>Diagnóstico do Elo ${idx + 1} — ${stepName} (${meta.sub})</strong>
+      <span style="font-size:10px;font-weight:800;color:${statusMap[st].color};text-transform:uppercase">${statusMap[st].label}</span>
+    </div>
+    <div class="elo-detail-grid">
+      <div class="elo-detail-col">
+        <strong>Evidência Documental</strong>
+        <span>${evidencia}</span>
+      </div>
+      <div class="elo-detail-col">
+        <strong>Impacto na Reprodutibilidade</strong>
+        <span>${impacto}</span>
+      </div>
+      <div class="elo-detail-col">
+        <strong>Recomendação Técnica (IA / Cogeplan)</strong>
+        <span>${recomendacao}</span>
+      </div>
+    </div>
+  `;
 }
 
 function renderDonut(data, avgComp) {
