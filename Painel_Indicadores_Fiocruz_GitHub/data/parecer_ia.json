@@ -1,0 +1,16 @@
+{
+  "gerado_em": "Ciclo 2025 (Portaria nº 571/2026)",
+  "modelo": "Gemini 2.5 Flash · Auditoria Documental",
+  "analise": {
+    "sintese_executiva": "Os indicadores estratégicos da Fiocruz no ciclo 2025 registram elevado desempenho operacional, alcançando média de 117,2% nas metas quantificáveis (Portaria nº 571/2026). Contudo, a auditoria de transparência ativa revela assimetria entre a divulgação do resultado final e a abertura de seus componentes primários: 5 indicadores possuem reprodutibilidade apenas parcial e 2 são não reproduzíveis externamente, em razão da não publicação conjunta dos denominadores, pautas pactuadas e memórias de cálculo.",
+    "recomendacoes_por_id": {
+      "pesquisa": "Publicar a série histórica agregada de servidores ativos elegíveis no cargo/função de pesquisa por unidade, permitindo recompor o denominador quadrienal.",
+      "plataformas": "Disponibilizar em base aberta o volume anual de solicitações recebidas (denominador) e atendidas (numerador) pela Rede de Plataformas.",
+      "colecoes": "Abrir o consolidado anual de serviços demandados e atendidos pelas Coleções Biológicas em formato processável (.CSV).",
+      "bio": "Integrar a coluna de programação anual pactuada ao painel público de fornecimento de biofármacos.",
+      "arv": "Publicar as quantidades requisitadas nas pautas do Ministério da Saúde no mesmo conjunto de dados das entregas realizadas.",
+      "med": "Incluir a memória de cálculo das pautas requisitadas pelo Ministério da Saúde junto aos dados de fornecimento de medicamentos.",
+      "edu": "Apresentar as metas pactuadas por modalidade de ensino na mesma tabela pública que reporta as matrículas registradas."
+    }
+  }
+}
