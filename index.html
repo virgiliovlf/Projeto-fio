@@ -50,7 +50,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Segoe UI',Aptos
 
 .filter-bar{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(11,52,72,.04);display:grid;grid-template-columns:1.3fr 1.3fr 1fr 0.9fr 0.7fr auto;gap:12px;align-items:end}
 .f-group label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:5px}
-.f-group select,.f-group input{width:100%;height:36px;border:1px solid #c5d5dc;border-radius:6px;padding:0 10px;font-size:12px;color:var(--ink);background:#fbfdfe}
+.f-group select,.f-group input{width:100%;height:36px;border:1px solid #c5d5dc;border-radius:6px;padding:0 10px;font-size:12px;color:var(--ink);background:#fbfdfe;cursor:pointer}
 .f-group select:focus,.f-group input:focus{outline:none;border-color:var(--teal-bright);background:#fff}
 .f-actions{display:flex;gap:6px}
 .btn{height:36px;padding:0 14px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;border:none}
@@ -81,13 +81,26 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Segoe UI',Aptos
 .kpi-val{font-size:28px;font-weight:800;color:var(--navy);margin:6px 0 3px;line-height:1.1}
 .kpi-sub{font-size:11px;color:var(--muted)}
 
-.viz-grid-main{display:grid;grid-template-columns:1.4fr 1fr;gap:14px;margin-bottom:14px}
-.viz-grid-sub{display:grid;grid-template-columns:1.35fr 1fr;gap:14px;margin-bottom:14px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px 18px;box-shadow:0 2px 8px rgba(11,52,72,.04);display:flex;flex-direction:column}
+.viz-grid-main{display:grid;grid-template-columns:1.35fr 1.05fr;gap:14px;margin-bottom:14px}
+.viz-grid-sub{display:grid;grid-template-columns:1.38fr 0.92fr;gap:14px;margin-bottom:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px 18px;box-shadow:0 2px 8px rgba(11,52,72,.04);display:flex;flex-direction:column;transition:box-shadow .25s ease, border-color .25s ease}
 .card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;gap:10px}
 .card-title{font-size:15px;font-weight:700;color:var(--navy);margin:0}
 .card-subtitle{font-size:11px;color:var(--muted);margin:3px 0 0}
 .badge-info{font-size:10px;font-weight:700;background:var(--soft);color:var(--blue);padding:4px 8px;border-radius:4px;white-space:nowrap}
+
+/* Dica discreta de interação (UX Affordance) */
+.ux-hint{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:600;color:var(--blue);background:#eef7f8;border:1px solid #cbe4e6;padding:3px 8px;border-radius:5px;white-space:nowrap}
+
+/* Destaque ao atualizar a Trilha */
+@keyframes pulseChain {
+  0% { box-shadow: 0 0 0 0 rgba(0, 166, 166, 0.45); border-color: var(--teal-bright); }
+  70% { box-shadow: 0 0 0 8px rgba(0, 166, 166, 0); border-color: var(--teal-bright); }
+  100% { box-shadow: 0 2px 8px rgba(11, 52, 72, .04); border-color: var(--line); }
+}
+.card.pulse-update {
+  animation: pulseChain 0.85s ease-out;
+}
 
 /* Rodapé metodológico discreto dentro dos cards */
 .ref-note{margin-top:auto;padding-top:10px;border-top:1px dashed #d8e5ea;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;font-size:10.5px;color:var(--muted)}
@@ -95,8 +108,10 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Segoe UI',Aptos
 .ref-link{background:none;border:none;padding:0;color:var(--blue);font-size:10.5px;font-weight:700;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
 .ref-link:hover{color:var(--teal)}
 
-.bullet-list{display:grid;gap:15px;margin-top:14px;margin-bottom:12px;max-height:420px;overflow-y:auto;padding:6px 4px 4px 0}
-.bullet-item{display:grid;grid-template-columns:220px 1fr 72px;align-items:center;gap:12px;font-size:12px}
+.bullet-list{display:grid;gap:10px;margin-top:12px;margin-bottom:12px;max-height:420px;overflow-y:auto;padding:6px 4px 4px 0}
+.bullet-item{display:grid;grid-template-columns:220px 1fr 72px;align-items:center;gap:12px;font-size:12px;padding:6px 8px;border-radius:6px;border:1px solid transparent;cursor:pointer;transition:.15s}
+.bullet-item:hover{background:#f3f9fa;border-color:#cfe4e7}
+.bullet-item.active-bullet{background:#e7f4f5;border-color:var(--teal-bright);box-shadow:inset 3px 0 0 var(--teal)}
 .bullet-label{font-weight:600;color:var(--ink);line-height:1.25}
 .bullet-label small{display:block;font-size:10px;color:var(--muted);font-weight:400}
 .bullet-track{height:20px;background:#e8eff2;border-radius:4px;position:relative}
@@ -106,22 +121,47 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Segoe UI',Aptos
 .bullet-val{text-align:right;font-weight:800;font-size:13px;color:var(--navy)}
 
 .table-clean{width:100%;border-collapse:collapse;font-size:12px}
-.table-clean th{text-align:left;font-size:10px;text-transform:uppercase;color:var(--muted);padding:8px 10px;border-bottom:2px solid var(--line);background:#f7fafb}
-.table-clean td{padding:9px 10px;border-bottom:1px solid #edf2f5;vertical-align:middle}
-.table-clean tr:hover td{background:#f8fbfc}
+.table-clean th{text-align:left;font-size:10px;text-transform:uppercase;color:var(--muted);padding:8px 10px;border-bottom:2px solid var(--line);background:#f7fafb;position:sticky;top:0;z-index:1}
+.table-clean td{padding:9px 10px;border-bottom:1px solid #edf2f5;vertical-align:middle;transition:background .15s}
+
+/* Linhas interativas e linha selecionada na trilha */
+.interactive-table tbody tr{cursor:pointer}
+.interactive-table tbody tr:hover td{background:#f1f8f9}
+.interactive-table tbody tr.active-row td{background:#e6f4f5;border-bottom-color:#bce0e3}
+.interactive-table tbody tr.active-row td:first-child{box-shadow:inset 4px 0 0 var(--teal-bright)}
+
+.track-btn{display:inline-flex;align-items:center;gap:4px;padding:4px 9px;border-radius:5px;font-size:10.5px;font-weight:700;border:1px solid #c3dde0;background:#fff;color:var(--blue);white-space:nowrap;transition:.15s}
+.interactive-table tbody tr:hover .track-btn{background:var(--blue);color:#fff;border-color:var(--blue)}
+.interactive-table tbody tr.active-row .track-btn{background:var(--teal);color:#fff;border-color:var(--teal)}
+
 .pill{display:inline-block;padding:3px 9px;border-radius:50px;font-size:10px;font-weight:800;color:#fff;white-space:nowrap}
 .pill.partial{background:var(--amber)}
 .pill.no{background:var(--red)}
 .pill.yes{background:var(--green)}
 
-.chain-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:8px;margin-top:10px}
-.chain-step{border-radius:7px;padding:12px 6px;text-align:center;border:1px solid var(--line);background:#f6fafb;transition:.2s;cursor:pointer;position:relative}
-.chain-step:hover{transform:translateY(-2px);box-shadow:0 4px 10px rgba(11,52,72,.08)}
-.chain-step.active-elo{outline:2.5px solid var(--navy);outline-offset:1px;background:#fff}
-.chain-step .st-num{font-size:9px;font-weight:800;color:var(--muted);margin-bottom:4px}
-.chain-step .st-name{font-size:11px;font-weight:700;color:var(--navy);margin-bottom:3px}
+/* Faixa de contexto do indicador selecionado dentro da Trilha */
+.trilha-focus-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:#eef6f8;border:1px solid #cde1e6;border-left:4px solid var(--teal-bright);border-radius:6px;padding:9px 12px;margin-bottom:10px}
+.trilha-focus-info{display:flex;flex-direction:column;gap:2px}
+.trilha-focus-kicker{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--teal)}
+.trilha-focus-name{font-size:13px;font-weight:700;color:var(--navy)}
+.trilha-focus-stats{font-size:11px;color:var(--muted)}
+.trilha-quick-select{display:flex;align-items:center;gap:6px}
+.trilha-quick-select label{font-size:10px;font-weight:700;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.trilha-quick-select select{height:30px;max-width:250px;border:1px solid #bfd5dc;border-radius:5px;padding:0 8px;font-size:11.5px;font-weight:600;color:var(--navy);background:#fff;cursor:pointer}
+
+.chain-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:10px;margin-top:6px}
+.chain-step{border-radius:7px;padding:10px 6px 8px;text-align:center;border:1px solid var(--line);background:#f6fafb;transition:.18s;cursor:pointer;position:relative;display:flex;flex-direction:column;justify-content:space-between}
+.chain-step:not(:last-child)::after{content:"›";position:absolute;right:-8px;top:50%;transform:translateY(-50%);font-size:14px;font-weight:800;color:#8ba4ae;pointer-events:none}
+.chain-step:hover{transform:translateY(-2px);box-shadow:0 5px 12px rgba(11,52,72,.12);border-color:var(--blue)}
+.chain-step.active-elo{outline:2.5px solid var(--navy);outline-offset:1px;background:#fff;transform:translateY(-2px);box-shadow:0 5px 14px rgba(11,52,72,.14)}
+.chain-step .st-num{font-size:9px;font-weight:800;color:var(--muted);margin-bottom:3px}
+.chain-step .st-name{font-size:11px;font-weight:700;color:var(--navy);margin-bottom:2px}
 .chain-step .st-desc{display:block;font-size:9px;color:var(--muted);margin-bottom:5px;line-height:1.15}
-.chain-step .st-status{font-size:10px;font-weight:700}
+.chain-step .st-status{font-size:10px;font-weight:800;margin-bottom:5px}
+.chain-step .st-cta{display:block;font-size:9px;font-weight:700;padding:2px 4px;border-radius:4px;background:rgba(11,52,72,.06);color:var(--navy);transition:.15s}
+.chain-step:hover .st-cta{background:var(--navy);color:#fff}
+.chain-step.active-elo .st-cta{background:var(--navy);color:#fff}
+
 .chain-step.ok{background:#e7f5ef;border-color:#b2decb}
 .chain-step.ok .st-status{color:var(--green)}
 .chain-step.part{background:#fef6e7;border-color:#f3d59b}
@@ -135,7 +175,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Segoe UI',Aptos
 .elo-detail-col{background:#fff;border:1px solid #e3ecef;border-radius:6px;padding:9px 11px}
 .elo-detail-col strong{display:block;font-size:10px;text-transform:uppercase;color:var(--blue);letter-spacing:.4px;margin-bottom:4px}
 .elo-ref-line{margin-top:9px;padding-top:7px;border-top:1px solid #e3ecef;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;font-size:10.5px;color:var(--muted)}
-.elo-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;margin-bottom:10px;padding-top:8px;border-top:1px solid #edf2f5;font-size:10.5px;color:var(--muted)}
+.elo-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;margin-bottom:10px;padding-top:8px;border-top:1px solid #edf2f5;font-size:10.5px;color:var(--muted);align-items:center}
 
 .donut-box{display:flex;align-items:center;gap:22px;padding:6px 0 12px}
 .canvas-donut{width:155px!important;height:155px!important}
@@ -145,7 +185,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Segoe UI',Aptos
 
 .catalog-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
 .search-box{width:340px;max-width:100%;height:36px;border:1px solid #c5d5dc;border-radius:6px;padding:0 12px;font-size:12px}
-.btn-ficha{background:var(--soft);color:var(--blue);border:1px solid #bfe0e2;padding:5px 10px;border-radius:5px;font-size:11px;font-weight:700;cursor:pointer}
+.btn-ficha{background:var(--soft);color:var(--blue);border:1px solid #bfe0e2;padding:5px 10px;border-radius:5px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap}
 .btn-ficha:hover{background:var(--teal-bright);color:#fff;border-color:var(--teal-bright)}
 
 .modal{display:none;position:fixed;inset:0;background:rgba(9,35,48,.72);z-index:100;padding:24px;overflow-y:auto;backdrop-filter:blur(2px)}
@@ -178,6 +218,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
   .kpi-strip{grid-template-columns:repeat(2,1fr)}
   .viz-grid-main,.viz-grid-sub{grid-template-columns:1fr}
   .chain-grid{grid-template-columns:repeat(4,1fr)}
+  .chain-step::after{display:none}
   .elo-detail-grid,.m-grid{grid-template-columns:1fr}
 }
 </style>
@@ -336,7 +377,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
           <h2 class="card-title">Execução e Atingimento Reconstruído das Metas</h2>
           <p class="card-subtitle">Comparativo percentual entre resultado apurado e meta pactuada (linha vertical = 100%, escala = 250%)</p>
         </div>
-        <span class="badge-info">15 indicadores oficiais</span>
+        <span class="ux-hint" title="Clique em uma barra para abrir a trilha do indicador">👆 Clique na barra p/ trilha</span>
       </div>
       <div id="bulletContainer" class="bullet-list"></div>
       <div class="ref-note">
@@ -349,17 +390,18 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
       <div class="card-header">
         <div>
           <h2 class="card-title">Diagnóstico de Reprodutibilidade</h2>
-          <p class="card-subtitle">Status de auditoria pública e principal gargalo identificado</p>
+          <p class="card-subtitle">Status de auditoria pública — selecione uma linha para carregar os 8 elos na Trilha abaixo</p>
         </div>
-        <span class="badge-info">Auditoria Aberta</span>
+        <span class="ux-hint" title="Clique em qualquer indicador abaixo para inspecionar sua trilha de 8 elos">👆 Selecione p/ auditar elos</span>
       </div>
       <div style="overflow-x:auto; max-height:420px; margin-bottom:12px">
-        <table class="table-clean">
+        <table class="table-clean interactive-table">
           <thead>
             <tr>
               <th>Indicador</th>
               <th>Situação</th>
               <th>Gargalo Principal</th>
+              <th style="text-align:right">Trilha</th>
             </tr>
           </thead>
           <tbody id="matrixBody"></tbody>
@@ -373,21 +415,35 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
   </section>
 
   <section class="viz-grid-sub">
-    <div class="card">
+    <div class="card" id="chainCard">
       <div class="card-header">
         <div>
           <h2 class="card-title">Trilha Pública de Rastreabilidade do Indicador</h2>
-          <p class="card-subtitle" id="chainSubtitle">Selecione um indicador específico no filtro acima (ou clique na tabela) para inspecionar os 8 elos.</p>
+          <p class="card-subtitle">Auditoria passo a passo da cadeia de dados do indicador selecionado no Diagnóstico ou Catálogo</p>
         </div>
         <span class="badge-info">8 Elos Metodológicos</span>
       </div>
+
+      <!-- Banner de vínculo explícito com o indicador selecionado -->
+      <div class="trilha-focus-bar">
+        <div class="trilha-focus-info">
+          <span class="trilha-focus-kicker">Indicador vinculado à trilha</span>
+          <span class="trilha-focus-name" id="chainFocusName">—</span>
+          <span class="trilha-focus-stats" id="chainSubtitle">—</span>
+        </div>
+        <div class="trilha-quick-select">
+          <label for="chainQuickSelect">Trocar:</label>
+          <select id="chainQuickSelect" onchange="selectChain(this.value, false)"></select>
+        </div>
+      </div>
+
       <div class="chain-grid" id="chainContainer"></div>
       <div id="eloDetailBox" class="elo-detail-box" style="display:none"></div>
       <div class="elo-legend">
         <span><strong style="color:var(--green)">● Disponível:</strong> Dado aberto e exportável</span>
         <span><strong style="color:#b8740e">● Parcial:</strong> Dado agregado sem desagregação completa</span>
         <span><strong style="color:var(--red)">● Lacuna:</strong> Componente ausente dos painéis públicos</span>
-        <span style="margin-left:auto;font-style:italic">Clique em qualquer elo acima para inspecionar a evidência</span>
+        <span style="margin-left:auto" class="ux-hint">👆 Clique em qualquer elo acima para abrir o diagnóstico</span>
       </div>
       <div class="ref-note">
         <span><strong>Base metodológica:</strong> ENAP (2022); TCU (2011); MPGO (2025) · Operacionalização em 8 elos (proposição analítica do PTT).</span>
@@ -424,12 +480,12 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
     <div class="catalog-toolbar">
       <div>
         <h2 class="card-title">Catálogo Integrado de Indicadores e Fichas Metodológicas (Portaria nº 571/2026)</h2>
-        <p class="card-subtitle">Clique na linha para ver a trilha de rastreabilidade ou abra a Ficha Metodológica completa.</p>
+        <p class="card-subtitle">Clique na linha para carregar o indicador na Trilha de Rastreabilidade ou abra a Ficha Metodológica completa.</p>
       </div>
       <input type="text" id="searchInput" class="search-box" placeholder="Buscar por nome do indicador, atividade-fim ou gargalo..." oninput="renderAll()">
     </div>
     <div style="overflow-x:auto; margin-bottom:12px">
-      <table class="table-clean">
+      <table class="table-clean interactive-table">
         <thead>
           <tr>
             <th>Indicador</th>
@@ -438,7 +494,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
             <th>Apurado</th>
             <th>Atingimento</th>
             <th>Reprodutibilidade</th>
-            <th>Detalhes</th>
+            <th>Ações</th>
           </tr>
         </thead>
         <tbody id="catalogBody"></tbody>
@@ -938,7 +994,7 @@ const CHAIN_STEPS = [
 ];
 
 let donutInstance = null;
-let focusedIndicatorId = null;
+let focusedIndicatorId = 'pesquisa';
 let selectedEloIndex = 5;
 
 const ELO_META = [
@@ -1118,6 +1174,12 @@ function renderAll() {
   const data = getFilteredData();
   const numeric = data.filter(d => d.att != null);
 
+  // Garante que o indicador focado pertença ao recorte filtrado atual
+  const targetItem = data.length === 1
+    ? data[0]
+    : (data.find(d => d.id === focusedIndicatorId) || data[0] || null);
+  if (targetItem) focusedIndicatorId = targetItem.id;
+
   el('kpiTotal').textContent = data.length;
   el('kpiAvg').textContent = numeric.length ? fmtPct(numeric.reduce((acc, d) => acc + d.att, 0) / numeric.length) : '—';
   el('kpiPartial').textContent = data.filter(d => d.repro === 'Parcial').length;
@@ -1129,9 +1191,10 @@ function renderAll() {
   el('bulletContainer').innerHTML = numeric.length ? numeric.map(d => {
     const pctWidth = Math.min((d.att / 250) * 100, 100);
     const barColor = d.repro === 'Disponível' ? 'var(--green)' : (d.repro === 'Parcial' ? 'var(--teal)' : 'var(--blue)');
+    const activeBullet = targetItem && d.id === targetItem.id ? ' active-bullet' : '';
     return `
-      <div class="bullet-item">
-        <div class="bullet-label" title="${d.name}">${d.name}<small>${d.activity}</small></div>
+      <div class="bullet-item${activeBullet}" onclick="selectChain('${d.id}', true)" title="Clique para ver a trilha de 8 elos deste indicador">
+        <div class="bullet-label">${d.name}<small>${d.activity}</small></div>
         <div class="bullet-track">
           <div class="bullet-fill" style="width:${pctWidth}%;background:${barColor}"></div>
           <div class="bullet-target" title="Meta pactuada: 100%"></div>
@@ -1140,48 +1203,76 @@ function renderAll() {
       </div>`;
   }).join('') : '<div style="padding:20px;color:var(--muted);font-size:12px">Nenhum indicador numérico no filtro atual.</div>';
 
-  el('matrixBody').innerHTML = data.map(d => {
+  el('matrixBody').innerHTML = data.length ? data.map(d => {
     const pillClass = d.repro === 'Disponível' ? 'yes' : (d.repro === 'Parcial' ? 'partial' : 'no');
+    const isSelected = targetItem && d.id === targetItem.id;
     return `
-      <tr style="cursor:pointer" onclick="selectChain('${d.id}')">
+      <tr class="${isSelected ? 'active-row' : ''}" onclick="selectChain('${d.id}', true)" title="Clique para carregar os 8 elos na Trilha abaixo">
         <td><strong>${d.name}</strong></td>
         <td><span class="pill ${pillClass}">${d.repro}</span></td>
         <td>${d.bottleneck}</td>
+        <td style="text-align:right"><span class="track-btn">${isSelected ? '● Na trilha' : 'Ver trilha →'}</span></td>
       </tr>
     `;
-  }).join('');
+  }).join('') : '<tr><td colspan="4" style="text-align:center;padding:20px;color:var(--muted)">Nenhum indicador no filtro atual.</td></tr>';
 
   el('catalogBody').innerHTML = data.length ? data.map(d => {
     const pillClass = d.repro === 'Disponível' ? 'yes' : (d.repro === 'Parcial' ? 'partial' : 'no');
+    const isSelected = targetItem && d.id === targetItem.id;
     return `
-      <tr style="cursor:pointer" onclick="selectChain('${d.id}')">
+      <tr class="${isSelected ? 'active-row' : ''}" onclick="selectChain('${d.id}', true)" title="Clique na linha para ver a trilha deste indicador">
         <td><strong>${d.name}</strong></td>
         <td>${d.activity}</td>
         <td>${d.metaLabel}</td>
         <td>${d.actualLabel}</td>
         <td><strong>${fmtPct(d.att)}</strong></td>
         <td><span class="pill ${pillClass}">${d.repro}</span></td>
-        <td><button class="btn-ficha" onclick="event.stopPropagation();openModal('${d.id}')">Ficha metodológica</button></td>
+        <td style="display:flex;gap:6px;align-items:center">
+          <span class="track-btn">${isSelected ? '● Na trilha' : 'Ver trilha'}</span>
+          <button class="btn-ficha" onclick="event.stopPropagation();openModal('${d.id}')">Ficha metodológica</button>
+        </td>
       </tr>
     `;
   }).join('') : '<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--muted)">Nenhum registro encontrado.</td></tr>';
 
-  const targetItem = data.length === 1 ? data[0] : (data.find(d => d.id === focusedIndicatorId) || data[0] || null);
+  // Atualiza o seletor rápido dentro da Trilha com os indicadores do recorte ativo
+  const quickSel = el('chainQuickSelect');
+  if (quickSel) {
+    quickSel.innerHTML = data.length
+      ? data.map(d => `<option value="${d.id}">${d.name}</option>`).join('')
+      : '<option value="">Nenhum indicador</option>';
+    if (targetItem) quickSel.value = targetItem.id;
+  }
+
   renderChain(targetItem);
   renderDonut(data, avgComp);
 }
 
-function selectChain(id) {
+function selectChain(id, scrollToChain = false) {
+  if (!id) return;
   focusedIndicatorId = id;
-  const item = INDICATORS_DATA.find(d => d.id === id);
   trackEvent('selecionar_indicador_trilha', { indicador: id });
-  renderChain(item);
+  renderAll();
+
+  const chainCard = el('chainCard');
+  if (chainCard) {
+    chainCard.classList.remove('pulse-update');
+    void chainCard.offsetWidth;
+    chainCard.classList.add('pulse-update');
+    if (scrollToChain) {
+      const rect = chainCard.getBoundingClientRect();
+      if (rect.top > window.innerHeight * 0.72 || rect.bottom < 0) {
+        chainCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+  }
 }
 
 function renderChain(item) {
   const detailBox = el('eloDetailBox');
   if (!item) {
-    el('chainSubtitle').textContent = 'Nenhum indicador disponível no filtro.';
+    el('chainFocusName').textContent = 'Nenhum indicador selecionado';
+    el('chainSubtitle').textContent = 'Ajuste os filtros acima para visualizar a trilha.';
     el('chainContainer').innerHTML = CHAIN_STEPS.map(s => `<div class="chain-step"><div class="st-name">${s}</div><div class="st-status">—</div></div>`).join('');
     if (detailBox) detailBox.style.display = 'none';
     return;
@@ -1192,18 +1283,25 @@ function renderChain(item) {
   const missC = item.states.filter(s => s === 'miss').length;
   const pctItem = Math.round(((okC + partC * 0.5) / 8) * 100);
 
-  el('chainSubtitle').innerHTML = `Inspecionando: <strong>${item.name}</strong> (${item.activity}) · <strong>${pctItem}% rastreável</strong> (${okC} disponíveis, ${partC} parciais, ${missC} lacunas)`;
+  el('chainFocusName').textContent = item.name;
+  el('chainSubtitle').innerHTML = `${item.activity} · <strong>${pctItem}% rastreável</strong> (${okC} disponíveis, ${partC} parciais, ${missC} lacunas)`;
 
   const labels = { ok: 'Disponível', part: 'Parcial', miss: 'Lacuna' };
   el('chainContainer').innerHTML = CHAIN_STEPS.map((step, idx) => {
     const st = item.states[idx];
     const activeCls = idx === selectedEloIndex ? ' active-elo' : '';
+    const ctaText = idx === selectedEloIndex ? '▲ Em inspeção' : 'Detalhar ▾';
     return `
-      <div class="chain-step ${st}${activeCls}" onclick="inspectElo('${item.id}', ${idx})">
-        <div class="st-num">ELO ${idx + 1}</div>
-        <div class="st-name">${step.split('. ')[1]}</div>
-        <span class="st-desc">${ELO_META[idx].sub}</span>
-        <div class="st-status">${labels[st]}</div>
+      <div class="chain-step ${st}${activeCls}" onclick="inspectElo('${item.id}', ${idx})" title="Clique para ver a evidência e recomendação do Elo ${idx + 1}">
+        <div>
+          <div class="st-num">ELO ${idx + 1}</div>
+          <div class="st-name">${step.split('. ')[1]}</div>
+          <span class="st-desc">${ELO_META[idx].sub}</span>
+        </div>
+        <div>
+          <div class="st-status">${labels[st]}</div>
+          <span class="st-cta">${ctaText}</span>
+        </div>
       </div>`;
   }).join('');
 
@@ -1218,7 +1316,10 @@ function inspectElo(indId, idx, rerenderCards = true) {
 
   if (rerenderCards) {
     document.querySelectorAll('#chainContainer .chain-step').forEach((card, i) => {
-      card.classList.toggle('active-elo', i === idx);
+      const isSelected = i === idx;
+      card.classList.toggle('active-elo', isSelected);
+      const cta = card.querySelector('.st-cta');
+      if (cta) cta.textContent = isSelected ? '▲ Em inspeção' : 'Detalhar ▾';
     });
     trackEvent('inspecionar_elo_trilha', { indicador: indId, elo: idx + 1 });
   }
@@ -1270,7 +1371,7 @@ function inspectElo(indId, idx, rerenderCards = true) {
   detailBox.style.borderLeftColor = statusMap[st].color;
   detailBox.innerHTML = `
     <div class="elo-detail-head">
-      <strong>Diagnóstico do Elo ${idx + 1} — ${stepName} (${meta.sub})</strong>
+      <strong>Diagnóstico do Elo ${idx + 1} — ${stepName} (${meta.sub}) · <span style="color:var(--blue)">${item.name}</span></strong>
       <span style="font-size:10px;font-weight:800;color:${statusMap[st].color};text-transform:uppercase">${statusMap[st].label}</span>
     </div>
     <div class="elo-detail-grid">
@@ -1373,7 +1474,7 @@ function resetFilters() {
   el('searchInput').value = '';
   updateIndicatorOptions();
   syncAxisPills('');
-  focusedIndicatorId = null;
+  focusedIndicatorId = 'pesquisa';
   renderAll();
 }
 
