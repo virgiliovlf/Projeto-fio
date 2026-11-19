@@ -1030,18 +1030,61 @@ async function carregarParecerIA() {
   }
 }
 
+function syncAxisPills(atividadeFim) {
+  document.querySelectorAll('.axis-pill').forEach(pill => {
+    const onclickAttr = pill.getAttribute('onclick') || '';
+    const isTodos = atividadeFim === '' && onclickAttr.includes("filtrarPorEixo('',");
+    const isMatch = atividadeFim !== '' && onclickAttr.includes(`'${atividadeFim}'`);
+    pill.classList.toggle('active', isTodos || isMatch);
+  });
+}
+
+function updateIndicatorOptions() {
+  const act = el('fActivity').value;
+  const currentInd = el('fIndicator').value;
+  const filteredInds = act
+    ? INDICATORS_DATA.filter(i => i.activity === act)
+    : INDICATORS_DATA;
+
+  el('fIndicator').innerHTML =
+    '<option value="">Todos os indicadores</option>' +
+    filteredInds.map(i => `<option value="${i.id}">${i.name}</option>`).join('');
+
+  if (filteredInds.some(i => i.id === currentInd)) {
+    el('fIndicator').value = currentInd;
+  } else {
+    el('fIndicator').value = '';
+  }
+}
+
 function initControls() {
   const activities = [...new Set(INDICATORS_DATA.map(d => d.activity))];
-  el('fActivity').innerHTML = '<option value="">Todas as atividades-fim</option>' + activities.map(a => `<option value="${a}">${a}</option>`).join('');
-  el('fIndicator').innerHTML = '<option value="">Todos os indicadores</option>' + INDICATORS_DATA.map(i => `<option value="${i.id}">${i.name}</option>`).join('');
+  el('fActivity').innerHTML =
+    '<option value="">Todas as atividades-fim</option>' +
+    activities.map(a => `<option value="${a}">${a}</option>`).join('');
+
+  updateIndicatorOptions();
+
+  el('fActivity').addEventListener('change', () => {
+    const act = el('fActivity').value;
+    updateIndicatorOptions();
+    syncAxisPills(act);
+    trackEvent('filtrar_eixo_estrategico', { eixo: act || 'todos' });
+    renderAll();
+  });
+
+  ['fIndicator', 'fRepro', 'fPolarity'].forEach(id => {
+    el(id).addEventListener('change', () => renderAll());
+  });
+
   carregarParecerIA();
   renderAll();
 }
 
 function filtrarPorEixo(atividadeFim, targetEl) {
   el('fActivity').value = atividadeFim;
-  document.querySelectorAll('.axis-pill').forEach(pill => pill.classList.remove('active'));
-  if (targetEl) targetEl.classList.add('active');
+  updateIndicatorOptions();
+  syncAxisPills(atividadeFim);
   trackEvent('filtrar_eixo_estrategico', { eixo: atividadeFim || 'todos' });
   renderAll();
 }
@@ -1328,9 +1371,8 @@ function closeRefModal() {
 function resetFilters() {
   ['fActivity', 'fIndicator', 'fRepro', 'fPolarity'].forEach(id => el(id).value = '');
   el('searchInput').value = '';
-  document.querySelectorAll('.axis-pill').forEach(pill => pill.classList.remove('active'));
-  const firstPill = document.querySelector('.axis-pill');
-  if (firstPill) firstPill.classList.add('active');
+  updateIndicatorOptions();
+  syncAxisPills('');
   focusedIndicatorId = null;
   renderAll();
 }
