@@ -1267,8 +1267,9 @@ function selectChain(id, scrollToChain = false) {
   const chainCard = el('chainCard');
   if (chainCard && scrollToChain) {
     const rect = chainCard.getBoundingClientRect();
-    if (rect.top > window.innerHeight * 0.72 || rect.bottom < 0) {
-      chainCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    const isFullyVisible = rect.top >= 16 && rect.bottom <= window.innerHeight - 16;
+    if (!isFullyVisible) {
+      chainCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   }
 }
