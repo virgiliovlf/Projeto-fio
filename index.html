@@ -342,9 +342,9 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
       <div class="kpi-sub">Sem base pública de cálculo</div>
     </div>
     <div class="kpi-card">
-      <div class="kpi-top"><span>Completude Documental</span><span>RASTREIO</span></div>
+      <div class="kpi-top"><span>Completude Média</span><span>RECORTE</span></div>
       <div class="kpi-val" id="kpiComp">61%</div>
-      <div class="kpi-sub">Disponibilidade dos 8 campos-chave</div>
+      <div class="kpi-sub">Média geral dos indicadores filtrados</div>
     </div>
   </section>
   <div class="section-ref-bar">
@@ -451,22 +451,23 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
       </div>
     </div>
 
-    <div class="card">
+    <div class="card" id="donutCard">
       <div class="card-header">
         <div>
           <h2 class="card-title">Índice de Completude dos Metadados</h2>
-          <p class="card-subtitle">Proporção de componentes públicos disponíveis no recorte</p>
+          <p class="card-subtitle" id="donutSubtitle">Proporção dos 8 elos do indicador selecionado na trilha</p>
         </div>
+        <span class="badge-info" id="donutBadge">Indicador ativo</span>
       </div>
       <div class="donut-box">
-        <div style="position:relative;width:155px;height:155px">
+        <div style="position:relative;width:155px;height:155px;flex-shrink:0">
           <canvas id="donutChart" class="canvas-donut"></canvas>
-          <div id="donutCenter" style="position:absolute;inset:0;display:grid;place-items:center;font-size:22px;font-weight:800;color:var(--navy);pointer-events:none">61%</div>
+          <div id="donutCenter" style="position:absolute;inset:0;display:grid;place-items:center;font-size:22px;font-weight:800;color:var(--navy);pointer-events:none">63%</div>
         </div>
         <div class="legend-list">
-          <div class="legend-row"><span class="dot" style="background:var(--green)"></span><strong>Disponível integralmente</strong> (Fórmula, Fonte, Meta, Resultado)</div>
-          <div class="legend-row"><span class="dot" style="background:var(--amber)"></span><strong>Disponível parcialmente</strong> (Numerador / Filtros)</div>
-          <div class="legend-row"><span class="dot" style="background:var(--red)"></span><strong>Lacuna pública</strong> (Denominador / Memória de cálculo)</div>
+          <div class="legend-row"><span class="dot" style="background:var(--green)"></span><span><strong id="legOkCount">4</strong> <strong>Disponível integralmente</strong> (Fórmula, Fonte, Meta, Resultado)</span></div>
+          <div class="legend-row"><span class="dot" style="background:var(--amber)"></span><span><strong id="legPartCount">2</strong> <strong>Disponível parcialmente</strong> (Numerador / Filtros)</span></div>
+          <div class="legend-row"><span class="dot" style="background:var(--red)"></span><span><strong id="legMissCount">2</strong> <strong>Lacuna pública</strong> (Denominador / Memória de cálculo)</span></div>
         </div>
       </div>
       <div class="ref-note">
@@ -1245,7 +1246,7 @@ function renderAll() {
   }
 
   renderChain(targetItem);
-  renderDonut(data, avgComp);
+  renderDonut(targetItem, avgComp);
 }
 
 function selectChain(id, scrollToChain = false) {
@@ -1254,16 +1255,20 @@ function selectChain(id, scrollToChain = false) {
   trackEvent('selecionar_indicador_trilha', { indicador: id });
   renderAll();
 
+  ['chainCard', 'donutCard'].forEach(cardId => {
+    const cardEl = el(cardId);
+    if (cardEl) {
+      cardEl.classList.remove('pulse-update');
+      void cardEl.offsetWidth;
+      cardEl.classList.add('pulse-update');
+    }
+  });
+
   const chainCard = el('chainCard');
-  if (chainCard) {
-    chainCard.classList.remove('pulse-update');
-    void chainCard.offsetWidth;
-    chainCard.classList.add('pulse-update');
-    if (scrollToChain) {
-      const rect = chainCard.getBoundingClientRect();
-      if (rect.top > window.innerHeight * 0.72 || rect.bottom < 0) {
-        chainCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }
+  if (chainCard && scrollToChain) {
+    const rect = chainCard.getBoundingClientRect();
+    if (rect.top > window.innerHeight * 0.72 || rect.bottom < 0) {
+      chainCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
   }
 }
@@ -1395,15 +1400,29 @@ function inspectElo(indId, idx, rerenderCards = true) {
   `;
 }
 
-function renderDonut(data, avgComp) {
+function renderDonut(item, fallbackComp) {
   let okCount = 0, partCount = 0, missCount = 0;
-  data.forEach(d => d.states.forEach(s => {
-    if (s === 'ok') okCount++;
-    else if (s === 'part') partCount++;
-    else missCount++;
-  }));
 
-  el('donutCenter').textContent = avgComp + '%';
+  if (item) {
+    item.states.forEach(s => {
+      if (s === 'ok') okCount++;
+      else if (s === 'part') partCount++;
+      else missCount++;
+    });
+    const compPct = Math.round(calcCompleteness(item));
+    el('donutCenter').textContent = compPct + '%';
+    el('donutSubtitle').innerHTML = `Indicador na trilha: <strong>${item.name}</strong>`;
+    el('donutBadge').textContent = `${okCount + partCount}/8 elos`;
+  } else {
+    el('donutCenter').textContent = fallbackComp + '%';
+    el('donutSubtitle').textContent = 'Nenhum indicador selecionado no filtro atual';
+    el('donutBadge').textContent = '0/8 elos';
+  }
+
+  el('legOkCount').textContent = `${okCount}/8`;
+  el('legPartCount').textContent = `${partCount}/8`;
+  el('legMissCount').textContent = `${missCount}/8`;
+
   const ctx = el('donutChart').getContext('2d');
   if (donutInstance) donutInstance.destroy();
 
@@ -1412,7 +1431,7 @@ function renderDonut(data, avgComp) {
     data: {
       labels: ['Disponível', 'Parcial', 'Lacuna'],
       datasets: [{
-        data: data.length ? [okCount, partCount, missCount] : [0, 0, 1],
+        data: item ? [okCount, partCount, missCount] : [0, 0, 1],
         backgroundColor: ['#2f8f6f', '#e69b28', '#c95244'],
         borderWidth: 2,
         borderColor: '#ffffff'
