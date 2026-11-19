@@ -720,4 +720,439 @@ const INDICATORS_DATA = [
     responsible: 'Instituto Fernandes Figueira (IFF / Fiocruz).',
     periodicity: 'Anual.',
     polarity: 'Maior melhor',
-    states: ['ok', 'ok', 'ok', 'ok', 'part',
+    states: ['ok', 'ok', 'ok', 'ok', 'part', 'miss', 'part', 'miss'],
+    iaRecomendacao: 'Disponibilizar mapa interativo em tempo real da Rede Brasileira de BLHs com status de credenciamento.'
+  },
+  {
+    id: 'diag',
+    name: 'Diagnósticos laboratoriais de referência atendidos no prazo',
+    activity: 'Serviços de referência, assistência e vigilância',
+    meta: 90,
+    metaLabel: '90%',
+    actual: 97.43,
+    actualLabel: '97,43%',
+    att: 108.26,
+    repro: 'Parcial',
+    bottleneck: 'Gestão de insumos e amostras',
+    formula: '(Total de diagnósticos laboratoriais realizados no prazo ÷ Total de diagnósticos laboratoriais realizados) x 100',
+    source: 'Laboratórios de Referência da Fiocruz; Portaria nº 571/2026.',
+    purpose: 'Avaliar a agilidade e a confiabilidade na entrega de exames de vigilância em saúde e referência nacional.',
+    interpretation: 'Desempenho acima da meta (97,43%) evidencia forte capacidade de resposta laboratorial.',
+    limitations: 'Variabilidade de prazos conforme a complexidade do agravo e sazonalidade de insumos.',
+    numerator: 'Diagnósticos laboratoriais realizados no prazo.',
+    denominator: 'Total de diagnósticos laboratoriais realizados.',
+    filters: 'Agravo e laboratório de referência.',
+    memory: 'Sistemas de gestão de laboratórios (LIS).',
+    responsible: 'Vice-Presidência de Laboratórios, Referência e Coleções Biológicas.',
+    periodicity: 'Anual.',
+    polarity: 'Maior melhor',
+    states: ['ok', 'ok', 'ok', 'ok', 'part', 'miss', 'part', 'miss'],
+    iaRecomendacao: 'Integrar painel de tempos de resposta de exames por agravo de notificação compulsória.'
+  },
+  {
+    id: 'ouvidoria',
+    name: 'Manifestações de ouvidoria atendidas no prazo pactuado',
+    activity: 'Administração e gestão institucional',
+    meta: 80,
+    metaLabel: '≥ 80%',
+    actual: 85,
+    actualLabel: '85%',
+    att: 106.00,
+    repro: 'Parcial',
+    bottleneck: 'Tramitação interna nas unidades',
+    formula: '(Total de manifestações respondidas no prazo legal de 30 dias ÷ Total de manifestações respondidas) x 100',
+    source: 'Plataforma Integrada de Ouvidoria e Acesso à Informação (e-Fals/e-Ouv); Portaria nº 571/2026.',
+    purpose: 'Assegurar o direito de resposta ao cidadão e o cumprimento do Decreto nº 9.492/2018.',
+    interpretation: 'Índice de 85% reflete cumprimento satisfatório, mas aponta margem de melhoria na capilaridade.',
+    limitations: 'O prazo depende da agilidade das áreas técnicas na apuração das demandas.',
+    numerator: 'Manifestações respondidas no prazo legal.',
+    denominator: 'Total de manifestações respondidas.',
+    filters: 'Tipo de manifestação (exceto denúncias sigilosas).',
+    memory: 'Base federal e-Ouv.',
+    responsible: 'Ouvidoria Geral da Fiocruz.',
+    periodicity: 'Anual.',
+    polarity: 'Maior melhor',
+    states: ['ok', 'ok', 'ok', 'ok', 'ok', 'part', 'part', 'part'],
+    iaRecomendacao: 'Automatizar alertas de vencimento de prazos para as unidades técnicas demandadas.'
+  },
+  {
+    id: 'economia',
+    name: 'Economia obtida em aquisições por Pregão Eletrônico SISPP',
+    activity: 'Administração e gestão institucional',
+    meta: 10,
+    metaLabel: '10%',
+    actual: 24.24,
+    actualLabel: '24,24%',
+    att: 242.40,
+    repro: 'Parcial',
+    bottleneck: 'Estimativas de preço e mercado',
+    formula: '{[(Valor Estimado - Cancelados/Desertos) - Valor Homologado] / (Valor Estimado - Cancelados/Desertos)} x 100',
+    source: 'Coordenação-Geral de Administração (CogeAD); Portaria nº 571/2026.',
+    purpose: 'Mensurar a economicidade e a eficiência nas contratações públicas de materiais, equipamentos e serviços.',
+    interpretation: 'Economia de 24,24% representa alta competitividade nas licitações e otimização orçamentária.',
+    limitations: 'A oscilação de preços de mercado afeta a precisão do valor estimado inicial.',
+    numerator: 'Diferença entre valor estimado e valor homologado.',
+    denominator: 'Valor total estimado descontados itens desertos/cancelados.',
+    filters: 'Modalidade Pregão Eletrônico SISPP.',
+    memory: 'Sistema Compras.net / CogeAD.',
+    responsible: 'CogeAD / Presidência da Fiocruz.',
+    periodicity: 'Anual.',
+    polarity: 'Maior melhor',
+    states: ['ok', 'ok', 'ok', 'ok', 'part', 'miss', 'part', 'miss'],
+    iaRecomendacao: 'Disponibilizar painel analítico de compras públicas por categoria de material e fornecedor.'
+  }
+];
+
+const CHAIN_STEPS = [
+  '1. Fórmula', '2. Fonte', '3. Meta', '4. Resultado',
+  '5. Numerador', '6. Denominador', '7. Filtros', '8. Memória'
+];
+
+let donutInstance = null;
+let focusedIndicatorId = null;
+let selectedEloIndex = 5;
+
+const ELO_META = [
+  { sub: 'Regra de cálculo', field: 'formula', impactoOk: 'Fórmula oficial publicada e auditável.', impactoBad: 'Regra matemática não formalizada.' },
+  { sub: 'Sistema de origem', field: 'source', impactoOk: 'Origem documental e normativa identificada.', impactoBad: 'Fonte primária não rastreada.' },
+  { sub: 'Pactuação anual', field: 'metaLabel', impactoOk: 'Meta pactuada divulgada para comparação.', impactoBad: 'Meta desagregada não integrada ao painel.' },
+  { sub: 'Valor apurado', field: 'actualLabel', impactoOk: 'Resultado oficial publicado na Portaria nº 571/2026.', impactoBad: 'Apuração divulgada apenas de forma consolidada.' },
+  { sub: 'Entregas / eventos', field: 'numerator', impactoOk: 'Numerador aberto e verificável.', impactoBad: 'Restringe a conferência granular do volume realizado.' },
+  { sub: 'Base de referência', field: 'denominator', impactoOk: 'Denominador aberto nos mesmos filtros.', impactoBad: 'Impede recalcular o indicador de forma independente.' },
+  { sub: 'Recorte e filtros', field: 'filters', impactoOk: 'Parâmetros de extração reproduzíveis.', impactoBad: 'Gera margem de divergência em consultas retroativas.' },
+  { sub: 'Memória / base aberta', field: 'memory', impactoOk: 'Memória de cálculo e microdados disponíveis.', impactoBad: 'Exige reconstrução manual por fontes secundárias.' }
+];
+
+const el = id => document.getElementById(id);
+const fmtPct = v => v == null ? '—' : v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%';
+
+async function carregarParecerIA() {
+  try {
+    const res = await fetch('parecer_ia.json?v=' + Date.now());
+    if (!res.ok) return;
+    const dados = await res.json();
+    if (dados.analise && dados.analise.sintese_executiva) {
+      el('iaSintese').textContent = dados.analise.sintese_executiva;
+      el('iaMeta').textContent = `Última auditoria automatizada: ${dados.gerado_em}`;
+      el('iaModel').textContent = dados.modelo || 'Auditoria IA';
+      INDICATORS_DATA.forEach(ind => {
+        if (dados.analise.recomendacoes_por_id && dados.analise.recomendacoes_por_id[ind.id]) {
+          ind.iaRecomendacao = dados.analise.recomendacoes_por_id[ind.id];
+        }
+      });
+      renderAll();
+    }
+  } catch (e) {
+    // Mantém o texto padrão caso rode localmente sem servidor
+  }
+}
+
+function initControls() {
+  const activities = [...new Set(INDICATORS_DATA.map(d => d.activity))];
+  el('fActivity').innerHTML = '<option value="">Todas as atividades-fim</option>' + activities.map(a => `<option value="${a}">${a}</option>`).join('');
+  el('fIndicator').innerHTML = '<option value="">Todos os indicadores</option>' + INDICATORS_DATA.map(i => `<option value="${i.id}">${i.name}</option>`).join('');
+  carregarParecerIA();
+  renderAll();
+}
+
+function filtrarPorEixo(atividadeFim) {
+  el('fActivity').value = atividadeFim;
+  document.querySelectorAll('.axis-pill').forEach(pill => pill.classList.remove('active'));
+  if (event && event.currentTarget) {
+    event.currentTarget.classList.add('active');
+  }
+  renderAll();
+}
+
+function getFilteredData() {
+  const act = el('fActivity').value;
+  const ind = el('fIndicator').value;
+  const rep = el('fRepro').value;
+  const pol = el('fPolarity').value;
+  const q = el('searchInput').value.trim().toLowerCase();
+
+  return INDICATORS_DATA.filter(item =>
+    (!act || item.activity === act) &&
+    (!ind || item.id === ind) &&
+    (!rep || item.repro === rep) &&
+    (!pol || item.polarity === pol) &&
+    (!q || (item.name + ' ' + item.activity + ' ' + item.bottleneck).toLowerCase().includes(q))
+  );
+}
+
+function calcCompleteness(item) {
+  let score = 0;
+  item.states.forEach(s => {
+    if (s === 'ok') score += 1;
+    else if (s === 'part') score += 0.5;
+  });
+  return (score / 8) * 100;
+}
+
+function renderAll() {
+  const data = getFilteredData();
+  const numeric = data.filter(d => d.att != null);
+
+  el('kpiTotal').textContent = data.length;
+  el('kpiAvg').textContent = numeric.length ? fmtPct(numeric.reduce((acc, d) => acc + d.att, 0) / numeric.length) : '—';
+  el('kpiPartial').textContent = data.filter(d => d.repro === 'Parcial').length;
+  el('kpiNo').textContent = data.filter(d => d.repro === 'Não reproduzível').length;
+
+  const avgComp = data.length ? Math.round(data.reduce((acc, d) => acc + calcCompleteness(d), 0) / data.length) : 0;
+  el('kpiComp').textContent = avgComp + '%';
+
+  el('bulletContainer').innerHTML = numeric.length ? numeric.map(d => {
+    const pctWidth = Math.min((d.att / 250) * 100, 100);
+    const barColor = d.repro === 'Disponível' ? 'var(--green)' : (d.repro === 'Parcial' ? 'var(--teal)' : 'var(--blue)');
+    return `
+      <div class="bullet-item">
+        <div class="bullet-label" title="${d.name}">${d.name}<small>${d.activity}</small></div>
+        <div class="bullet-track">
+          <div class="bullet-fill" style="width:${pctWidth}%;background:${barColor}"></div>
+          <div class="bullet-target" title="Meta pactuada: 100%"></div>
+        </div>
+        <div class="bullet-val">${fmtPct(d.att)}</div>
+      </div>`;
+  }).join('') : '<div style="padding:20px;color:var(--muted);font-size:12px">Nenhum indicador numérico no filtro atual.</div>';
+
+  el('matrixBody').innerHTML = data.map(d => {
+    const pillClass = d.repro === 'Disponível' ? 'yes' : (d.repro === 'Parcial' ? 'partial' : 'no');
+    return `
+      <tr style="cursor:pointer" onclick="selectChain('${d.id}')">
+        <td><strong>${d.name}</strong></td>
+        <td><span class="pill ${pillClass}">${d.repro}</span></td>
+        <td>${d.bottleneck}</td>
+      </tr>
+    `;
+  }).join('');
+
+  el('catalogBody').innerHTML = data.length ? data.map(d => {
+    const pillClass = d.repro === 'Disponível' ? 'yes' : (d.repro === 'Parcial' ? 'partial' : 'no');
+    return `
+      <tr style="cursor:pointer" onclick="selectChain('${d.id}')">
+        <td><strong>${d.name}</strong></td>
+        <td>${d.activity}</td>
+        <td>${d.metaLabel}</td>
+        <td>${d.actualLabel}</td>
+        <td><strong>${fmtPct(d.att)}</strong></td>
+        <td><span class="pill ${pillClass}">${d.repro}</span></td>
+        <td><button class="btn-ficha" onclick="event.stopPropagation();openModal('${d.id}')">Ficha metodológica</button></td>
+      </tr>
+    `;
+  }).join('') : '<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--muted)">Nenhum registro encontrado.</td></tr>';
+
+  const targetItem = data.length === 1 ? data[0] : (data.find(d => d.id === focusedIndicatorId) || data[0] || null);
+  renderChain(targetItem);
+  renderDonut(data, avgComp);
+}
+
+function selectChain(id) {
+  focusedIndicatorId = id;
+  const item = INDICATORS_DATA.find(d => d.id === id);
+  renderChain(item);
+}
+
+function renderChain(item) {
+  const detailBox = el('eloDetailBox');
+  if (!item) {
+    el('chainSubtitle').textContent = 'Nenhum indicador disponível no filtro.';
+    el('chainContainer').innerHTML = CHAIN_STEPS.map(s => `<div class="chain-step"><div class="st-name">${s}</div><div class="st-status">—</div></div>`).join('');
+    if (detailBox) detailBox.style.display = 'none';
+    return;
+  }
+
+  const okC = item.states.filter(s => s === 'ok').length;
+  const partC = item.states.filter(s => s === 'part').length;
+  const missC = item.states.filter(s => s === 'miss').length;
+  const pctItem = Math.round(((okC + partC * 0.5) / 8) * 100);
+
+  el('chainSubtitle').innerHTML = `Inspecionando: <strong>${item.name}</strong> (${item.activity}) · <strong>${pctItem}% rastreável</strong> (${okC} disponíveis, ${partC} parciais, ${missC} lacunas)`;
+
+  const labels = { ok: 'Disponível', part: 'Parcial', miss: 'Lacuna' };
+  el('chainContainer').innerHTML = CHAIN_STEPS.map((step, idx) => {
+    const st = item.states[idx];
+    const activeCls = idx === selectedEloIndex ? ' active-elo' : '';
+    return `
+      <div class="chain-step ${st}${activeCls}" onclick="inspectElo('${item.id}', ${idx})">
+        <div class="st-num">ELO ${idx + 1}</div>
+        <div class="st-name">${step.split('. ')[1]}</div>
+        <span class="st-desc">${ELO_META[idx].sub}</span>
+        <div class="st-status">${labels[st]}</div>
+      </div>`;
+  }).join('');
+
+  inspectElo(item.id, selectedEloIndex, false);
+}
+
+function inspectElo(indId, idx, rerenderCards = true) {
+  selectedEloIndex = idx;
+  const item = INDICATORS_DATA.find(d => d.id === indId);
+  const detailBox = el('eloDetailBox');
+  if (!item || !detailBox) return;
+
+  if (rerenderCards) {
+    document.querySelectorAll('#chainContainer .chain-step').forEach((card, i) => {
+      card.classList.toggle('active-elo', i === idx);
+    });
+  }
+
+  const st = item.states[idx];
+  const meta = ELO_META[idx];
+  const stepName = CHAIN_STEPS[idx].split('. ')[1];
+  const statusMap = {
+    ok: { label: 'Elo Disponível', color: 'var(--green)' },
+    part: { label: 'Restrição / Parcial', color: '#b8740e' },
+    miss: { label: 'Lacuna Documental', color: 'var(--red)' }
+  };
+
+  let evidencia = item[meta.field] || 'Informação registrada na Portaria nº 571/2026.';
+  if (idx === 2) evidencia = `Meta pactuada: ${item.metaLabel} (publicada no instrumento oficial).`;
+  if (idx === 3) evidencia = `Valor oficial apurado: ${item.actualLabel} (Atingimento: ${fmtPct(item.att)}).`;
+
+  const impacto = st === 'ok' ? meta.impactoOk : meta.impactoBad;
+
+  const recomendacoesPorEloOk = {
+    0: 'Manter a fórmula oficial publicada de forma clara e padronizada nas fichas técnicas.',
+    1: 'Preservar a identificação explícita da fonte e do instrumento normativo de referência.',
+    2: 'Manter a meta pactuada publicada e associada ao ciclo avaliativo vigente.',
+    3: 'Manter o resultado oficial apurado vinculado ao ato normativo de publicação.',
+    4: 'Manter a disponibilização pública do numerador com documentação do recorte.',
+    5: 'Manter o denominador aberto e acessível para conferência independente.',
+    6: 'Preservar a documentação dos filtros e parâmetros de extração utilizados.',
+    7: 'Manter a memória de cálculo e os dados de suporte em formato aberto e acessível.'
+  };
+
+  const recomendacoesPorEloLacuna = {
+    0: 'Formalizar e publicar a expressão matemática completa do indicador na nota metodológica.',
+    1: 'Registrar explicitamente o sistema de origem e a fonte documental primária do indicador.',
+    2: 'Publicar a meta pactuada (inclusive quando houver metas desagregadas por modalidade ou recorte).',
+    3: 'Divulgar o resultado apurado de forma estruturada junto ao atingimento correspondente.',
+    4: 'Abrir o numerador (entregas, atendimentos ou registros apurados) em base estruturada e verificável.',
+    5: item.iaRecomendacao
+      ? `Denominador: ${item.iaRecomendacao}`
+      : 'Publicar o denominador (base de referência ou demanda pactuada) sob os mesmos critérios do cálculo oficial.',
+    6: 'Documentar e publicar os filtros, critérios de elegibilidade e recortes temporais ou espaciais aplicados.',
+    7: 'Disponibilizar a memória de cálculo e os microdados/planilhas de suporte em formato aberto (.CSV/.JSON).'
+  };
+
+  const recomendacao = st === 'ok'
+    ? recomendacoesPorEloOk[idx]
+    : recomendacoesPorEloLacuna[idx];
+
+  detailBox.style.display = 'block';
+  detailBox.style.borderLeftColor = statusMap[st].color;
+  detailBox.innerHTML = `
+    <div class="elo-detail-head">
+      <strong>Diagnóstico do Elo ${idx + 1} — ${stepName} (${meta.sub})</strong>
+      <span style="font-size:10px;font-weight:800;color:${statusMap[st].color};text-transform:uppercase">${statusMap[st].label}</span>
+    </div>
+    <div class="elo-detail-grid">
+      <div class="elo-detail-col">
+        <strong>Evidência Documental</strong>
+        <span>${evidencia}</span>
+      </div>
+      <div class="elo-detail-col">
+        <strong>Impacto na Reprodutibilidade</strong>
+        <span>${impacto}</span>
+      </div>
+      <div class="elo-detail-col">
+        <strong>Recomendação Técnica (IA / Cogeplan)</strong>
+        <span>${recomendacao}</span>
+      </div>
+    </div>
+  `;
+}
+
+function renderDonut(data, avgComp) {
+  let okCount = 0, partCount = 0, missCount = 0;
+  data.forEach(d => d.states.forEach(s => {
+    if (s === 'ok') okCount++;
+    else if (s === 'part') partCount++;
+    else missCount++;
+  }));
+
+  el('donutCenter').textContent = avgComp + '%';
+  const ctx = el('donutChart').getContext('2d');
+  if (donutInstance) donutInstance.destroy();
+
+  donutInstance = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Disponível', 'Parcial', 'Lacuna'],
+      datasets: [{
+        data: data.length ? [okCount, partCount, missCount] : [0, 0, 1],
+        backgroundColor: ['#2f8f6f', '#e69b28', '#c95244'],
+        borderWidth: 2,
+        borderColor: '#ffffff'
+      }]
+    },
+    options: {
+      cutout: '68%',
+      plugins: { legend: { display: false } },
+      animation: { duration: 300 }
+    }
+  });
+}
+
+function openModal(id) {
+  const x = INDICATORS_DATA.find(d => d.id === id);
+  if (!x) return;
+  el('mTitle').textContent = x.name;
+  el('mContent').innerHTML = `
+    <div class="m-grid">
+      <div class="m-box"><label>Atividade-Fim</label><p>${x.activity}</p></div>
+      <div class="m-box"><label>Polaridade e Periodicidade</label><p>${x.polarity} · ${x.periodicity}</p></div>
+      <div class="m-box full"><label>Propósito do Indicador</label><p>${x.purpose}</p></div>
+      <div class="m-box full"><label>Interpretação Gerencial</label><p>${x.interpretation}</p></div>
+      <div class="m-box full"><label>Fórmula de Cálculo</label><div class="formula-code">${x.formula}</div></div>
+      <div class="m-box"><label>Meta Pactuada (Portaria nº 571/2026)</label><p><strong>${x.metaLabel}</strong></p></div>
+      <div class="m-box"><label>Resultado Apurado</label><p><strong>${x.actualLabel}</strong> (Atingimento: ${fmtPct(x.att)})</p></div>
+      <div class="m-box"><label>Numerador (Disponibilidade)</label><p>${x.numerator}</p></div>
+      <div class="m-box"><label>Denominador (Disponibilidade)</label><p>${x.denominator}</p></div>
+      <div class="m-box"><label>Filtros e Regras de Negócio</label><p>${x.filters}</p></div>
+      <div class="m-box"><label>Memória de Cálculo</label><p>${x.memory}</p></div>
+      <div class="m-box full"><label>Limitações de Reprodutibilidade</label><p>${x.limitations}</p></div>
+      <div class="m-box full"><label>Fontes Documentais</label><p>${x.source}</p></div>
+      <div class="m-box full solution-box"><label>Recomendação de Governança e Dados Abertos (IA / Produto Técnico)</label><p>${x.iaRecomendacao || 'Publicar, em repositório aberto integrado ao Observatório, a base processável (.CSV/.JSON), numerador, denominador, dicionário de filtros, data de extração e script reprodutível de cálculo.'}</p></div>
+    </div>
+  `;
+  el('methodModal').classList.add('open');
+}
+
+function closeModal() {
+  el('methodModal').classList.remove('open');
+}
+
+function resetFilters() {
+  ['fActivity', 'fIndicator', 'fRepro', 'fPolarity'].forEach(id => el(id).value = '');
+  el('searchInput').value = '';
+  document.querySelectorAll('.axis-pill').forEach(pill => pill.classList.remove('active'));
+  const firstPill = document.querySelector('.axis-pill');
+  if (firstPill) firstPill.classList.add('active');
+  focusedIndicatorId = null;
+  renderAll();
+}
+
+function exportCSV() {
+  const headers = ['ID', 'Indicador', 'Atividade_Fim', 'Meta', 'Apurado', 'Atingimento_Pct', 'Reprodutibilidade', 'Gargalo', 'Formula'];
+  const rows = getFilteredData().map(d => [
+    d.id, `"${d.name}"`, `"${d.activity}"`, `"${d.metaLabel}"`, `"${d.actualLabel}"`,
+    d.att != null ? d.att.toFixed(2) : '', `"${d.repro}"`, `"${d.bottleneck}"`, `"${d.formula}"`
+  ]);
+  const csvContent = "data:text/csv;charset=utf-8,\uFEFF" + [headers.join(';'), ...rows.map(r => r.join(';'))].join('\n');
+  const encodedUri = encodeURI(csvContent);
+  const link = document.createElement("a");
+  link.setAttribute("href", encodedUri);
+  link.setAttribute("download", "indicadores_fiocruz_portaria571.csv");
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
+window.onclick = e => { if (e.target === el('methodModal')) closeModal(); };
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+initControls();
+</script>
+</body>
+</html>
