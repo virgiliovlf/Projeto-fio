@@ -1,16 +1,16 @@
 {
-  "gerado_em": "18/11/2026 16:42",
-  "modelo": "gemini-3.1-flash-lite (Auditoria Determinística)",
+  "gerado_em": "19/11/2026 17:49",
+  "modelo": "gemini-3.8-flash (Auditoria Determinística)",
   "analise": {
-    "sintese_executiva": "O ciclo 2025 da Fiocruz apresenta um desempenho quantitativo robusto, com um atingimento médio de 117,2% que sugere alta eficiência operacional. Contudo, a transparência pública é severamente comprometida pela natureza dos dados, visto que 71% dos indicadores analisados apresentam falhas de reprodutibilidade. Essa discrepância entre o sucesso das metas e a opacidade dos registros exige uma revisão urgente dos fluxos de dados para garantir a auditabilidade externa dos resultados reportados.",
+    "sintese_executiva": "A análise dos indicadores do Ciclo 2025 aponta um elevado atingimento médio de 117,2%, sinalizando o cumprimento formal das metas institucionais estabelecidas na Portaria nº 571/2026. Em contrapartida, esse resultado contrasta fortemente com as limitações de transparência ativa, uma vez que 5 indicadores possuem reprodutibilidade parcial e 2 são considerados não reproduzíveis. A persistência de dados não integrados e denominadores indisponíveis compromete a auditabilidade e o controle social dos resultados informados. Torna-se imperativo que a governança institucional atue para sanar esses gargalos técnicos e viabilizar a verificação externa integral dos cálculos.",
     "recomendacoes_por_id": {
-      "pesquisa": "Padronizar os filtros de extração do denominador para garantir a paridade entre os sistemas internos e a base pública. Implementar uma rotina de exportação automatizada que contemple as mesmas variáveis utilizadas no cálculo do atingimento.",
-      "plataformas": "Desenvolver e publicar um painel de BI que exponha publicamente o numerador e o denominador utilizados no cálculo. Garantir que a base de dados seja atualizada em tempo real para permitir a verificação externa.",
-      "colecoes": "Estruturar uma base de dados aberta contendo o histórico de serviços demandados versus atendidos. Publicar esses dados em formato legível por máquina no portal de transparência da instituição.",
-      "bio": "Integrar a programação anual de biofármacos ao painel de fornecimento existente. Estabelecer uma chave única de vinculação entre o planejamento e a execução para permitir a rastreabilidade.",
-      "arv": "Consolidar as pautas e requisições de antirretrovirais em um único ambiente de dados integrado. Eliminar a fragmentação das informações para permitir a auditoria completa do fluxo de atendimento.",
-      "med": "Incluir as quantidades requisitadas pelo Ministério da Saúde no painel público de acompanhamento. Garantir que o dado de demanda seja disponibilizado com o mesmo nível de granularidade do dado de entrega.",
-      "edu": "Vincular a previsão pactuada diretamente aos registros acadêmicos no sistema de gestão. Automatizar o cálculo do atingimento para que a comparação entre meta e realizado seja transparente e auditável."
+      "pesquisa": "Disponibilizar a extração pública da base do denominador funcional com a aplicação padronizada dos mesmos filtros utilizados na apuração.",
+      "plataformas": "Estruturar e disponibilizar um painel público em dados abertos que apresente explicitamente tanto o numerador quanto o denominador do indicador.",
+      "colecoes": "Publicar em base de dados aberta os registros auditáveis contendo os serviços demandados e atendidos pelas coleções biológicas.",
+      "bio": "Integrar formalmente os dados da programação anual de fornecimento ao painel público de monitoramento de biofármacos.",
+      "arv": "Consolidar e publicar em um mesmo ambiente aberto as pautas e requisições de atendimento de antirretrovirais.",
+      "med": "Incorporar ao painel público as quantidades de medicamentos efetivamente requisitadas pelo Ministério da Saúde.",
+      "edu": "Promover a integração da previsão pactuada de vagas aos registros acadêmicos disponíveis para consulta."
     }
   }
 }
