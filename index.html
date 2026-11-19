@@ -4,6 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Observatório Fiocruz | Painel Integrado de Indicadores de Desempenho</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-G8BMMBRLLH"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-G8BMMBRLLH', { anonymize_ip: true });
+</script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
 :root{
@@ -526,7 +534,8 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
 </div>
 
 <footer>
-  <strong>Fontes documentais e metodológicas:</strong> Portaria nº 571/2026 (Fiocruz), Observatório da Fiocruz, CGU (2020), TCU (2011), ENAP/Arquivo Nacional (2022), MPGO (2025) e Pereira <em>et al.</em> (2021). Este painel integra o Produto Técnico-Tecnológico da dissertação de mestrado em Administração (UnP). <button class="ref-link" onclick="openRefModal()">Consultar referências completas (ABNT)</button>
+  <strong>Fontes documentais e metodológicas:</strong> Portaria nº 571/2026 (Fiocruz), Observatório da Fiocruz, CGU (2020), TCU (2011), ENAP/Arquivo Nacional (2022), MPGO (2025) e Pereira <em>et al.</em> (2021). Este painel integra o Produto Técnico-Tecnológico da dissertação de mestrado em Administração (UnP). <button class="ref-link" onclick="openRefModal()">Consultar referências completas (ABNT)</button><br>
+  <span><strong>Métricas de acesso:</strong> Este painel utiliza medição anônima de visitas e interações (Google Analytics 4, com anonimização de IP) exclusivamente para avaliação de uso do Produto Técnico-Tecnológico.</span>
 </footer>
 
 <script>
@@ -994,6 +1003,12 @@ const ELO_META = [
 const el = id => document.getElementById(id);
 const fmtPct = v => v == null ? '—' : v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%';
 
+function trackEvent(eventName, params = {}) {
+  if (typeof gtag === 'function') {
+    gtag('event', eventName, params);
+  }
+}
+
 async function carregarParecerIA() {
   try {
     const res = await fetch('parecer_ia.json?v=' + Date.now());
@@ -1027,6 +1042,7 @@ function filtrarPorEixo(atividadeFim, targetEl) {
   el('fActivity').value = atividadeFim;
   document.querySelectorAll('.axis-pill').forEach(pill => pill.classList.remove('active'));
   if (targetEl) targetEl.classList.add('active');
+  trackEvent('filtrar_eixo_estrategico', { eixo: atividadeFim || 'todos' });
   renderAll();
 }
 
@@ -1115,6 +1131,7 @@ function renderAll() {
 function selectChain(id) {
   focusedIndicatorId = id;
   const item = INDICATORS_DATA.find(d => d.id === id);
+  trackEvent('selecionar_indicador_trilha', { indicador: id });
   renderChain(item);
 }
 
@@ -1160,6 +1177,7 @@ function inspectElo(indId, idx, rerenderCards = true) {
     document.querySelectorAll('#chainContainer .chain-step').forEach((card, i) => {
       card.classList.toggle('active-elo', i === idx);
     });
+    trackEvent('inspecionar_elo_trilha', { indicador: indId, elo: idx + 1 });
   }
 
   const st = item.states[idx];
@@ -1267,6 +1285,7 @@ function renderDonut(data, avgComp) {
 function openModal(id) {
   const x = INDICATORS_DATA.find(d => d.id === id);
   if (!x) return;
+  trackEvent('abrir_ficha_metodologica', { indicador: id });
   el('mTitle').textContent = x.name;
   el('mContent').innerHTML = `
     <div class="m-grid">
@@ -1298,6 +1317,7 @@ function closeModal() {
 }
 
 function openRefModal() {
+  trackEvent('consultar_referencias_abnt');
   el('refModal').classList.add('open');
 }
 
@@ -1316,6 +1336,7 @@ function resetFilters() {
 }
 
 function exportCSV() {
+  trackEvent('exportar_base_csv', { total_registros: getFilteredData().length });
   const headers = ['ID', 'Indicador', 'Atividade_Fim', 'Meta', 'Apurado', 'Atingimento_Pct', 'Reprodutibilidade', 'Gargalo', 'Formula'];
   const rows = getFilteredData().map(d => [
     d.id, `"${d.name}"`, `"${d.activity}"`, `"${d.metaLabel}"`, `"${d.actualLabel}"`,
