@@ -39,11 +39,65 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Segoe UI',Aptos
 .title-group h1{margin:0;font-size:21px;font-weight:700;letter-spacing:-0.2px}
 .title-group p{margin:3px 0 0;font-size:12px;color:#cbe0e8}
 .meta-pills{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.meta-pill{font-size:11px;background:#ffffff12;border:1px solid #ffffff28;padding:6px 11px;border-radius:6px;color:#e4f1f5}
-.btn-export{background:var(--teal-bright);color:#fff;border:none;padding:7px 13px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;transition:.15s}
-.btn-export:hover{background:#009191}
-.btn-ref{background:#ffffff16;color:#e8f7f7;border:1px solid #63d0cd80;padding:6px 12px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;transition:.15s}
-.btn-ref:hover{background:#ffffff28;border-color:var(--cyan)}
+
+/* Botões reais do cabeçalho */
+.btn-top-pill{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  font-family:inherit;
+  font-size:11px;
+  font-weight:600;
+  background:#ffffff14;
+  border:1px solid #ffffff38;
+  padding:7px 12px;
+  border-radius:6px;
+  color:#eef7fa;
+  cursor:pointer;
+  transition:background .15s, border-color .15s, transform .1s, box-shadow .15s;
+}
+.btn-top-pill:hover{
+  background:#ffffff26;
+  border-color:var(--cyan);
+  color:#fff;
+  transform:translateY(-1px);
+  box-shadow:0 3px 10px rgba(0,0,0,.18);
+}
+.btn-top-pill:active{
+  transform:translateY(0);
+}
+.btn-export{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  font-family:inherit;
+  background:var(--teal-bright);
+  color:#fff;
+  border:1px solid var(--teal-bright);
+  padding:7px 13px;
+  border-radius:6px;
+  font-size:11px;
+  font-weight:700;
+  cursor:pointer;
+  transition:.15s;
+}
+.btn-export:hover{background:#009191;border-color:#009191;transform:translateY(-1px)}
+.btn-ref{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  font-family:inherit;
+  background:#ffffff16;
+  color:#e8f7f7;
+  border:1px solid #63d0cd80;
+  padding:7px 12px;
+  border-radius:6px;
+  font-size:11px;
+  font-weight:700;
+  cursor:pointer;
+  transition:.15s;
+}
+.btn-ref:hover{background:#ffffff28;border-color:var(--cyan);transform:translateY(-1px)}
 
 .subbanner{background:#e3eef2;border-bottom:1px solid var(--line);padding:7px 28px;font-size:11px;color:var(--blue);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
 .container{max-width:1540px;margin:0 auto;padding:18px 26px 36px}
@@ -203,6 +257,12 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Segoe UI',Aptos
 .formula-code{background:var(--navy) !important;color:#ffffff !important;padding:12px 14px;border-radius:6px;font-family:Consolas,monospace;font-size:12.5px;line-height:1.5;margin-top:4px}
 .solution-box{background:#eaf6f4;border-color:#b4dfd8}
 
+.modal-actions-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+.btn-modal-action{background:var(--blue);color:#fff;border:none;padding:8px 14px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn-modal-action:hover{background:var(--navy)}
+.btn-modal-secondary{background:var(--soft);color:var(--blue);border:1px solid #bfe0e2;padding:8px 14px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn-modal-secondary:hover{background:#d7ecee}
+
 .ref-section-title{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--blue);margin:16px 0 8px}
 .ref-section-title:first-child{margin-top:0}
 .abnt-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
@@ -234,10 +294,10 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
     </div>
   </div>
   <div class="meta-pills">
-    <span class="meta-pill">Base: Portaria nº 571/2026</span>
-    <span class="meta-pill" id="lastSync">Atualização: Dados estruturados</span>
-    <button class="btn-ref" onclick="openRefModal()">Referências (ABNT)</button>
-    <button class="btn-export" onclick="exportCSV()">Exportar Base (.CSV)</button>
+    <button type="button" class="btn-top-pill" onclick="openPortariaModal()" title="Clique para ver o escopo documental da Portaria nº 571/2026">📄 Base: Portaria nº 571/2026</button>
+    <button type="button" class="btn-top-pill" id="lastSync" onclick="openSyncModal()" title="Clique para ver o status de atualização dos dados e da auditoria IA">🔄 Atualização: Dados estruturados</button>
+    <button type="button" class="btn-ref" onclick="openRefModal()">📚 Referências (ABNT)</button>
+    <button type="button" class="btn-export" onclick="exportCSV()">⬇ Exportar Base (.CSV)</button>
   </div>
 </header>
 
@@ -279,8 +339,8 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
       </select>
     </div>
     <div class="f-actions">
-      <button class="btn btn-primary" onclick="renderAll()">Filtrar</button>
-      <button class="btn btn-ghost" onclick="resetFilters()">Limpar</button>
+      <button type="button" class="btn btn-primary" onclick="renderAll()">Filtrar</button>
+      <button type="button" class="btn btn-ghost" onclick="resetFilters()">Limpar</button>
     </div>
   </section>
 
@@ -317,7 +377,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
   </section>
   <div class="section-ref-bar">
     <span><strong>Base (eixos e seletividade):</strong> Fiocruz (Portaria nº 571/2026; 2025); Parmenter (2015); Badawy <em>et al.</em> (2016) — seletividade de KPIs e redução da dispersão informacional.</span>
-    <button class="ref-link" onclick="openRefModal()">Ver ABNT</button>
+    <button type="button" class="ref-link" onclick="openRefModal()">Ver ABNT</button>
   </div>
 
   <section class="kpi-strip">
@@ -349,7 +409,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
   </section>
   <div class="section-ref-bar">
     <span><strong>Base (qualidade técnica e rastreabilidade):</strong> Neely <em>et al.</em> (1997); RIPSA (2008); Bahia (2021); Tallens Junior <em>et al.</em> (2025).</span>
-    <button class="ref-link" onclick="openRefModal()">Ver ABNT</button>
+    <button type="button" class="ref-link" onclick="openRefModal()">Ver ABNT</button>
   </div>
 
   <!-- Bloco de Auditoria Automatizada via IA -->
@@ -366,7 +426,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
     </p>
     <div class="ref-note ref-note-spaced">
       <span><strong>Base analítica:</strong> Gonzaga <em>et al.</em> (2019); Lapuente e Van de Walle (2020) — eficácia formal vs. efetividade e qualidade; Ohayon e Rosenberg (2014) — lacunas de CT&amp;I na Fiocruz.</span>
-      <button class="ref-link" onclick="openRefModal()">Ver ABNT</button>
+      <button type="button" class="ref-link" onclick="openRefModal()">Ver ABNT</button>
     </div>
   </section>
 
@@ -382,7 +442,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
       <div id="bulletContainer" class="bullet-list"></div>
       <div class="ref-note">
         <span><strong>Base metodológica:</strong> TCU (2011); Mury (2019); Gonzaga <em>et al.</em> (2019) — dimensões do desempenho (economicidade, eficiência, eficácia e efetividade) e análise de desvios.</span>
-        <button class="ref-link" onclick="openRefModal()">Ver ABNT</button>
+        <button type="button" class="ref-link" onclick="openRefModal()">Ver ABNT</button>
       </div>
     </div>
 
@@ -409,7 +469,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
       </div>
       <div class="ref-note">
         <span><strong>Base metodológica:</strong> Bourne <em>et al.</em> (2000, 2003); Alves e Martins (2026); Castro, Barbosa Neto e Cunha (2022) — auditabilidade, gestão de riscos e <em>accountability</em>.</span>
-        <button class="ref-link" onclick="openRefModal()">Ver ABNT</button>
+        <button type="button" class="ref-link" onclick="openRefModal()">Ver ABNT</button>
       </div>
     </div>
   </section>
@@ -447,7 +507,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
       </div>
       <div class="ref-note">
         <span><strong>Base metodológica:</strong> RIPSA (2008); Bahia (2021); Fiocruz (2025); Tallens Junior <em>et al.</em> (2025) · Operacionalização em 8 elos (proposição analítica do PTT/UnP).</span>
-        <button class="ref-link" onclick="openRefModal()">Ver ABNT</button>
+        <button type="button" class="ref-link" onclick="openRefModal()">Ver ABNT</button>
       </div>
     </div>
 
@@ -472,7 +532,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
       </div>
       <div class="ref-note">
         <span><strong>Base metodológica:</strong> CGU ([s. d.]); Bahia (2021); Tallens Junior <em>et al.</em> (2025) — completude documental e validação metodológica.</span>
-        <button class="ref-link" onclick="openRefModal()">Ver ABNT</button>
+        <button type="button" class="ref-link" onclick="openRefModal()">Ver ABNT</button>
       </div>
     </div>
   </section>
@@ -503,10 +563,64 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
     </div>
     <div class="ref-note">
       <span><strong>Base metodológica:</strong> Neely <em>et al.</em> (1997); Fiocruz (2025); Belle <em>et al.</em> (2022) — ficha de metadados padronizada e comunicação visual para uso gerencial.</span>
-      <button class="ref-link" onclick="openRefModal()">Ver ABNT</button>
+      <button type="button" class="ref-link" onclick="openRefModal()">Ver ABNT</button>
     </div>
   </section>
 </main>
+
+<!-- Modal da Base Normativa (Portaria nº 571/2026) -->
+<div class="modal" id="portariaModal">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <div>
+        <span style="font-size:10px;font-weight:800;letter-spacing:1.2px;color:var(--cyan)">ESCOPO DOCUMENTAL E NORMATIVO · CICLO AVALIATIVO 2025</span>
+        <h2>Base Oficial: Portaria Fiocruz nº 571/2026</h2>
+      </div>
+      <button type="button" class="modal-close" onclick="closePortariaModal()">Fechar ✕</button>
+    </div>
+    <div class="modal-content">
+      <div class="m-grid">
+        <div class="m-box"><label>Ato Normativo de Referência</label><p><strong>Portaria nº 571/2026 (Fiocruz)</strong> — Divulgação oficial dos resultados dos indicadores institucionais de desempenho referentes ao Ciclo 2025.</p></div>
+        <div class="m-box"><label>Cobertura do Painel</label><p><strong>15 indicadores institucionais</strong> distribuídos nas 6 atividades-fim / eixos estratégicos da Fundação Oswaldo Cruz (levantamento censitário do instrumento).</p></div>
+        <div class="m-box full"><label>Critério Metodológico de Tratamento</label><p>Os metas, resultados apurados e percentuais de atingimento reproduzem estritamente os valores publicados na Portaria nº 571/2026 e no Relatório de Gestão 2025. Quando numeradores, denominadores, filtros ou memórias de cálculo não estão abertos nos painéis públicos do Observatório da Fiocruz, as lacunas são registradas explicitamente nos 8 elos, sem imputação ou simulação de dados.</p></div>
+        <div class="m-box"><label>Desempenho Quantitativo (Ciclo 2025)</label><p>Atingimento médio reconstruído de <strong>127,48%</strong> frente às metas pactuadas.</p></div>
+        <div class="m-box"><label>Diagnóstico de Reprodutibilidade Pública</label><p><strong>1</strong> integralmente disponível (100%), <strong>12</strong> parcialmente reproduzíveis e <strong>2</strong> não reproduzíveis externamente (completude documental média de <strong>61%</strong>).</p></div>
+      </div>
+      <div class="modal-actions-row">
+        <a class="btn-modal-action" href="https://observatorio.fiocruz.br/indicators" target="_blank" rel="noopener">Abrir Observatório da Fiocruz ↗</a>
+        <a class="btn-modal-secondary" href="https://fiocruz.br/documento/2026/03/relatorio-de-gestao-2025" target="_blank" rel="noopener">Relatório de Gestão 2025 ↗</a>
+        <a class="btn-modal-secondary" href="https://fiocruz.br/sites/fiocruz.br/files/documentos_2/GUIA-COPLAN-02_R00_Guia%20de%20Monitoramento%20Fiocruz.pdf" target="_blank" rel="noopener">Guia de Monitoramento (2025) ↗</a>
+        <button type="button" class="btn-modal-secondary" onclick="closePortariaModal();openRefModal()">Ver Referências ABNT</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de Status de Atualização e Rastreabilidade IA -->
+<div class="modal" id="syncModal">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <div>
+        <span style="font-size:10px;font-weight:800;letter-spacing:1.2px;color:var(--cyan)">INTEGRIDADE DE DADOS E AUDITORIA AUTOMATIZADA</span>
+        <h2>Status de Atualização e Sincronização do Painel</h2>
+      </div>
+      <button type="button" class="modal-close" onclick="closeSyncModal()">Fechar ✕</button>
+    </div>
+    <div class="modal-content">
+      <div class="m-grid">
+        <div class="m-box"><label>Camada 1 · Dados Estruturados (Base Fixa)</label><p><strong>Portaria nº 571/2026 (Ciclo 2025)</strong> — Metas, resultados oficiais e matriz de 8 elos auditados documentalmente no âmbito da dissertação (UnP).</p></div>
+        <div class="m-box"><label>Camada 2 · Parecer IA (parecer_ia.json)</label><p id="syncModalStatus">Carregado a partir da régua teórico-empírica integrada ao painel.</p></div>
+        <div class="m-box"><label>Data/Hora da Última Auditoria IA</label><p id="syncModalDate">Dados estruturados locais (sem sincronização remota ativa)</p></div>
+        <div class="m-box"><label>Motor e Critério de Julgamento</label><p id="syncModalModel">Régua Teórico-Empírica (PTT/UnP) · Temperatura controlada (auditoria determinística)</p></div>
+        <div class="m-box full solution-box"><label>Governança e Uso Responsável de IA (Seção 3.8 do Projeto)</label><p>A Inteligência Artificial atua exclusivamente como apoio analítico na síntese diagnóstica e na formulação de recomendações incrementais, operando sob restrição estrita aos metadados verificados e sujeita à validação crítica do pesquisador.</p></div>
+      </div>
+      <div class="modal-actions-row">
+        <button type="button" class="btn-modal-action" id="btnRecarregarIA" onclick="recarregarParecerManual()">↻ Reverificar parecer_ia.json agora</button>
+        <button type="button" class="btn-modal-secondary" onclick="closeSyncModal();exportCSV()">⬇ Exportar Base Completa (.CSV)</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Modal da Ficha Metodológica -->
 <div class="modal" id="methodModal">
@@ -516,7 +630,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
         <span style="font-size:10px;font-weight:800;letter-spacing:1.2px;color:var(--cyan)">FICHA METODOLÓGICA PADRONIZADA · OBSERVATÓRIO FIOCRUZ</span>
         <h2 id="mTitle">Título do Indicador</h2>
       </div>
-      <button class="modal-close" onclick="closeModal()">Fechar ✕</button>
+      <button type="button" class="modal-close" onclick="closeModal()">Fechar ✕</button>
     </div>
     <div class="modal-content" id="mContent"></div>
   </div>
@@ -530,7 +644,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
         <span style="font-size:10px;font-weight:800;letter-spacing:1.2px;color:var(--cyan)">FUNDAMENTAÇÃO TEÓRICO-METODOLÓGICA · PADRÃO ABNT</span>
         <h2>Referências do Painel e Arquitetura de Rastreabilidade</h2>
       </div>
-      <button class="modal-close" onclick="closeRefModal()">Fechar ✕</button>
+      <button type="button" class="modal-close" onclick="closeRefModal()">Fechar ✕</button>
     </div>
     <div class="modal-content">
       <div class="ref-section-title">1. Correspondência entre Seções do Painel e Referenciais da Dissertação</div>
@@ -611,7 +725,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
 </div>
 
 <footer>
-  <strong>Fontes documentais e metodológicas:</strong> Portaria nº 571/2026 (Fiocruz), Guia de Monitoramento (Fiocruz, 2025), Observatório da Fiocruz (2026), RIPSA (2008), TCU (2011), CGU ([s. d.]), Bahia (2021), Parmenter (2015), Neely <em>et al.</em> (1997), Bourne <em>et al.</em> (2000, 2003), Ohayon e Rosenberg (2014), Gonzaga <em>et al.</em> (2019), Lapuente e Van de Walle (2020) e Tallens Junior <em>et al.</em> (2025). Este painel integra o Produto Técnico-Tecnológico da dissertação de Mestrado Profissional em Administração (UnP). <button class="ref-link" onclick="openRefModal()">Consultar referências completas (ABNT)</button><br>
+  <strong>Fontes documentais e metodológicas:</strong> Portaria nº 571/2026 (Fiocruz), Guia de Monitoramento (Fiocruz, 2025), Observatório da Fiocruz (2026), RIPSA (2008), TCU (2011), CGU ([s. d.]), Bahia (2021), Parmenter (2015), Neely <em>et al.</em> (1997), Bourne <em>et al.</em> (2000, 2003), Ohayon e Rosenberg (2014), Gonzaga <em>et al.</em> (2019), Lapuente e Van de Walle (2020) e Tallens Junior <em>et al.</em> (2025). Este painel integra o Produto Técnico-Tecnológico da dissertação de Mestrado Profissional em Administração (UnP). <button type="button" class="ref-link" onclick="openRefModal()">Consultar referências completas (ABNT)</button><br>
   <span><strong>Métricas de acesso:</strong> Este painel utiliza medição anônima de visitas e interações (Google Analytics 4, com anonimização de IP) exclusivamente para avaliação de uso do Produto Técnico-Tecnológico.</span>
 </footer>
 
@@ -1017,6 +1131,7 @@ const CHAIN_STEPS = [
 let donutInstance = null;
 let focusedIndicatorId = 'pesquisa';
 let selectedEloIndex = 5;
+let lastAuditPayload = null;
 
 const ELO_META = [
   {
@@ -1089,22 +1204,67 @@ function trackEvent(eventName, params = {}) {
 async function carregarParecerIA() {
   try {
     const res = await fetch('parecer_ia.json?v=' + Date.now());
-    if (!res.ok) return;
+    if (!res.ok) return false;
     const dados = await res.json();
     if (dados.analise && dados.analise.sintese_executiva) {
+      lastAuditPayload = dados;
       el('iaSintese').textContent = dados.analise.sintese_executiva;
       el('iaMeta').textContent = `Última auditoria automatizada: ${dados.gerado_em}`;
       el('iaModel').textContent = dados.modelo || 'Régua Teórico-Empírica (PTT/UnP)';
+      el('lastSync').textContent = `🔄 Atualização: ${dados.gerado_em}`;
       INDICATORS_DATA.forEach(ind => {
         if (dados.analise.recomendacoes_por_id && dados.analise.recomendacoes_por_id[ind.id]) {
           ind.iaRecomendacao = dados.analise.recomendacoes_por_id[ind.id];
         }
       });
       renderAll();
+      return true;
     }
   } catch (e) {
-    // Mantém o texto padrão ancorado no referencial caso rode localmente sem servidor
+    // Mantém os dados estruturados locais caso rode offline
   }
+  return false;
+}
+
+function openPortariaModal() {
+  trackEvent('consultar_base_portaria');
+  el('portariaModal').classList.add('open');
+}
+
+function closePortariaModal() {
+  el('portariaModal').classList.remove('open');
+}
+
+function openSyncModal() {
+  trackEvent('consultar_status_atualizacao');
+  if (lastAuditPayload) {
+    el('syncModalStatus').innerHTML = '<strong>Ativo e sincronizado</strong> via arquivo <code>parecer_ia.json</code> (15 indicadores auditados).';
+    el('syncModalDate').textContent = lastAuditPayload.gerado_em;
+    el('syncModalModel').textContent = lastAuditPayload.modelo || 'Régua Teórico-Empírica (PTT/UnP)';
+  } else {
+    el('syncModalStatus').innerHTML = '<strong>Modo estruturado local</strong> — utilizando o parecer teórico-empírico embutido no painel.';
+    el('syncModalDate').textContent = 'Ciclo 2025 · Portaria nº 571/2026';
+    el('syncModalModel').textContent = 'Régua Teórico-Empírica (PTT/UnP)';
+  }
+  el('syncModal').classList.add('open');
+}
+
+function closeSyncModal() {
+  el('syncModal').classList.remove('open');
+}
+
+async function recarregarParecerManual() {
+  const btn = el('btnRecarregarIA');
+  if (btn) btn.textContent = 'Verificando...';
+  const ok = await carregarParecerIA();
+  if (lastAuditPayload) {
+    el('syncModalStatus').innerHTML = '<strong>Sincronizado com sucesso</strong> a partir de <code>parecer_ia.json</code>.';
+    el('syncModalDate').textContent = lastAuditPayload.gerado_em;
+    el('syncModalModel').textContent = lastAuditPayload.modelo || 'Régua Teórico-Empírica (PTT/UnP)';
+  } else if (!ok) {
+    el('syncModalStatus').innerHTML = '<strong>Base local ativa</strong> (arquivo externo <code>parecer_ia.json</code> não localizado neste ambiente).';
+  }
+  if (btn) btn.textContent = '↻ Reverificar parecer_ia.json agora';
 }
 
 function syncAxisPills(atividadeFim) {
@@ -1249,7 +1409,7 @@ function renderAll() {
         <td><span class="pill ${pillClass}">${d.repro}</span></td>
         <td style="display:flex;gap:6px;align-items:center">
           <span class="track-btn">${isSelected ? '● Na trilha' : 'Ver trilha'}</span>
-          <button class="btn-ficha" onclick="event.stopPropagation();openModal('${d.id}')">Ficha metodológica</button>
+          <button type="button" class="btn-ficha" onclick="event.stopPropagation();openModal('${d.id}')">Ficha metodológica</button>
         </td>
       </tr>
     `;
@@ -1414,7 +1574,7 @@ function inspectElo(indId, idx, rerenderCards = true) {
     </div>
     <div class="elo-ref-line">
       <span><strong>Fundamentação deste elo:</strong> ${meta.ref}</span>
-      <button class="ref-link" onclick="openRefModal()">Referências ABNT</button>
+      <button type="button" class="ref-link" onclick="openRefModal()">Referências ABNT</button>
     </div>
   `;
 }
@@ -1488,7 +1648,7 @@ function openModal(id) {
     </div>
     <div class="ref-note ref-note-spaced">
       <span><strong>Padronização da ficha:</strong> Ficha de metadados conforme Neely <em>et al.</em> (1997), RIPSA (2008), Bahia (2021), Fiocruz (2025) e Tallens Junior <em>et al.</em> (2025).</span>
-      <button class="ref-link" onclick="closeModal();openRefModal()">Ver referências ABNT</button>
+      <button type="button" class="ref-link" onclick="closeModal();openRefModal()">Ver referências ABNT</button>
     </div>
   `;
   el('methodModal').classList.add('open');
@@ -1536,11 +1696,15 @@ function exportCSV() {
 window.onclick = e => {
   if (e.target === el('methodModal')) closeModal();
   if (e.target === el('refModal')) closeRefModal();
+  if (e.target === el('portariaModal')) closePortariaModal();
+  if (e.target === el('syncModal')) closeSyncModal();
 };
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
     closeModal();
     closeRefModal();
+    closePortariaModal();
+    closeSyncModal();
   }
 });
 
