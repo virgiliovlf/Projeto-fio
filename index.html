@@ -63,9 +63,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Segoe UI',Aptos
   transform:translateY(-1px);
   box-shadow:0 3px 10px rgba(0,0,0,.18);
 }
-.btn-top-pill:active{
-  transform:translateY(0);
-}
+.btn-top-pill:active{transform:translateY(0)}
 .btn-export{
   display:inline-flex;
   align-items:center;
@@ -194,7 +192,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Segoe UI',Aptos
 .pill.yes{background:var(--green)}
 
 /* Faixa de contexto do indicador selecionado dentro da Trilha */
-.trilha-focus-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:#eef6f8;border:1px solid #cde1e6;border-left:4px solid var(--teal-bright);border-radius:6px;padding:9px 12px;margin-bottom:10px}
+.trilha-focus-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:#eef6f8;border:1px solid #cde1e6;border-left:4px solid var(--teal-bright);border-radius:6px;padding:9px 12px;margin-bottom:8px}
 .trilha-focus-info{display:flex;flex-direction:column;gap:2px}
 .trilha-focus-kicker{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--teal)}
 .trilha-focus-name{font-size:13px;font-weight:700;color:var(--navy)}
@@ -203,7 +201,13 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Segoe UI',Aptos
 .trilha-quick-select label{font-size:10px;font-weight:700;text-transform:uppercase;color:var(--muted);white-space:nowrap}
 .trilha-quick-select select{height:30px;max-width:250px;border:1px solid #bfd5dc;border-radius:5px;padding:0 8px;font-size:11.5px;font-weight:600;color:var(--navy);background:#fff;cursor:pointer}
 
-.chain-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:10px;margin-top:6px}
+/* Agrupamento teórico das 2 camadas dos 8 elos */
+.chain-layers{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px;margin-bottom:4px}
+.chain-layer-tag{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.45px;padding:4px 8px;border-radius:5px;text-align:center}
+.chain-layer-tag.norm{background:#eaf3f7;color:var(--blue);border:1px solid #cbe0e9}
+.chain-layer-tag.repro{background:#eaf6f4;color:var(--teal);border:1px solid #bfe3de}
+
+.chain-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:10px;margin-top:4px}
 .chain-step{border-radius:7px;padding:10px 6px 8px;text-align:center;border:1px solid var(--line);background:#f6fafb;transition:.18s;cursor:pointer;position:relative;display:flex;flex-direction:column;justify-content:space-between}
 .chain-step:not(:last-child)::after{content:"›";position:absolute;right:-8px;top:50%;transform:translateY(-50%);font-size:14px;font-weight:800;color:#8ba4ae;pointer-events:none}
 .chain-step:hover{transform:translateY(-2px);box-shadow:0 5px 12px rgba(11,52,72,.12);border-color:var(--blue)}
@@ -257,6 +261,14 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Segoe UI',Aptos
 .formula-code{background:var(--navy) !important;color:#ffffff !important;padding:12px 14px;border-radius:6px;font-family:Consolas,monospace;font-size:12.5px;line-height:1.5;margin-top:4px}
 .solution-box{background:#eaf6f4;border-color:#b4dfd8}
 
+/* Abas do Modal de Defesa / Arquitetura PTT */
+.ptt-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;border-bottom:2px solid var(--line);padding-bottom:10px}
+.ptt-tab-btn{background:#f0f5f7;color:var(--navy);border:1px solid #c5d5dc;padding:8px 14px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;transition:.15s}
+.ptt-tab-btn:hover{background:#e2ecef}
+.ptt-tab-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.ptt-tab-panel{display:none}
+.ptt-tab-panel.active{display:block}
+
 .modal-actions-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
 .btn-modal-action{background:var(--blue);color:#fff;border:none;padding:8px 14px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
 .btn-modal-action:hover{background:var(--navy)}
@@ -277,6 +289,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
   .axis-bar{grid-template-columns:repeat(2,1fr)}
   .kpi-strip{grid-template-columns:repeat(2,1fr)}
   .viz-grid-main,.viz-grid-sub{grid-template-columns:1fr}
+  .chain-layers{grid-template-columns:1fr}
   .chain-grid{grid-template-columns:repeat(4,1fr)}
   .chain-step::after{display:none}
   .elo-detail-grid,.m-grid{grid-template-columns:1fr}
@@ -295,6 +308,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
   </div>
   <div class="meta-pills">
     <button type="button" class="btn-top-pill" onclick="openPortariaModal()" title="Clique para ver o escopo documental da Portaria nº 571/2026">📄 Base: Portaria nº 571/2026</button>
+    <button type="button" class="btn-top-pill" onclick="openPttModal('elos')" title="Justificativa dos 8 elos, protocolo de validação e arquitetura de implantação na Fiocruz">📐 Validação &amp; Implantação</button>
     <button type="button" class="btn-top-pill" id="lastSync" onclick="openSyncModal()" title="Clique para ver o status de atualização dos dados e da auditoria IA">🔄 Atualização: Dados estruturados</button>
     <button type="button" class="btn-ref" onclick="openRefModal()">📚 Referências (ABNT)</button>
     <button type="button" class="btn-export" onclick="exportCSV()">⬇ Exportar Base (.CSV)</button>
@@ -481,7 +495,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
           <h2 class="card-title">Trilha Pública de Rastreabilidade do Indicador</h2>
           <p class="card-subtitle">Auditoria passo a passo da cadeia de dados do indicador selecionado no Diagnóstico ou Catálogo</p>
         </div>
-        <span class="badge-info">8 Elos Metodológicos</span>
+        <button type="button" class="badge-info" style="border:none;cursor:pointer" onclick="openPttModal('elos')" title="Ver fundamentação teórica dos 8 elos">8 Elos Metodológicos ⓘ</button>
       </div>
 
       <!-- Banner de vínculo explícito com o indicador selecionado -->
@@ -497,16 +511,22 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
         </div>
       </div>
 
+      <!-- Agrupamento lógico das duas camadas dos 8 elos -->
+      <div class="chain-layers">
+        <div class="chain-layer-tag norm">Camada I · Publicidade Normativa &amp; Conceitual (Elos 1–4)</div>
+        <div class="chain-layer-tag repro">Camada II · Reexecutabilidade Empírica (Elos 5–8)</div>
+      </div>
+
       <div class="chain-grid" id="chainContainer"></div>
       <div id="eloDetailBox" class="elo-detail-box" style="display:none"></div>
       <div class="elo-legend">
-        <span><strong style="color:var(--green)">● Disponível:</strong> Dado aberto e exportável</span>
-        <span><strong style="color:#b8740e">● Parcial:</strong> Dado agregado sem desagregação completa</span>
-        <span><strong style="color:var(--red)">● Lacuna:</strong> Componente ausente dos painéis públicos</span>
+        <span><strong style="color:var(--green)">● Disponível (1,0):</strong> Dado aberto</span>
+        <span><strong style="color:#b8740e">● Parcial (0,5):</strong> Sem desagregação</span>
+        <span><strong style="color:var(--red)">● Lacuna (0,0):</strong> Ausente nos painéis</span>
         <span style="margin-left:auto" class="ux-hint">👆 Clique em qualquer elo acima para abrir o diagnóstico</span>
       </div>
       <div class="ref-note">
-        <span><strong>Base metodológica:</strong> RIPSA (2008); Bahia (2021); Fiocruz (2025); Tallens Junior <em>et al.</em> (2025) · Operacionalização em 8 elos (proposição analítica do PTT/UnP).</span>
+        <span><strong>Base metodológica:</strong> RIPSA (2008); Bahia (2021); Fiocruz (2025); Tallens Junior <em>et al.</em> (2025) · Decomposição em 8 elos (<button type="button" class="ref-link" onclick="openPttModal('elos')">ver protocolo de validação</button>).</span>
         <button type="button" class="ref-link" onclick="openRefModal()">Ver ABNT</button>
       </div>
     </div>
@@ -567,6 +587,93 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
     </div>
   </section>
 </main>
+
+<!-- Modal de Mitigação Metodológica: 8 Elos, Validação e Implantação na Fiocruz -->
+<div class="modal" id="pttModal">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <div>
+        <span style="font-size:10px;font-weight:800;letter-spacing:1.2px;color:var(--cyan)">GOVERNANÇA METODOLÓGICA DO PTT · MESTRADO ACADÊMICO (PPGA/UnP)</span>
+        <h2>Arquitetura dos 8 Elos, Protocolo de Validação e Implantação na Fiocruz</h2>
+      </div>
+      <button type="button" class="modal-close" onclick="closePttModal()">Fechar ✕</button>
+    </div>
+    <div class="modal-content">
+      <div class="ptt-tabs">
+        <button type="button" class="ptt-tab-btn active" id="tabBtn-elos" onclick="switchPttTab('elos')">1. Por que exatamente 8 Elos?</button>
+        <button type="button" class="ptt-tab-btn" id="tabBtn-validacao" onclick="switchPttTab('validacao')">2. Protocolo de Validação</button>
+        <button type="button" class="ptt-tab-btn" id="tabBtn-implantacao" onclick="switchPttTab('implantacao')">3. Implantação na Fiocruz (As-Is → To-Be)</button>
+      </div>
+
+      <!-- ABA 1: POR QUE 8 ELOS -->
+      <div class="ptt-tab-panel active" id="tabPanel-elos">
+        <div class="m-grid">
+          <div class="m-box full solution-box">
+            <label>Lógica da Decomposição em 8 Elos (Condição Mínima de Reexecutabilidade)</label>
+            <p>Os 8 elos não constituem uma contagem arbitrária: representam a <strong>decomposição operacional mínima</strong> necessária para que um indicador institucional seja <strong>auditado e recalculado de forma independente</strong> por órgãos de controle, gestores ou cidadãos, cruzando os atributos de ficha técnica da literatura (Neely <em>et al.</em>, 1997; RIPSA, 2008; Bahia, 2021; Fiocruz, 2025; Tallens Junior <em>et al.</em>, 2025) com a estrutura formal de cálculo ($I = \frac{N}{D}$ aplicado sobre filtros $F$ e documentado em memória $M$).</p>
+          </div>
+          <div class="m-box">
+            <label>Camada I · Publicidade Normativa (Elos 1 a 4)</label>
+            <p><strong>1. Fórmula</strong> (regra matemática)<br><strong>2. Fonte</strong> (sistema/ato de origem)<br><strong>3. Meta</strong> (referência pactuada)<br><strong>4. Resultado</strong> (índice oficial apurado)<br><br><em>Função:</em> Garante o anúncio formal do desempenho, mas isoladamente permite apenas controle declaratório.</p>
+          </div>
+          <div class="m-box">
+            <label>Camada II · Reexecutabilidade Empírica (Elos 5 a 8)</label>
+            <p><strong>5. Numerador</strong> (entregas/eventos realizados)<br><strong>6. Denominador</strong> (base de referência/demanda)<br><strong>7. Filtros</strong> (critérios de elegibilidade e corte)<br><strong>8. Memória</strong> (trilha de cálculo / base aberta)<br><br><em>Função:</em> Sem qualquer um desses 4 elos, torna-se impossível reproduzir o resultado oficial.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ABA 2: PROTOCOLO DE VALIDAÇÃO -->
+      <div class="ptt-tab-panel" id="tabPanel-validacao">
+        <div style="overflow-x:auto; margin-bottom:12px">
+          <table class="table-clean">
+            <thead>
+              <tr>
+                <th>Nível de Validação</th>
+                <th>Procedimento Metodológico</th>
+                <th>Evidência no Protótipo</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>1. Validação Teórico-Normativa (Construto)</strong></td>
+                <td>Triangulação dos critérios de qualidade técnica e completude documental de Neely <em>et al.</em> (1997), RIPSA (2008), Bahia (2021), Fiocruz (2025) e Tallens Junior <em>et al.</em> (2025).</td>
+                <td>Cada um dos 8 elos exibe no painel sua fundamentação bibliográfica específica e sua correspondência na ficha de metadados.</td>
+              </tr>
+              <tr>
+                <td><strong>2. Validação Empírico-Documental (Censo)</strong></td>
+                <td>Aplicação da matriz de verificação aos <strong>15 indicadores da Portaria nº 571/2026</strong> (Seção 3.2 do projeto), utilizando escore objetivo determinístico: <strong>1,0</strong> (Disponível), <strong>0,5</strong> (Parcial) e <strong>0,0</strong> (Lacuna).</td>
+                <td>Elimina subjetividade na classificação: os 120 pontos de verificação (15 indicadores × 8 elos) são auditáveis linha a linha no painel.</td>
+              </tr>
+              <tr>
+                <td><strong>3. Delimitação e Validação com Especialistas (Etapa Futura)</strong></td>
+                <td>Conforme Seção 3.2 da dissertação, esta pesquisa utiliza exclusivamente dados secundários públicos, sem coleta com sujeitos humanos.</td>
+                <td>A validação semântica e de usabilidade junto a gestores da <strong>Cogeplan/ICICT</strong> constitui etapa subsequente de transferência tecnológica.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ABA 3: IMPLANTAÇÃO NA FIOCRUZ -->
+      <div class="ptt-tab-panel" id="tabPanel-implantacao">
+        <div class="m-grid" style="margin-bottom:12px">
+          <div class="m-box">
+            <label>Barreiras Identificadas no Diagnóstico (As-Is)</label>
+            <p>• <strong>Silos entre sistemas finalísticos:</strong> prontuários eletrônicos distintos (INI/IFF), sistemas laboratoriais (LIS), pautas do MS e registros das plataformas/coleções.<br>• <strong>Opacidade de denominadores:</strong> bases funcionais e previsões pactuadas não exportáveis nos mesmos filtros.<br>• <strong>Consolidação manual:</strong> apuração periódica dependente de planilhas setoriais para publicação em portaria.</p>
+          </div>
+          <div class="m-box">
+            <label>Arquitetura de Implantação Proposta (To-Be)</label>
+            <p>• <strong>Fase 1 (Governança):</strong> Incorporar a Ficha Padronizada de 8 Elos ao Guia de Monitoramento da Cogeplan.<br>• <strong>Fase 2 (APIs Institucionais):</strong> Conectar bases já estruturadas (API do Repositório ARCA, Compras.net/SISPP, e-Ouv e Rede BLH).<br>• <strong>Fase 3 (ETL / Power BI):</strong> Automatizar extração e anonimização de denominadores sensíveis.<br>• <strong>Fase 4 (Observatório Fiocruz):</strong> Publicar dados abertos (.CSV/.JSON) integrados aos painéis oficiais.</p>
+          </div>
+        </div>
+        <div class="ptt-note">
+          <strong>Prontidão arquitetural do protótipo:</strong> O painel já separa a camada visual (<code>index.html</code>) da camada de dados e auditoria (<code>parecer_ia.json</code> / <code>coletor.py</code>), permitindo substituir a fonte estática da Portaria por endpoints de API institucional ou pipelines ETL em Power BI sem redesenhar a interface gerencial.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Modal da Base Normativa (Portaria nº 571/2026) -->
 <div class="modal" id="portariaModal">
@@ -1226,6 +1333,25 @@ async function carregarParecerIA() {
   return false;
 }
 
+function openPttModal(tab = 'elos') {
+  trackEvent('consultar_arquitetura_validacao_ptt', { aba: tab });
+  switchPttTab(tab);
+  el('pttModal').classList.add('open');
+}
+
+function closePttModal() {
+  el('pttModal').classList.remove('open');
+}
+
+function switchPttTab(tab) {
+  ['elos', 'validacao', 'implantacao'].forEach(t => {
+    const btn = el('tabBtn-' + t);
+    const panel = el('tabPanel-' + t);
+    if (btn) btn.classList.toggle('active', t === tab);
+    if (panel) panel.classList.toggle('active', t === tab);
+  });
+}
+
 function openPortariaModal() {
   trackEvent('consultar_base_portaria');
   el('portariaModal').classList.add('open');
@@ -1512,9 +1638,9 @@ function inspectElo(indId, idx, rerenderCards = true) {
   const meta = ELO_META[idx];
   const stepName = CHAIN_STEPS[idx].split('. ')[1];
   const statusMap = {
-    ok: { label: 'Elo Disponível', color: 'var(--green)' },
-    part: { label: 'Restrição / Parcial', color: '#b8740e' },
-    miss: { label: 'Lacuna Documental', color: 'var(--red)' }
+    ok: { label: 'Elo Disponível (1,0)', color: 'var(--green)' },
+    part: { label: 'Restrição / Parcial (0,5)', color: '#b8740e' },
+    miss: { label: 'Lacuna Documental (0,0)', color: 'var(--red)' }
   };
 
   let evidencia = item[meta.field] || 'Informação registrada na Portaria nº 571/2026.';
@@ -1698,6 +1824,7 @@ window.onclick = e => {
   if (e.target === el('refModal')) closeRefModal();
   if (e.target === el('portariaModal')) closePortariaModal();
   if (e.target === el('syncModal')) closeSyncModal();
+  if (e.target === el('pttModal')) closePttModal();
 };
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
@@ -1705,6 +1832,7 @@ document.addEventListener('keydown', e => {
     closeRefModal();
     closePortariaModal();
     closeSyncModal();
+    closePttModal();
   }
 });
 
