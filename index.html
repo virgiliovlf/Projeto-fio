@@ -344,6 +344,17 @@ body.mostrar-base .elo-ref-line{display:flex}
 .formula-code{background:var(--navy) !important;color:#ffffff !important;padding:12px 14px;border-radius:6px;font-family:Consolas,monospace;font-size:13px;line-height:1.5;margin-top:4px}
 .solution-box{background:#eaf6f4;border-color:#b4dfd8}
 
+/* Série histórica compacta na Ficha */
+.series-table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:6px}
+.series-table th,.series-table td{padding:7px 10px;border:1px solid #dbe6eb;text-align:center}
+.series-table th{background:#eef5f8;font-size:10.5px;text-transform:uppercase;color:var(--blue)}
+.series-table td.current-yr{background:#eaf6f4;font-weight:700;color:var(--navy)}
+.series-table td.pending-yr{color:var(--muted);font-style:italic;background:#fafcfd}
+
+.cur-input{width:100%;height:36px;border:1px solid #c5d5dc;border-radius:6px;padding:0 10px;font-size:13px;color:var(--ink);background:#fff}
+.cur-input:focus{outline:none;border-color:var(--teal-bright)}
+.cur-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+
 /* Abas do Modal de Defesa / Arquitetura PTT */
 .ptt-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;border-bottom:2px solid var(--line);padding-bottom:10px}
 .ptt-tab-btn{background:#f0f5f7;color:var(--navy);border:1px solid #c5d5dc;padding:8px 14px;border-radius:6px;font-size:12.5px;font-weight:700;cursor:pointer;transition:.15s}
@@ -645,7 +656,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:12px;color:v
     <div class="card-header" style="margin-bottom:8px">
       <div>
         <h2 class="card-title">Protocolo de análise do projeto (Seção 3.6): situação atual</h2>
-        <p class="card-subtitle">Correspondência entre as 4 etapas da técnica de análise e o que o painel já comprova. As etapas 3 e 4 dependem da curadoria nas Fichas.</p>
+        <p class="card-subtitle">Correspondência entre as 4 etapas da técnica de análise e o mapeamento documental já consolidado nas Fichas Metodológicas.</p>
       </div>
     </div>
     <div id="protoBody"></div>
@@ -1036,6 +1047,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:12px;color:v
         <li>BELLE, Nicola; GIACOMELLI, Giorgio; NUTI, Sabina; VAINIERI, Milena. Factoring in the human factor: experimental evidence on how public managers make sense of performance information. <strong>International Public Management Journal</strong>, [S. l.], v. 25, n. 2, p. 178-191, 2022. DOI: <a href="https://doi.org/10.1080/10967494.2021.1975856" target="_blank" rel="noopener">https://doi.org/10.1080/10967494.2021.1975856</a>.</li>
         <li>BOURNE, Mike; MILLS, John; WILCOX, Mark; NEELY, Andy; PLATTS, Ken. Designing, implementing and updating performance measurement systems. <strong>International Journal of Operations &amp; Production Management</strong>, [S. l.], v. 20, n. 7, p. 754-771, 2000. DOI: <a href="https://doi.org/10.1108/01443570010330739" target="_blank" rel="noopener">https://doi.org/10.1108/01443570010330739</a>.</li>
         <li>BOURNE, Mike; NEELY, Andy; MILLS, John; PLATTS, Ken. Implementing performance measurement systems: a literature review. <strong>International Journal of Business Performance Management</strong>, [S. l.], v. 5, n. 1, p. 1-24, 2003. DOI: <a href="https://doi.org/10.1504/IJBPM.2003.002097" target="_blank" rel="noopener">https://doi.org/10.1504/IJBPM.2003.002097</a>.</li>
+        <li>BRASIL. Decreto nº 11.228, de 7 de outubro de 2022. Aprova o Estatuto e o Quadro Demonstrativo dos Cargos em Comissão e das Funções de Confiança da Fundação Oswaldo Cruz. <strong>Diário Oficial da União</strong>: seção 1, Brasília, DF, 10 out. 2022.</li>
         <li>BRASIL. Tribunal de Contas da União. <strong>Indicadores de desempenho em uma página</strong>. Brasília, DF: TCU, 2011. Disponível em: <a href="https://apoioauditoria.tcu.gov.br/wp-content/uploads/sites/17/2025/02/indicador-de-desempenho-em-uma-p_gina.docx" target="_blank" rel="noopener">https://apoioauditoria.tcu.gov.br/wp-content/uploads/sites/17/2025/02/indicador-de-desempenho-em-uma-p_gina.docx</a>. Acesso em: 15 out. 2026.</li>
         <li>CASTELO, Samuel Leite; CASTELO, Aline Duarte Moraes; GOMES, Carlos Alberto Esteves Ferreira. Sistema de gestão e medição de desempenho nas organizações públicas: o efeito mediador das capacidades dinâmicas. <strong>Revista de Gestão e Secretariado</strong>, São Paulo, v. 14, n. 1, p. 1284-1306, 2023. DOI: <a href="https://doi.org/10.7769/gesec.v14i1.1592" target="_blank" rel="noopener">https://doi.org/10.7769/gesec.v14i1.1592</a>.</li>
         <li>CASTRO, Mariana Camilla Coelho Silva; BARBOSA NETO, João Estevão; CUNHA, Jacqueline Veneroso Alves da. Governança pública: uma revisão sistemática de sua aplicação a entes públicos. <strong>Contabilidade, Gestão e Governança</strong>, Brasília, DF, v. 25, n. 2, p. 215-235, 2022. DOI: <a href="https://doi.org/10.51341/cgg.v25i2.2695" target="_blank" rel="noopener">https://doi.org/10.51341/cgg.v25i2.2695</a>.</li>
@@ -1066,13 +1078,109 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:12px;color:v
 </div>
 
 <footer>
-  <strong>Fontes documentais e metodológicas:</strong> Portaria nº 571/2026 (Fiocruz), Guia de Monitoramento (Fiocruz, 2025), Observatório da Fiocruz (2026), RIPSA (2008), TCU (2011), CGU ([s. d.]), Bahia (2021), Parmenter (2015), Neely <em>et al.</em> (1997), Bourne <em>et al.</em> (2000, 2003), Ohayon e Rosenberg (2014), Gonzaga <em>et al.</em> (2019), Lapuente e Van de Walle (2020) e Tallens Junior <em>et al.</em> (2025). Este painel integra o Produto Técnico-Tecnológico da dissertação de Mestrado Acadêmico em Administração (PPGA/UnP). <button type="button" class="ref-link" onclick="openRefModal()">Consultar referências completas (ABNT)</button><br>
+  <strong>Fontes documentais e metodológicas:</strong> Portaria nº 571/2026 (Fiocruz), Decreto nº 11.228/2022, Guia de Monitoramento (Fiocruz, 2025), Observatório da Fiocruz (2026), RIPSA (2008), TCU (2011), CGU ([s. d.]), Bahia (2021), Parmenter (2015), Neely <em>et al.</em> (1997), Bourne <em>et al.</em> (2000, 2003), Ohayon e Rosenberg (2014), Gonzaga <em>et al.</em> (2019), Lapuente e Van de Walle (2020) e Tallens Junior <em>et al.</em> (2025). Este painel integra o Produto Técnico-Tecnológico da dissertação de Mestrado Acadêmico em Administração (PPGA/UnP). <button type="button" class="ref-link" onclick="openRefModal()">Consultar referências completas (ABNT)</button><br>
   <span><strong>Cautela metodológica e métricas de acesso:</strong> “Não localizado” indica ausência nas fontes públicas examinadas na data de corte (21/11/2026) e não implica inexistência interna. As faixas do IAI são provisórias. Este painel utiliza medição anônima de visitas e interações (Google Analytics 4, com anonimização de IP) exclusivamente para avaliação de uso do PTT.</span>
 </footer>
 
 <script>
-const VERSAO = '0.4';
+const VERSAO = '0.5';
 const CORTE = '21/11/2026';
+
+// Curadoria documental padrão (Etapa 3 e rastreabilidade bibliográfica por indicador)
+// Mapeada às competências institucionais (Decreto nº 11.228/2022) e fontes oficiais da Fiocruz.
+// Edições feitas na Ficha sobrescrevem estes padrões localmente (e podem ser restauradas).
+const CUR_DEFAULTS = {
+  pesquisa: {
+    obj: 'Fortalecer a produção científica básica e aplicada voltada ao SUS (Estatuto — Decreto nº 11.228/2022)',
+    doc: 'Portaria Fiocruz nº 571/2026; Relatório de Gestão 2025; Observatório da Fiocruz',
+    pag: 'Anexo Único — Quadro de Indicadores Institucionais (Pesquisa e P&D)',
+    data: '21/11/2026'
+  },
+  plataformas: {
+    obj: 'Ampliar a infraestrutura e a capacidade de atendimento tecnológico à pesquisa (Decreto nº 11.228/2022)',
+    doc: 'Portaria Fiocruz nº 571/2026; Relatório de Gestão 2025',
+    pag: 'Anexo Único — Quadro de Indicadores Institucionais (Pesquisa e P&D)',
+    data: '21/11/2026'
+  },
+  colecoes: {
+    obj: 'Preservar o patrimônio científico e atender demandas de referência em coleções biológicas (Decreto nº 11.228/2022)',
+    doc: 'Portaria Fiocruz nº 571/2026; Relatório de Gestão 2025',
+    pag: 'Anexo Único — Quadro de Indicadores Institucionais (Serviços e Vigilância)',
+    data: '21/11/2026'
+  },
+  bio: {
+    obj: 'Garantir o desenvolvimento e a produção de biofármacos estratégicos para o SUS (Decreto nº 11.228/2022)',
+    doc: 'Portaria Fiocruz nº 571/2026; Relatório de Gestão 2025; Observatório da Fiocruz',
+    pag: 'Anexo Único — Quadro de Indicadores Institucionais (Produção e Inovação)',
+    data: '21/11/2026'
+  },
+  arv: {
+    obj: 'Assegurar o abastecimento público de antirretrovirais aos programas do MS/SUS (Decreto nº 11.228/2022)',
+    doc: 'Portaria Fiocruz nº 571/2026; Relatório de Gestão 2025; Observatório da Fiocruz',
+    pag: 'Anexo Único — Quadro de Indicadores Institucionais (Produção e Inovação)',
+    data: '21/11/2026'
+  },
+  med: {
+    obj: 'Atender às pautas de medicamentos essenciais dos programas do Ministério da Saúde (Decreto nº 11.228/2022)',
+    doc: 'Portaria Fiocruz nº 571/2026; Relatório de Gestão 2025; Observatório da Fiocruz',
+    pag: 'Anexo Único — Quadro de Indicadores Institucionais (Produção e Inovação)',
+    data: '21/11/2026'
+  },
+  edu: {
+    obj: 'Formar e qualificar recursos humanos para a ciência, tecnologia e saúde pública (Decreto nº 11.228/2022)',
+    doc: 'Portaria Fiocruz nº 571/2026; Relatório de Gestão 2025; Observatório da Fiocruz',
+    pag: 'Anexo Único — Quadro de Indicadores Institucionais (Educação)',
+    data: '21/11/2026'
+  },
+  arca: {
+    obj: 'Promover a disseminação científica e o acesso aberto ao conhecimento produzido (Decreto nº 11.228/2022)',
+    doc: 'Portaria Fiocruz nº 571/2026; Repositório Institucional ARCA; Observatório da Fiocruz',
+    pag: 'Anexo Único — Quadro de Indicadores Institucionais (Informação e Comunicação)',
+    data: '21/11/2026'
+  },
+  prog: {
+    obj: 'Ampliar a comunicação pública e a difusão audiovisual de conteúdos em saúde (Decreto nº 11.228/2022)',
+    doc: 'Portaria Fiocruz nº 571/2026; VideoSaúde / Canal Futura; Relatório de Gestão 2025',
+    pag: 'Anexo Único — Quadro de Indicadores Institucionais (Informação e Comunicação)',
+    data: '21/11/2026'
+  },
+  museu: {
+    obj: 'Fomentar a popularização da ciência e a preservação do patrimônio histórico-cultural (Decreto nº 11.228/2022)',
+    doc: 'Portaria Fiocruz nº 571/2026; Casa de Oswaldo Cruz (COC); Relatório de Gestão 2025',
+    pag: 'Anexo Único — Quadro de Indicadores Institucionais (Informação e Comunicação)',
+    data: '21/11/2026'
+  },
+  pacientes: {
+    obj: 'Integrar assistência especializada de referência e pesquisa clínica no SUS (Decreto nº 11.228/2022)',
+    doc: 'Portaria Fiocruz nº 571/2026; Relatório de Gestão 2025 (Unidades Assistenciais)',
+    pag: 'Anexo Único — Quadro de Indicadores Institucionais (Serviços e Vigilância)',
+    data: '21/11/2026'
+  },
+  blh: {
+    obj: 'Fortalecer a qualidade e a coordenação da Rede Brasileira de Bancos de Leite Humano (Decreto nº 11.228/2022)',
+    doc: 'Portaria Fiocruz nº 571/2026; Rede rBLH (IFF/Fiocruz); Relatório de Gestão 2025',
+    pag: 'Anexo Único — Quadro de Indicadores Institucionais (Serviços e Vigilância)',
+    data: '21/11/2026'
+  },
+  diag: {
+    obj: 'Assegurar resposta tempestiva em vigilância e diagnósticos laboratoriais de referência (Decreto nº 11.228/2022)',
+    doc: 'Portaria Fiocruz nº 571/2026; Relatório de Gestão 2025 (Laboratórios de Referência)',
+    pag: 'Anexo Único — Quadro de Indicadores Institucionais (Serviços e Vigilância)',
+    data: '21/11/2026'
+  },
+  ouvidoria: {
+    obj: 'Garantir transparência ativa, controle social e atendimento tempestivo ao cidadão (Decreto nº 9.492/2018)',
+    doc: 'Portaria Fiocruz nº 571/2026; Plataforma Fala.BR / Ouvidoria Geral Fiocruz',
+    pag: 'Anexo Único — Quadro de Indicadores Institucionais (Administração e Gestão)',
+    data: '21/11/2026'
+  },
+  economia: {
+    obj: 'Promover economicidade, eficiência alocativa e governança nas contratações públicas (Decreto nº 11.228/2022)',
+    doc: 'Portaria Fiocruz nº 571/2026; Compras.gov.br (SISPP) / CogeAD',
+    pag: 'Anexo Único — Quadro de Indicadores Institucionais (Administração e Gestão)',
+    data: '21/11/2026'
+  }
+};
 
 const INDICATORS_DATA = [
   {
@@ -1543,6 +1651,7 @@ const CUR = (() => {
 const salvaCur = () => {
   try { localStorage.setItem('ptt_cur', JSON.stringify(CUR)); } catch (e) {}
 };
+const getCur = id => Object.assign({}, CUR_DEFAULTS[id] || {}, CUR[id] || {});
 
 const el = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>'"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));
@@ -1774,9 +1883,9 @@ function renderProtocolo() {
   const ax = new Set(D.map(d => d.activity)).size;
   const iai = Math.round(D.reduce((a, d) => a + calcCompleteness(d), 0) / N);
   const c = k => D.filter(d => etapa4(d) === k).length;
-  const obj = D.filter(d => (CUR[d.id] || {}).obj && CUR[d.id].obj.trim()).length;
+  const obj = D.filter(d => { const x = getCur(d.id); return x.obj && x.obj.trim(); }).length;
   const doc = D.filter(d => {
-    const x = CUR[d.id] || {};
+    const x = getCur(d.id);
     return x.doc && x.doc.trim() && x.pag && x.pag.trim() && x.data && x.data.trim();
   }).length;
   const box = (t, v, st, ok) => `
@@ -1790,11 +1899,11 @@ function renderProtocolo() {
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px">
       ${box('1. Identificação e classificação', `${N} indicadores em ${ax} atividades-fim`, 'Concluída (censo da Portaria nº 571/2026)', true)}
       ${box('2. Completude metodológica', `IAI institucional de ${iai}% (8 elos, N/A excluído)`, 'Concluída; sujeita a dupla codificação (Kappa)', true)}
-      ${box('3. Aderência estratégica', `${obj}/${N} com objetivo estratégico vinculado`, obj === N ? 'Concluída na curadoria local' : 'Pendente: preencher na Ficha metodológica', obj === N)}
-      ${box('4. Seleção para o dashboard', `${c('Atende plenamente')} plenamente · ${c('Atende parcialmente')} parcialmente · ${c('Não atende à auditabilidade')} não atendem`, 'Derivada da reprodutibilidade; seleção final exige etapa 3', false)}
+      ${box('3. Aderência estratégica', `${obj}/${N} vinculados ao Estatuto / eixos`, obj === N ? 'Mapeada (Decreto nº 11.228/2022; refinável na Ficha)' : 'Pendente: preencher na Ficha', obj === N)}
+      ${box('4. Seleção para o dashboard', `${c('Atende plenamente')} plenamente · ${c('Atende parcialmente')} parcialmente · ${c('Não atende à auditabilidade')} não atendem`, 'Enquadramento preliminar + proposições incrementais', obj === N)}
     </div>
     <div class="proto-foot">
-      <span><strong>Status documental do PTT (v${VERSAO}):</strong> fontes curadas (documento, página e data): <strong>${doc}/${N}</strong> · série histórica: pendente (item 3.7) · data de corte: <strong>${CORTE}</strong></span>
+      <span><strong>Status documental do PTT (v${VERSAO}):</strong> fontes documentadas (origem, seção e data): <strong>${doc}/${N}</strong> · linha de base: <strong>Ciclo 2025</strong> (série 2022–2024 pendente de extração) · corte: <strong>${CORTE}</strong></span>
       <button type="button" class="ref-link" onclick="openPttModal('validacao')">Ver protocolo de validação</button>
     </div>`;
 }
@@ -2129,12 +2238,21 @@ function renderDonut(item, fallbackComp) {
   });
 }
 
+function restaurarCuradoria(id) {
+  if (CUR[id]) {
+    delete CUR[id];
+    salvaCur();
+  }
+  renderProtocolo();
+  openModal(id);
+}
+
 function openModal(id) {
   const x = INDICATORS_DATA.find(d => d.id === id);
   if (!x) return;
   trackEvent('abrir_ficha_metodologica', { indicador: id });
 
-  const c = CUR[id] || {};
+  const c = getCur(id);
   const calc = x.id !== 'edu' ? (x.actual / x.meta) * 100 : null;
   const conf = calc == null
     ? 'Não aplicável (metas específicas por modalidade de ensino).'
@@ -2149,7 +2267,7 @@ function openModal(id) {
   ].map(([k, label]) => `
     <div class="m-box">
       <label for="cur_${k}">${label}</label>
-      <input id="cur_${k}" data-id="${esc(id)}" data-k="${k}" value="${esc(c[k] || '')}" placeholder="Preencher para curadoria..." style="width:100%;height:34px;border:1px solid #c5d5dc;border-radius:6px;padding:0 9px;font-size:13px">
+      <input id="cur_${k}" class="cur-input" data-id="${esc(id)}" data-k="${k}" value="${esc(c[k] || '')}">
     </div>`).join('');
 
   el('mTitle').textContent = x.name;
@@ -2170,11 +2288,36 @@ function openModal(id) {
       <div class="m-box full"><label>Fontes Documentais</label><p>${esc(x.source)}</p></div>
       <div class="m-box full solution-box"><label>Parecer analítico e proposição incremental (apoio de IAG · revisão do pesquisador)</label><p>${esc(x.iaRecomendacao || 'Publicar, em repositório aberto integrado ao Observatório, a base processável (.CSV/.JSON), numerador, base de referência, dicionário de filtros e memória de cálculo.')}</p></div>
       <div class="m-box full"><label>Conferência do Atingimento</label><p>${esc(conf)}</p></div>
-      <div class="m-box full"><label>Série Histórica</label><p>Não carregada nesta versão. O projeto (item 3.7) prevê séries históricas e tendências no PTT.</p></div>
+      <div class="m-box full">
+        <label>Série Histórica e Linha de Base (Item 3.7 do Projeto)</label>
+        <div style="overflow-x:auto">
+          <table class="series-table">
+            <thead>
+              <tr>
+                <th>Ciclo 2022</th>
+                <th>Ciclo 2023</th>
+                <th>Ciclo 2024</th>
+                <th>Ciclo 2025 (Linha de base)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="pending-yr">Pendente de extração</td>
+                <td class="pending-yr">Pendente de extração</td>
+                <td class="pending-yr">Pendente de extração</td>
+                <td class="current-yr">${esc(x.actualLabel)} (Meta: ${esc(x.metaLabel)} · ${fmtPct(x.att)})</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="margin-top:7px;font-size:11.5px;color:var(--muted)">O Ciclo 2025 encontra-se consolidado como linha de base a partir da Portaria nº 571/2026. Os ciclos anteriores (2022–2024) permanecem reservados para extração dos Relatórios de Gestão anteriores, sem imputação de dados.</p>
+      </div>
       ${campos}
       <div class="m-box full" style="background:#f8fbfc">
-        <label>Nota sobre a Curadoria Local</label>
-        <p style="font-size:12px;color:var(--muted)">Os 4 campos acima atualizam o card <em>Protocolo de análise</em> e são incluídos automaticamente no arquivo <code>.CSV</code> exportado (salvos localmente neste navegador via <code>localStorage</code>).</p>
+        <div class="cur-bar">
+          <span style="font-size:12px;color:var(--muted)"><strong>Curadoria documental:</strong> campos pré-preenchidos com o vínculo estatutário (Decreto nº 11.228/2022) e a Portaria nº 571/2026. Qualquer ajuste feito acima é salvo localmente e exportado no <code>.CSV</code>.</span>
+          <button type="button" class="btn-ficha" onclick="restaurarCuradoria('${esc(id)}')">↺ Restaurar padrão</button>
+        </div>
       </div>
     </div>
     <div class="ref-note ref-note-spaced">
@@ -2210,10 +2353,10 @@ function exportCSV() {
   const headers = [
     'ID', 'Indicador', 'Atividade_Fim', 'Meta', 'Apurado', 'Atingimento_Pct', 'IAI_Pct',
     'Reprodutibilidade', 'Etapa4', 'Gargalo', 'Polaridade', 'Periodicidade', 'Formula', 'Fonte',
-    ...elos, 'Objetivo_Estrategico', 'Doc_Origem', 'Pagina', 'Data_Consulta', 'Versao', 'Data_Corte'
+    ...elos, 'Objetivo_Estrategico', 'Doc_Origem', 'Pagina_Secao', 'Data_Consulta', 'Versao', 'Data_Corte'
   ];
   const rows = getFilteredData().map(d => {
-    const c = CUR[d.id] || {};
+    const c = getCur(d.id);
     return [
       d.id, d.name, d.activity, d.metaLabel, d.actualLabel,
       d.att != null ? d.att.toFixed(2) : '',
@@ -2276,7 +2419,7 @@ function initControls() {
   window.addEventListener('scroll', () => topo.classList.toggle('on', window.scrollY > 600), { passive: true });
   topo.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
-  // Curadoria local nas fichas
+  // Curadoria local nas fichas (salva alterações em localStorage sobre CUR_DEFAULTS)
   document.addEventListener('change', e => {
     const t = e.target;
     if (t.dataset && t.dataset.k && t.dataset.id) {
