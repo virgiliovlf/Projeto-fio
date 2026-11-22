@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Produto Técnico-Tecnológico (PPGA/UnP) para análise de desempenho, rastreabilidade e auditabilidade dos indicadores institucionais da Fiocruz (Portaria nº 571/2026).">
 <title>Observatório Fiocruz | Painel Integrado de Indicadores de Desempenho</title>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-G8BMMBRLLH"></script>
@@ -23,6 +24,7 @@
   --amber:#e69b28;
   --green:#2f8f6f;
   --red:#c95244;
+  --slate:#6e7f87;
   --bg:#f2f6f8;
   --card:#ffffff;
   --ink:#162d38;
@@ -31,7 +33,19 @@
   --soft:#e8f3f4;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:'Segoe UI',Aptos,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'Segoe UI',Aptos,Arial,sans-serif;
+  font-size:15px;
+  line-height:1.5;
+  font-variant-numeric:tabular-nums;
+  -webkit-font-smoothing:antialiased;
+}
+[id]{scroll-margin-top:64px}
+:focus-visible{outline:3px solid #d98a00;outline-offset:2px}
 
 .topbar{background:var(--navy);color:#fff;padding:14px 28px;border-bottom:4px solid var(--teal-bright);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px}
 .brand-area{display:flex;align-items:center;gap:16px}
@@ -46,7 +60,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Segoe UI',Aptos
   align-items:center;
   gap:6px;
   font-family:inherit;
-  font-size:11px;
+  font-size:12px;
   font-weight:600;
   background:#ffffff14;
   border:1px solid #ffffff38;
@@ -74,7 +88,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Segoe UI',Aptos
   border:1px solid var(--teal-bright);
   padding:7px 13px;
   border-radius:6px;
-  font-size:11px;
+  font-size:12px;
   font-weight:700;
   cursor:pointer;
   transition:.15s;
@@ -90,22 +104,39 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Segoe UI',Aptos
   border:1px solid #63d0cd80;
   padding:7px 12px;
   border-radius:6px;
-  font-size:11px;
+  font-size:12px;
   font-weight:700;
   cursor:pointer;
   transition:.15s;
 }
 .btn-ref:hover{background:#ffffff28;border-color:var(--cyan);transform:translateY(-1px)}
 
-.subbanner{background:#e3eef2;border-bottom:1px solid var(--line);padding:7px 28px;font-size:11px;color:var(--blue);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.subbanner{background:#e3eef2;border-bottom:1px solid var(--line);padding:7px 28px;font-size:12px;color:var(--blue);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
 .container{max-width:1540px;margin:0 auto;padding:18px 26px 36px}
 
-.filter-bar{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(11,52,72,.04);display:grid;grid-template-columns:1.3fr 1.3fr 1fr 0.9fr 0.7fr auto;gap:12px;align-items:end}
-.f-group label{display:block;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:5px}
-.f-group select,.f-group input{width:100%;height:36px;border:1px solid #c5d5dc;border-radius:6px;padding:0 10px;font-size:12px;color:var(--ink);background:#fbfdfe;cursor:pointer}
+/* Barra fixa de navegação por seções e guia rápido */
+.secnav{position:sticky;top:0;z-index:40;display:flex;gap:6px;overflow-x:auto;background:#f2f6f8ee;backdrop-filter:blur(6px);padding:8px 0;margin-bottom:8px;border-bottom:1px solid var(--line)}
+.secnav a{white-space:nowrap;padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--navy);font-weight:700;font-size:13px;text-decoration:none;transition:.15s}
+.secnav a:hover{border-color:var(--teal-bright);background:#f7fcfd}
+
+.dica{display:flex;gap:16px;align-items:center;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-left:4px solid var(--teal-bright);border-radius:10px;padding:10px 14px;margin-bottom:12px;font-size:14px}
+.dica[hidden]{display:none}
+.dica ol{margin:0;padding-left:18px;display:flex;gap:22px;flex-wrap:wrap}
+
+.contexto{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0 2px 12px;font-size:13px;color:var(--muted)}
+.chip{background:var(--soft);color:var(--blue);border:1px solid #bfe0e2;border-radius:999px;padding:3px 10px;font-weight:700;font-size:12px;cursor:pointer}
+.chip:hover{background:#d7ecee}
+
+.topbtt{position:fixed;right:16px;bottom:16px;z-index:45;width:44px;height:44px;border-radius:50%;border:0;background:var(--navy);color:#fff;font-size:18px;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.25);display:none}
+.topbtt.on{display:block}
+
+/* Filtros */
+.filter-bar{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(11,52,72,.04);display:grid;grid-template-columns:1.3fr 1.3fr 1fr 0.9fr 0.7fr auto;gap:12px;align-items:end}
+.f-group label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:5px}
+.f-group select,.f-group input{width:100%;height:40px;border:1px solid #c5d5dc;border-radius:6px;padding:0 10px;font-size:14px;color:var(--ink);background:#fbfdfe;cursor:pointer}
 .f-group select:focus,.f-group input:focus{outline:none;border-color:var(--teal-bright);background:#fff}
 .f-actions{display:flex;gap:6px}
-.btn{height:36px;padding:0 14px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;border:none}
+.btn{height:40px;padding:0 14px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;border:none}
 .btn-primary{background:var(--blue);color:#fff}
 .btn-primary:hover{background:var(--navy)}
 .btn-ghost{background:#f0f5f7;color:var(--navy);border:1px solid #c5d5dc}
@@ -117,132 +148,142 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Segoe UI',Aptos
 .axis-pill:hover{border-color:var(--teal-bright);background:#f7fcfd;transform:translateY(-1px)}
 .axis-pill.active{background:var(--navy);border-color:var(--navy);color:#fff}
 .axis-pill.active .axis-title,.axis-pill.active .axis-count{color:#fff}
-.axis-title{font-size:10px;font-weight:700;color:var(--navy);display:block;line-height:1.2}
-.axis-count{font-size:10px;font-weight:600;color:var(--muted);display:block;margin-top:2px}
+.axis-title{font-size:11px;font-weight:700;color:var(--navy);display:block;line-height:1.25}
+.axis-count{font-size:11px;font-weight:600;color:var(--muted);display:block;margin-top:2px}
 
-.section-ref-bar{display:flex;justify-content:flex-end;align-items:center;gap:8px;margin:0 2px 14px;font-size:10.5px;color:var(--muted);flex-wrap:wrap}
+.section-ref-bar{display:none;justify-content:flex-end;align-items:center;gap:8px;margin:0 2px 14px;font-size:11px;color:var(--muted);flex-wrap:wrap}
 
-.kpi-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:6px}
-.kpi-card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:14px 16px;position:relative;overflow:hidden;box-shadow:0 2px 8px rgba(11,52,72,.04);transition:border-color .2s}
+/* Faixa de KPIs */
+.kpi-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:12px}
+.kpi-card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;position:relative;overflow:hidden;box-shadow:0 2px 8px rgba(11,52,72,.04);transition:border-color .2s}
 .kpi-card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--teal)}
 .kpi-card.good::before{background:var(--green)}
 .kpi-card.warn::before{background:var(--amber)}
 .kpi-card.bad::before{background:var(--red)}
 .kpi-card.navy::before{background:var(--navy)}
-.kpi-top{display:flex;justify-content:space-between;align-items:center;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;gap:6px}
-.kpi-val{font-size:28px;font-weight:800;color:var(--navy);margin:6px 0 3px;line-height:1.1}
-.kpi-sub{font-size:11px;color:var(--muted)}
+.kpi-top{display:flex;justify-content:space-between;align-items:center;font-size:11.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;gap:6px}
+.kpi-val{font-size:30px;font-weight:800;color:var(--navy);margin:6px 0 3px;line-height:1.1}
+.kpi-sub{font-size:12px;color:var(--muted)}
 
 /* Semáforo do Índice de Auditabilidade Institucional */
-.audit-badge{font-size:9.5px;font-weight:800;padding:2px 7px;border-radius:50px;color:#fff;letter-spacing:.4px;white-space:nowrap}
+.audit-badge{font-size:10px;font-weight:800;padding:2px 8px;border-radius:50px;color:#fff;letter-spacing:.4px;white-space:nowrap}
 .audit-badge.good{background:var(--green)}
 .audit-badge.warn{background:var(--amber)}
 .audit-badge.bad{background:var(--red)}
-.audit-scale{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;padding-top:5px;border-top:1px dashed #e2ecf0;font-size:9.5px;font-weight:600;color:var(--muted)}
+.audit-scale{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px;padding-top:5px;border-top:1px dashed #e2ecf0;font-size:11px;font-weight:600;color:var(--muted)}
 .audit-scale span{display:inline-flex;align-items:center;gap:3px}
 
-/* Card de Inovação do Produto (Comparativo Visual Tradicional vs PTT) */
-.innovation-card{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--teal-bright);border-radius:8px;padding:15px 18px;margin-bottom:14px;box-shadow:0 2px 8px rgba(11,52,72,.04)}
+/* Card de Inovação do Produto (Tradicional vs PTT) */
+.innovation-card{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--teal-bright);border-radius:12px;padding:18px 20px;margin-bottom:14px;box-shadow:0 2px 8px rgba(11,52,72,.04)}
 .inno-grid{display:grid;grid-template-columns:0.85fr 2.15fr;gap:14px;align-items:stretch}
-.inno-col{border-radius:7px;padding:12px 14px;display:flex;flex-direction:column;justify-content:space-between}
+.inno-col{border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;justify-content:space-between}
 .inno-col.trad{background:#f6f8fa;border:1px solid #d9e2e7}
 .inno-col.ptt{background:#f0f9f8;border:1.5px solid #9ad7d2}
 .inno-col-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap}
-.inno-col-title{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.4px}
+.inno-col-title{font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:.4px}
 .inno-col.trad .inno-col-title{color:var(--muted)}
 .inno-col.ptt .inno-col-title{color:var(--navy)}
-.inno-tag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px}
+.inno-tag{font-size:10.5px;font-weight:700;padding:2px 8px;border-radius:4px}
 .inno-col.trad .inno-tag{background:#e4ebef;color:#4f646e}
 .inno-col.ptt .inno-tag{background:var(--teal);color:#fff}
 
 .flow-vertical{display:flex;flex-direction:column;align-items:center;gap:4px;margin:auto 0}
-.flow-box{width:100%;max-width:210px;text-align:center;padding:7px 10px;border-radius:6px;font-size:12px;font-weight:700}
+.flow-box{width:100%;max-width:220px;text-align:center;padding:8px 10px;border-radius:6px;font-size:13px;font-weight:700}
 .inno-col.trad .flow-box{background:#fff;border:1px solid #cbd6dc;color:var(--ink)}
 .flow-arrow-v{font-size:14px;font-weight:800;color:#8ba1ab;line-height:1}
 
 .ptt-dual-flow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .ptt-subflow{background:#ffffffcc;border:1px solid #cbe7e4;border-radius:6px;padding:8px 10px}
-.ptt-subflow-label{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;color:var(--blue);text-align:center;margin-bottom:6px}
+.ptt-subflow-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;color:var(--blue);text-align:center;margin-bottom:6px}
 .ptt-subflow.emp .ptt-subflow-label{color:var(--teal)}
-.ptt-step-pill{width:100%;text-align:center;padding:5px 8px;border-radius:5px;font-size:11.5px;font-weight:700;background:#fff;border:1px solid #b8dedb;color:var(--navy);cursor:pointer;transition:.15s}
+.ptt-step-pill{width:100%;text-align:center;padding:6px 8px;border-radius:5px;font-size:12px;font-weight:700;background:#fff;border:1px solid #b8dedb;color:var(--navy);cursor:pointer;transition:.15s}
 .ptt-step-pill:hover{background:var(--navy);color:#fff;border-color:var(--navy);transform:translateY(-1px)}
 .ptt-subflow.emp .ptt-step-pill{border-color:#7ccbc5;background:#f7fcfc}
 .ptt-subflow.emp .ptt-step-pill:hover{background:var(--teal);color:#fff;border-color:var(--teal)}
 .flow-arrow-teal{font-size:12px;font-weight:800;color:var(--teal);line-height:1;text-align:center}
-.inno-foot{margin-top:10px;font-size:11px;color:var(--muted);text-align:center}
+.inno-foot{margin-top:10px;font-size:12px;color:var(--muted);text-align:center}
 .inno-col.ptt .inno-foot{color:var(--blue);font-weight:600}
 
+/* Cards gerais */
 .viz-grid-main{display:grid;grid-template-columns:1.35fr 1.05fr;gap:14px;margin-bottom:14px}
 .viz-grid-sub{display:grid;grid-template-columns:1.38fr 0.92fr;gap:14px;margin-bottom:14px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:16px 18px;box-shadow:0 2px 8px rgba(11,52,72,.04);display:flex;flex-direction:column;transition:box-shadow .25s ease, border-color .25s ease}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 20px;box-shadow:0 2px 8px rgba(11,52,72,.04);display:flex;flex-direction:column;transition:box-shadow .25s ease, border-color .25s ease}
 .card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;gap:10px}
-.card-title{font-size:15px;font-weight:700;color:var(--navy);margin:0}
-.card-subtitle{font-size:11px;color:var(--muted);margin:3px 0 0}
-.badge-info{font-size:10px;font-weight:700;background:var(--soft);color:var(--blue);padding:4px 8px;border-radius:4px;white-space:nowrap}
+.card-title{font-size:16px;font-weight:700;color:var(--navy);margin:0}
+.card-subtitle{font-size:12.5px;color:var(--muted);margin:3px 0 0}
+.badge-info{font-size:11px;font-weight:700;background:var(--soft);color:var(--blue);padding:4px 9px;border-radius:5px;white-space:nowrap}
 
-/* Dica discreta de interação (UX Affordance) */
-.ux-hint{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:600;color:var(--blue);background:#eef7f8;border:1px solid #cbe4e6;padding:3px 8px;border-radius:5px;white-space:nowrap}
+.ux-hint{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;color:var(--blue);background:#eef7f8;border:1px solid #cbe4e6;padding:4px 9px;border-radius:5px;white-space:nowrap}
 
-/* Destaque ao atualizar a Trilha */
 @keyframes pulseChain {
   0% { box-shadow: 0 0 0 0 rgba(0, 166, 166, 0.45); border-color: var(--teal-bright); }
   70% { box-shadow: 0 0 0 8px rgba(0, 166, 166, 0); border-color: var(--teal-bright); }
   100% { box-shadow: 0 2px 8px rgba(11, 52, 72, .04); border-color: var(--line); }
 }
-.card.pulse-update {
-  animation: pulseChain 0.85s ease-out;
-}
+.card.pulse-update { animation: pulseChain 0.85s ease-out; }
 
-/* Rodapé metodológico discreto dentro dos cards */
-.ref-note{margin-top:auto;padding-top:10px;border-top:1px dashed #d8e5ea;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;font-size:10.5px;color:var(--muted)}
+/* Rodapés metodológicos (alternáveis via botão "Mostrar fundamentação") */
+.ref-note{display:none;margin-top:auto;padding-top:10px;border-top:1px dashed #d8e5ea;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;font-size:11px;color:var(--muted)}
 .ref-note-spaced{margin-top:12px}
-.ref-link{background:none;border:none;padding:0;color:var(--blue);font-size:10.5px;font-weight:700;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.elo-ref-line{display:none;margin-top:9px;padding-top:7px;border-top:1px solid #e3ecef;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;font-size:11px;color:var(--muted)}
+body.mostrar-base .ref-note,
+body.mostrar-base .section-ref-bar,
+body.mostrar-base .elo-ref-line{display:flex}
+
+/* Rodapé operacional sempre visível (Protocolo e Nota N/A) */
+.proto-foot{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px;padding-top:10px;border-top:1px dashed #d8e5ea;font-size:12px;color:var(--muted)}
+
+.ref-link{background:none;border:none;padding:0;color:var(--blue);font-size:11.5px;font-weight:700;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
 .ref-link:hover{color:var(--teal)}
 
-.bullet-list{display:grid;gap:10px;margin-top:12px;margin-bottom:12px;max-height:420px;overflow-y:auto;padding:6px 4px 4px 0}
-.bullet-item{display:grid;grid-template-columns:220px 1fr 72px;align-items:center;gap:12px;font-size:12px;padding:6px 8px;border-radius:6px;border:1px solid transparent;cursor:pointer;transition:.15s}
+/* Legenda e gráfico de barras de execução */
+.leg-bar{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin:2px 0 4px}
+.leg-bar i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:5px}
+.bullet-list{display:grid;gap:10px;margin-top:10px;margin-bottom:12px;max-height:420px;overflow-y:auto;padding:6px 4px 4px 0}
+.bullet-item{display:grid;grid-template-columns:minmax(180px,240px) 1fr 78px;align-items:center;gap:12px;font-size:13px;padding:6px 8px;border-radius:6px;border:1px solid transparent;cursor:pointer;transition:.15s}
 .bullet-item:hover{background:#f3f9fa;border-color:#cfe4e7}
 .bullet-item.active-bullet{background:#e7f4f5;border-color:var(--teal-bright);box-shadow:inset 3px 0 0 var(--teal)}
 .bullet-label{font-weight:600;color:var(--ink);line-height:1.25}
-.bullet-label small{display:block;font-size:10px;color:var(--muted);font-weight:400}
+.bullet-label small{display:block;font-size:11.5px;color:var(--muted);font-weight:400}
 .bullet-track{height:20px;background:#e8eff2;border-radius:4px;position:relative}
 .bullet-fill{height:100%;border-radius:4px;transition:width .4s ease}
 .bullet-target{position:absolute;left:40%;top:-4px;bottom:-4px;width:2.5px;background:var(--navy);z-index:2}
-.bullet-target::after{content:"100%";position:absolute;top:-14px;left:-11px;font-size:9px;font-weight:800;color:var(--navy)}
-.bullet-val{text-align:right;font-weight:800;font-size:13px;color:var(--navy)}
+.bullet-target::after{content:"100%";position:absolute;top:-15px;left:-12px;font-size:10px;font-weight:800;color:var(--navy)}
+.bullet-val{text-align:right;font-weight:800;font-size:13.5px;color:var(--navy)}
 
-.table-clean{width:100%;border-collapse:collapse;font-size:12px}
-.table-clean th{text-align:left;font-size:10px;text-transform:uppercase;color:var(--muted);padding:8px 10px;border-bottom:2px solid var(--line);background:#f7fafb;position:sticky;top:0;z-index:1}
+/* Tabelas */
+.table-clean{width:100%;border-collapse:collapse;font-size:13.5px}
+.table-clean th{text-align:left;font-size:11px;text-transform:uppercase;color:var(--muted);padding:8px 10px;border-bottom:2px solid var(--line);background:#f7fafb;position:sticky;top:0;z-index:1}
 .table-clean td{padding:9px 10px;border-bottom:1px solid #edf2f5;vertical-align:middle;transition:background .15s}
-
-/* Linhas interativas e linha selecionada na trilha */
 .interactive-table tbody tr{cursor:pointer}
 .interactive-table tbody tr:hover td{background:#f1f8f9}
 .interactive-table tbody tr.active-row td{background:#e6f4f5;border-bottom-color:#bce0e3}
 .interactive-table tbody tr.active-row td:first-child{box-shadow:inset 4px 0 0 var(--teal-bright)}
 
-.track-btn{display:inline-flex;align-items:center;gap:4px;padding:4px 9px;border-radius:5px;font-size:10.5px;font-weight:700;border:1px solid #c3dde0;background:#fff;color:var(--blue);white-space:nowrap;transition:.15s}
+.track-btn{display:inline-flex;align-items:center;gap:4px;padding:4px 9px;border-radius:5px;font-size:11px;font-weight:700;border:1px solid #c3dde0;background:#fff;color:var(--blue);white-space:nowrap;transition:.15s}
 .interactive-table tbody tr:hover .track-btn{background:var(--blue);color:#fff;border-color:var(--blue)}
 .interactive-table tbody tr.active-row .track-btn{background:var(--teal);color:#fff;border-color:var(--teal)}
 
-.pill{display:inline-block;padding:3px 9px;border-radius:50px;font-size:10px;font-weight:800;color:#fff;white-space:nowrap}
+.pill{display:inline-block;padding:3px 10px;border-radius:50px;font-size:11px;font-weight:800;color:#fff;white-space:nowrap}
 .pill.partial{background:var(--amber)}
 .pill.no{background:var(--red)}
 .pill.yes{background:var(--green)}
+.pill.yes::before{content:"✓ "}
+.pill.partial::before{content:"◐ "}
+.pill.no::before{content:"✕ "}
 
-/* Faixa de contexto do indicador selecionado dentro da Trilha */
+/* Trilha de 8 elos */
 .trilha-focus-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:#eef6f8;border:1px solid #cde1e6;border-left:4px solid var(--teal-bright);border-radius:6px;padding:9px 12px;margin-bottom:8px}
 .trilha-focus-info{display:flex;flex-direction:column;gap:2px}
-.trilha-focus-kicker{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--teal)}
-.trilha-focus-name{font-size:13px;font-weight:700;color:var(--navy)}
-.trilha-focus-stats{font-size:11px;color:var(--muted)}
+.trilha-focus-kicker{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--teal)}
+.trilha-focus-name{font-size:14px;font-weight:700;color:var(--navy)}
+.trilha-focus-stats{font-size:12px;color:var(--muted)}
 .trilha-quick-select{display:flex;align-items:center;gap:6px}
-.trilha-quick-select label{font-size:10px;font-weight:700;text-transform:uppercase;color:var(--muted);white-space:nowrap}
-.trilha-quick-select select{height:30px;max-width:250px;border:1px solid #bfd5dc;border-radius:5px;padding:0 8px;font-size:11.5px;font-weight:600;color:var(--navy);background:#fff;cursor:pointer}
+.trilha-quick-select label{font-size:11px;font-weight:700;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.trilha-quick-select select{height:34px;max-width:260px;border:1px solid #bfd5dc;border-radius:5px;padding:0 8px;font-size:12.5px;font-weight:600;color:var(--navy);background:#fff;cursor:pointer}
 
-/* Agrupamento teórico das 2 camadas dos 8 elos */
 .chain-layers{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:4px;margin-bottom:4px}
-.chain-layer-tag{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.45px;padding:4px 8px;border-radius:5px;text-align:center}
+.chain-layer-tag{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.45px;padding:4px 8px;border-radius:5px;text-align:center}
 .chain-layer-tag.norm{background:#eaf3f7;color:var(--blue);border:1px solid #cbe0e9}
 .chain-layer-tag.repro{background:#eaf6f4;color:var(--teal);border:1px solid #bfe3de}
 
@@ -251,13 +292,12 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Segoe UI',Aptos
 .chain-step:not(:last-child)::after{content:"›";position:absolute;right:-8px;top:50%;transform:translateY(-50%);font-size:14px;font-weight:800;color:#8ba4ae;pointer-events:none}
 .chain-step:hover{transform:translateY(-2px);box-shadow:0 5px 12px rgba(11,52,72,.12);border-color:var(--blue)}
 .chain-step.active-elo{outline:2.5px solid var(--navy);outline-offset:1px;background:#fff;transform:translateY(-2px);box-shadow:0 5px 14px rgba(11,52,72,.14)}
-.chain-step .st-num{font-size:9px;font-weight:800;color:var(--muted);margin-bottom:3px}
-.chain-step .st-name{font-size:11px;font-weight:700;color:var(--navy);margin-bottom:2px}
-.chain-step .st-desc{display:block;font-size:9px;color:var(--muted);margin-bottom:5px;line-height:1.15}
-.chain-step .st-status{font-size:10px;font-weight:800;margin-bottom:5px}
-.chain-step .st-cta{display:block;font-size:9px;font-weight:700;padding:2px 4px;border-radius:4px;background:rgba(11,52,72,.06);color:var(--navy);transition:.15s}
-.chain-step:hover .st-cta{background:var(--navy);color:#fff}
-.chain-step.active-elo .st-cta{background:var(--navy);color:#fff}
+.chain-step .st-num{font-size:10px;font-weight:800;color:var(--muted);margin-bottom:3px}
+.chain-step .st-name{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:2px}
+.chain-step .st-desc{display:block;font-size:10.5px;color:var(--muted);margin-bottom:5px;line-height:1.15}
+.chain-step .st-status{font-size:10.5px;font-weight:800;margin-bottom:5px}
+.chain-step .st-cta{display:block;font-size:10.5px;font-weight:700;padding:2px 4px;border-radius:4px;background:rgba(11,52,72,.06);color:var(--navy);transition:.15s}
+.chain-step:hover .st-cta,.chain-step.active-elo .st-cta{background:var(--navy);color:#fff}
 
 .chain-step.ok{background:#e7f5ef;border-color:#b2decb}
 .chain-step.ok .st-status{color:var(--green)}
@@ -265,29 +305,33 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Segoe UI',Aptos
 .chain-step.part .st-status{color:#b8740e}
 .chain-step.miss{background:#fdeceb;border-color:#efb9b3}
 .chain-step.miss .st-status{color:var(--red)}
+.chain-step.na{background:#eef2f4;border-color:#cbd6dc}
+.chain-step.na .st-status{color:var(--slate)}
 
-.elo-detail-box{margin-top:12px;border-radius:7px;padding:12px 14px;background:#f7fafb;border:1px solid var(--line);border-left:4px solid var(--navy);font-size:12px}
+.elo-detail-box{margin-top:12px;border-radius:7px;padding:12px 14px;background:#f7fafb;border:1px solid var(--line);border-left:4px solid var(--navy);font-size:13px}
 .elo-detail-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:8px;flex-wrap:wrap}
 .elo-detail-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.elo-detail-col{background:#fff;border:1px solid #e3ecef;border-radius:6px;padding:9px 11px}
-.elo-detail-col strong{display:block;font-size:10px;text-transform:uppercase;color:var(--blue);letter-spacing:.4px;margin-bottom:4px}
-.elo-ref-line{margin-top:9px;padding-top:7px;border-top:1px solid #e3ecef;display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;font-size:10.5px;color:var(--muted)}
-.elo-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;margin-bottom:10px;padding-top:8px;border-top:1px solid #edf2f5;font-size:10.5px;color:var(--muted);align-items:center}
+.elo-detail-col{background:#fff;border:1px solid #e3ecef;border-radius:6px;padding:10px 12px}
+.elo-detail-col strong{display:block;font-size:10.5px;text-transform:uppercase;color:var(--blue);letter-spacing:.4px;margin-bottom:4px}
+.elo-legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;margin-bottom:10px;padding-top:8px;border-top:1px solid #edf2f5;font-size:11.5px;color:var(--muted);align-items:center}
 
+/* Gráfico Donut */
 .donut-box{display:flex;align-items:center;gap:22px;padding:6px 0 12px}
 .canvas-donut{width:155px!important;height:155px!important}
-.legend-list{display:grid;gap:8px;font-size:12px}
+.legend-list{display:grid;gap:8px;font-size:13px}
 .legend-row{display:flex;align-items:center;gap:8px}
-.dot{width:11px;height:11px;border-radius:3px;display:inline-block}
+.dot{width:11px;height:11px;border-radius:3px;display:inline-block;flex-shrink:0}
 
+/* Catálogo */
 .catalog-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}
-.search-box{width:340px;max-width:100%;height:36px;border:1px solid #c5d5dc;border-radius:6px;padding:0 12px;font-size:12px}
-.btn-ficha{background:var(--soft);color:var(--blue);border:1px solid #bfe0e2;padding:5px 10px;border-radius:5px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap}
+.search-box{width:340px;max-width:100%;height:38px;border:1px solid #c5d5dc;border-radius:6px;padding:0 12px;font-size:13.5px}
+.btn-ficha{background:var(--soft);color:var(--blue);border:1px solid #bfe0e2;padding:6px 10px;border-radius:5px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
 .btn-ficha:hover{background:var(--teal-bright);color:#fff;border-color:var(--teal-bright)}
 
+/* Modais */
 .modal{display:none;position:fixed;inset:0;background:rgba(9,35,48,.72);z-index:100;padding:24px;overflow-y:auto;backdrop-filter:blur(2px)}
 .modal.open{display:block}
-.modal-dialog{max-width:1040px;background:#fff;margin:10px auto;border-radius:10px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.modal-dialog{max-width:1040px;background:#fff;margin:10px auto;border-radius:12px;overflow:hidden;box-shadow:0 20px 50px rgba(0,0,0,.3)}
 .modal-header{background:linear-gradient(120deg,var(--navy),var(--blue));color:#fff;padding:18px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:4px solid var(--teal-bright)}
 .modal-header h2{margin:4px 0 0;font-size:19px}
 .modal-close{background:#ffffff1c;border:1px solid #ffffff38;color:#fff;padding:7px 14px;border-radius:6px;cursor:pointer;font-weight:700}
@@ -295,33 +339,33 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Segoe UI',Aptos
 .m-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .m-box{border:1px solid var(--line);border-radius:7px;padding:12px 14px;background:#fcfdfe}
 .m-box.full{grid-column:1/-1}
-.m-box label{display:block;font-size:10px;font-weight:800;text-transform:uppercase;color:var(--teal);letter-spacing:.6px;margin-bottom:5px}
-.m-box p,.m-box div{margin:0;font-size:12.5px;line-height:1.5;color:var(--ink)}
-.formula-code{background:var(--navy) !important;color:#ffffff !important;padding:12px 14px;border-radius:6px;font-family:Consolas,monospace;font-size:12.5px;line-height:1.5;margin-top:4px}
+.m-box label{display:block;font-size:10.5px;font-weight:800;text-transform:uppercase;color:var(--teal);letter-spacing:.6px;margin-bottom:5px}
+.m-box p,.m-box div{margin:0;font-size:13px;line-height:1.5;color:var(--ink)}
+.formula-code{background:var(--navy) !important;color:#ffffff !important;padding:12px 14px;border-radius:6px;font-family:Consolas,monospace;font-size:13px;line-height:1.5;margin-top:4px}
 .solution-box{background:#eaf6f4;border-color:#b4dfd8}
 
 /* Abas do Modal de Defesa / Arquitetura PTT */
 .ptt-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;border-bottom:2px solid var(--line);padding-bottom:10px}
-.ptt-tab-btn{background:#f0f5f7;color:var(--navy);border:1px solid #c5d5dc;padding:8px 14px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;transition:.15s}
+.ptt-tab-btn{background:#f0f5f7;color:var(--navy);border:1px solid #c5d5dc;padding:8px 14px;border-radius:6px;font-size:12.5px;font-weight:700;cursor:pointer;transition:.15s}
 .ptt-tab-btn:hover{background:#e2ecef}
 .ptt-tab-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
 .ptt-tab-panel{display:none}
 .ptt-tab-panel.active{display:block}
 
 .modal-actions-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
-.btn-modal-action{background:var(--blue);color:#fff;border:none;padding:8px 14px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn-modal-action{background:var(--blue);color:#fff;border:none;padding:8px 14px;border-radius:6px;font-size:12.5px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
 .btn-modal-action:hover{background:var(--navy)}
-.btn-modal-secondary{background:var(--soft);color:var(--blue);border:1px solid #bfe0e2;padding:8px 14px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.btn-modal-secondary{background:var(--soft);color:var(--blue);border:1px solid #bfe0e2;padding:8px 14px;border-radius:6px;font-size:12.5px;font-weight:700;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px}
 .btn-modal-secondary:hover{background:#d7ecee}
 
 .ref-section-title{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:var(--blue);margin:16px 0 8px}
 .ref-section-title:first-child{margin-top:0}
 .abnt-list{list-style:none;margin:0;padding:0;display:grid;gap:10px}
-.abnt-list li{font-size:12.5px;line-height:1.55;color:var(--ink);padding:10px 12px;background:#f8fbfc;border:1px solid #e1ecf0;border-left:3px solid var(--teal);border-radius:6px}
+.abnt-list li{font-size:13px;line-height:1.55;color:var(--ink);padding:10px 12px;background:#f8fbfc;border:1px solid #e1ecf0;border-left:3px solid var(--teal);border-radius:6px}
 .abnt-list a{color:var(--blue);word-break:break-all}
-.ptt-note{margin-top:14px;padding:11px 14px;background:#eaf6f4;border:1px solid #b4dfd8;border-radius:6px;font-size:12px;line-height:1.5;color:var(--ink)}
+.ptt-note{margin-top:14px;padding:11px 14px;background:#eaf6f4;border:1px solid #b4dfd8;border-radius:6px;font-size:12.5px;line-height:1.5;color:var(--ink)}
 
-footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:var(--muted);line-height:1.5}
+footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:12px;color:var(--muted);line-height:1.5}
 
 @media(max-width:1100px){
   .filter-bar{grid-template-columns:repeat(2,1fr)}
@@ -333,6 +377,27 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
   .chain-grid{grid-template-columns:repeat(4,1fr)}
   .chain-step::after{display:none}
   .elo-detail-grid,.m-grid{grid-template-columns:1fr}
+}
+@media(max-width:700px){
+  .modal{padding:0}
+  .modal-dialog{margin:0;border-radius:0;min-height:100%}
+  .container{padding:12px}
+  .topbar{padding:12px 14px}
+  .meta-pills{width:100%}
+  .btn-top-pill,.btn-export,.btn-ref{flex:1 1 45%;justify-content:center}
+  .bullet-item{grid-template-columns:1fr}
+  .kpi-strip{grid-template-columns:1fr 1fr}
+  .chain-grid{grid-template-columns:repeat(2,1fr)}
+  .donut-box{flex-direction:column;align-items:flex-start}
+  .search-box{width:100%}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media print{
+  .topbar,.secnav,.dica,.filter-bar,.axis-bar,.btn-ficha,.topbtt,.search-box,.contexto{display:none!important}
+  .ref-note,.section-ref-bar,.elo-ref-line{display:flex!important}
+  .card,.innovation-card{break-inside:avoid;box-shadow:none}
+  body{background:#fff}
+  .modal{display:none!important}
 }
 </style>
 </head>
@@ -351,27 +416,49 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
     <button type="button" class="btn-top-pill" onclick="openPttModal('elos')" title="Justificativa dos 8 elos, protocolo de validação e arquitetura de implantação na Fiocruz">📐 Validação &amp; Implantação</button>
     <button type="button" class="btn-top-pill" id="lastSync" onclick="openSyncModal()" title="Clique para ver o status de atualização dos dados e da auditoria IA">🔄 Atualização: Dados estruturados</button>
     <button type="button" class="btn-ref" onclick="openRefModal()">📚 Referências (ABNT)</button>
+    <button type="button" class="btn-top-pill" id="btnBase" aria-pressed="false">📚 Mostrar fundamentação</button>
     <button type="button" class="btn-export" onclick="exportCSV()">⬇ Exportar Base (.CSV)</button>
   </div>
 </header>
 
 <div class="subbanner">
   <span><strong>Nota Metodológica:</strong> Produto Técnico-Tecnológico (Mestrado Acadêmico em Administração — PPGA/UnP). Não substitui os painéis oficiais da Fiocruz.</span>
-  <span>Lacunas documentais são registradas explicitamente, sem imputação ou simulação de dados.</span>
+  <span>Lacuna = não localizado nas fontes públicas examinadas (não implica inexistência interna). Sem imputação de dados.</span>
 </div>
 
 <main class="container">
-  <section class="filter-bar">
+  <nav class="secnav" aria-label="Seções do painel">
+    <a href="#resumo">Resumo</a>
+    <a href="#protocolo">Protocolo de análise</a>
+    <a href="#execucao">Execução das metas</a>
+    <a href="#chainCard">Trilha dos 8 elos</a>
+    <a href="#catalogo">Catálogo</a>
+  </nav>
+
+  <div id="dica" class="dica" role="note">
+    <strong>Como ler o painel:</strong>
+    <ol>
+      <li>Escolha um eixo ou use os filtros</li>
+      <li>Clique em um indicador</li>
+      <li>Inspecione os 8 elos e abra a Ficha</li>
+    </ol>
+    <button type="button" class="btn btn-ghost" id="dicaOk">Entendi</button>
+  </div>
+
+  <div id="contexto" class="contexto" aria-live="polite"></div>
+  <button type="button" class="topbtt" id="topo" aria-label="Voltar ao topo">↑</button>
+
+  <section class="filter-bar" aria-label="Filtros do painel">
     <div class="f-group">
-      <label>Atividade-Fim (Eixo Estratégico)</label>
+      <label for="fActivity">Atividade-Fim (Eixo Estratégico)</label>
       <select id="fActivity"></select>
     </div>
     <div class="f-group">
-      <label>Indicador de Desempenho</label>
+      <label for="fIndicator">Indicador de Desempenho</label>
       <select id="fIndicator"></select>
     </div>
     <div class="f-group">
-      <label>Grau de Reprodutibilidade</label>
+      <label for="fRepro">Grau de Reprodutibilidade</label>
       <select id="fRepro">
         <option value="">Todos os graus</option>
         <option value="Disponível">Disponível</option>
@@ -380,14 +467,14 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
       </select>
     </div>
     <div class="f-group">
-      <label>Polaridade</label>
+      <label for="fPolarity">Polaridade</label>
       <select id="fPolarity">
         <option value="">Todas</option>
         <option value="Maior melhor">Maior melhor</option>
       </select>
     </div>
     <div class="f-group">
-      <label>Ciclo Avaliativo</label>
+      <label for="fCycle">Ciclo Avaliativo</label>
       <select id="fCycle">
         <option value="2025">2025</option>
       </select>
@@ -399,7 +486,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
   </section>
 
   <!-- Barra de Eixos Estratégicos (7 eixos da Portaria nº 571/2026) -->
-  <section class="axis-bar" id="axisBarContainer">
+  <section class="axis-bar" id="axisBarContainer" aria-label="Atalhos por eixo estratégico">
     <div class="axis-pill active" onclick="filtrarPorEixo('', this)">
       <span class="axis-title">Todos os Eixos</span>
       <span class="axis-count">15 indicadores</span>
@@ -434,8 +521,8 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
     <button type="button" class="ref-link" onclick="openRefModal()">Ver ABNT</button>
   </div>
 
-  <!-- Faixa de KPIs com o novo Índice de Auditabilidade Institucional -->
-  <section class="kpi-strip">
+  <!-- Faixa de KPIs com o Índice de Auditabilidade Institucional (IAI) -->
+  <section class="kpi-strip" id="resumo">
     <div class="kpi-card navy">
       <div class="kpi-top"><span>Indicadores Monitorados</span><span>TOTAL</span></div>
       <div class="kpi-val" id="kpiTotal">15</div>
@@ -443,30 +530,30 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
     </div>
     <div class="kpi-card good">
       <div class="kpi-top"><span>Atingimento Médio</span><span>META = 100%</span></div>
-      <div class="kpi-val" id="kpiAvg">127,48%</div>
-      <div class="kpi-sub">Média dos 15 indicadores da Portaria</div>
+      <div class="kpi-val" id="kpiAvg">127,28%</div>
+      <div class="kpi-sub">Média aritmética dos 15 indicadores</div>
     </div>
     <div class="kpi-card warn">
       <div class="kpi-top"><span>Reprodução Parcial</span><span>RESTRIÇÃO</span></div>
       <div class="kpi-val" id="kpiPartial">12</div>
-      <div class="kpi-sub">Denominador ou filtro parcial</div>
+      <div class="kpi-sub">Base de referência ou filtro parcial</div>
     </div>
     <div class="kpi-card bad">
-      <div class="kpi-top"><span>Não Reproduzíveis</span><span>OPACIDADE</span></div>
+      <div class="kpi-top"><span>Não Reproduzíveis</span><span>LACUNA PÚBLICA</span></div>
       <div class="kpi-val" id="kpiNo">2</div>
-      <div class="kpi-sub">Sem base pública de cálculo</div>
+      <div class="kpi-sub">Sem base pública localizada</div>
     </div>
     <div class="kpi-card warn" id="kpiAuditCard">
       <div class="kpi-top">
-        <span>Índice de Auditabilidade</span>
-        <span class="audit-badge warn" id="kpiAuditBadge">PARCIAL</span>
+        <span>Índice de Auditabilidade (IAI)</span>
+        <span class="audit-badge warn" id="kpiAuditBadge">PARCIAL*</span>
       </div>
       <div class="kpi-val" id="kpiComp">65%</div>
-      <div class="kpi-sub" id="kpiAuditSub">Institucional (média dos 8 elos)</div>
-      <div class="audit-scale" title="Faixas de classificação do Índice de Auditabilidade Institucional">
-        <span><strong style="color:var(--green)">●</strong> &gt;80% Alta</span>
-        <span><strong style="color:var(--amber)">●</strong> 60–80% Parcial</span>
-        <span><strong style="color:var(--red)">●</strong> &lt;60% Baixa</span>
+      <div class="kpi-sub" id="kpiAuditSub">Faixas interpretativas provisórias</div>
+      <div class="audit-scale" title="Faixas interpretativas provisórias do Índice de Auditabilidade Institucional">
+        <span><strong style="color:var(--green)">●</strong> &gt;80% Alta*</span>
+        <span><strong style="color:var(--amber)">●</strong> 60–80% Parcial*</span>
+        <span><strong style="color:var(--red)">●</strong> &lt;60% Baixa*</span>
       </div>
     </div>
   </section>
@@ -480,13 +567,12 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
     <div class="card-header" style="margin-bottom:10px">
       <div>
         <h2 class="card-title">Inovação do Produto Técnico-Tecnológico (PTT)</h2>
-        <p class="card-subtitle">Evolução do modelo declaratório tradicional para a arquitetura de rastreabilidade auditável em 8 elos</p>
+        <p class="card-subtitle">Evolução da visualização declaratória tradicional para a arquitetura de rastreabilidade auditável em 8 elos</p>
       </div>
       <button type="button" class="ux-hint" style="cursor:pointer" onclick="openPttModal('elos')">📐 Ver fundamentação dos 8 elos</button>
     </div>
 
     <div class="inno-grid">
-      <!-- Modelo Tradicional -->
       <div class="inno-col trad">
         <div class="inno-col-head">
           <span class="inno-col-title">Indicador Tradicional</span>
@@ -497,10 +583,9 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
           <div class="flow-arrow-v">↓</div>
           <div class="flow-box">Meta Pactuada</div>
         </div>
-        <div class="inno-foot">Informa o cumprimento formal, mas <strong>não permite recalcular</strong> nem auditar a origem dos dados.</div>
+        <div class="inno-foot">Comunica o cumprimento formal, mas <strong>não oferece elementos suficientes</strong> para conferência independente.</div>
       </div>
 
-      <!-- Modelo Auditável (PTT) -->
       <div class="inno-col ptt">
         <div class="inno-col-head">
           <span class="inno-col-title">Indicador Auditável (PTT)</span>
@@ -522,17 +607,17 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
           <div class="ptt-subflow emp">
             <div class="ptt-subflow-label">Camada II · Reexecutabilidade Empírica</div>
             <div class="flow-vertical">
-              <button type="button" class="ptt-step-pill" onclick="jumpToEloFromInno(4)">5. Numerador</button>
+              <button type="button" class="ptt-step-pill" onclick="jumpToEloFromInno(4)">5. Numerador / Valor</button>
               <div class="flow-arrow-teal">↓</div>
-              <button type="button" class="ptt-step-pill" onclick="jumpToEloFromInno(5)">6. Denominador</button>
+              <button type="button" class="ptt-step-pill" onclick="jumpToEloFromInno(5)">6. Base de Referência</button>
               <div class="flow-arrow-teal">↓</div>
-              <button type="button" class="ptt-step-pill" onclick="jumpToEloFromInno(6)">7. Filtros</button>
+              <button type="button" class="ptt-step-pill" onclick="jumpToEloFromInno(6)">7. Filtros e Parâmetros</button>
               <div class="flow-arrow-teal">↓</div>
-              <button type="button" class="ptt-step-pill" onclick="jumpToEloFromInno(7)">8. Memória</button>
+              <button type="button" class="ptt-step-pill" onclick="jumpToEloFromInno(7)">8. Memória de Cálculo</button>
             </div>
           </div>
         </div>
-        <div class="inno-foot">Assegura transparência ativa, comparabilidade histórica e auditoria independente (clique em qualquer elo para inspecionar abaixo).</div>
+        <div class="inno-foot">Proposição analítica sujeita a validação por especialistas (clique em qualquer elo para inspecionar abaixo).</div>
       </div>
     </div>
   </section>
@@ -541,13 +626,13 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
   <section class="card" style="margin-bottom:14px; border-left:4px solid var(--navy); background:#f8fbfc">
     <div class="card-header" style="margin-bottom:6px">
       <div>
-        <h2 class="card-title">Síntese Diagnóstica Automatizada (IA · Régua Teórico-Empírica da Dissertação)</h2>
+        <h2 class="card-title">Síntese Diagnóstica (apoio de IAG · revisão do pesquisador)</h2>
         <p class="card-subtitle" id="iaMeta">Análise gerada estritamente sobre os metadados documentais verificados</p>
       </div>
       <span class="badge-info" id="iaModel">Régua Teórico-Empírica (PTT/UnP)</span>
     </div>
-    <p id="iaSintese" style="margin:0; font-size:12.5px; line-height:1.55; color:var(--ink)">
-      À luz do referencial de medição de desempenho no setor público, os 15 indicadores da Portaria nº 571/2026 revelam elevada eficácia formal (atingimento médio de 127,48%), mas auditabilidade moderada/parcial (Índice de Auditabilidade Institucional de 65%): 14 indicadores (93,3%) têm reprodutibilidade parcial (12) ou ausente (2). Conforme alertam Gonzaga et al. (2019) e Lapuente e Van de Walle (2020), o cumprimento numérico de metas não assegura qualidade nem efetividade no SUS quando persiste a fragmentação entre painéis e memórias de cálculo (Bourne et al., 2000; Ohayon; Rosenberg, 2014), exigindo a abertura de denominadores e indicadores incrementais de resultado.
+    <p id="iaSintese" style="margin:0; font-size:13.5px; line-height:1.55; color:var(--ink)">
+      À luz do referencial de medição de desempenho no setor público, os 15 indicadores da Portaria nº 571/2026 revelam elevada eficácia formal (atingimento médio de 127,28%), mas auditabilidade parcial (Índice de Auditabilidade Institucional de 65%): 14 indicadores (93,3%) têm reprodutibilidade parcial (12) ou ausente nas fontes públicas (2). Conforme alertam Gonzaga et al. (2019) e Lapuente e Van de Walle (2020), o cumprimento numérico de metas não assegura qualidade nem efetividade no SUS quando persiste a fragmentação entre painéis e memórias de cálculo (Bourne et al., 2000; Ohayon; Rosenberg, 2014), exigindo a abertura de denominadores e indicadores incrementais de resultado.
     </p>
     <div class="ref-note ref-note-spaced">
       <span><strong>Base analítica:</strong> Gonzaga <em>et al.</em> (2019); Lapuente e Van de Walle (2020) — eficácia formal vs. efetividade e qualidade; Ohayon e Rosenberg (2014) — lacunas de CT&amp;I na Fiocruz.</span>
@@ -555,6 +640,18 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
     </div>
   </section>
 
+  <!-- Protocolo de Análise (Seção 3.6) -->
+  <section class="card" id="protocolo" style="margin-bottom:14px;border-left:4px solid var(--blue)">
+    <div class="card-header" style="margin-bottom:8px">
+      <div>
+        <h2 class="card-title">Protocolo de análise do projeto (Seção 3.6): situação atual</h2>
+        <p class="card-subtitle">Correspondência entre as 4 etapas da técnica de análise e o que o painel já comprova. As etapas 3 e 4 dependem da curadoria nas Fichas.</p>
+      </div>
+    </div>
+    <div id="protoBody"></div>
+  </section>
+
+  <span id="execucao"></span>
   <section class="viz-grid-main">
     <div class="card">
       <div class="card-header">
@@ -563,6 +660,12 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
           <p class="card-subtitle">Comparativo percentual entre resultado apurado e meta pactuada (linha vertical = 100%, escala = 250%)</p>
         </div>
         <span class="ux-hint" title="Clique em uma barra para abrir a trilha do indicador">👆 Clique na barra p/ trilha</span>
+      </div>
+      <div class="leg-bar">
+        <span><i style="background:var(--green)"></i>Disponível</span>
+        <span><i style="background:var(--teal)"></i>Parcial</span>
+        <span><i style="background:var(--blue)"></i>Não reproduzível</span>
+        <span>Linha vertical = 100% da meta</span>
       </div>
       <div id="bulletContainer" class="bullet-list"></div>
       <div class="ref-note">
@@ -583,10 +686,10 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
         <table class="table-clean interactive-table">
           <thead>
             <tr>
-              <th>Indicador</th>
-              <th>Situação</th>
-              <th>Gargalo Principal</th>
-              <th style="text-align:right">Trilha</th>
+              <th scope="col">Indicador</th>
+              <th scope="col">Situação</th>
+              <th scope="col">Gargalo Principal</th>
+              <th scope="col" style="text-align:right">Trilha</th>
             </tr>
           </thead>
           <tbody id="matrixBody"></tbody>
@@ -629,11 +732,12 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
       </div>
 
       <div class="chain-grid" id="chainContainer"></div>
-      <div id="eloDetailBox" class="elo-detail-box" style="display:none"></div>
+      <div id="eloDetailBox" class="elo-detail-box" style="display:none" aria-live="polite"></div>
       <div class="elo-legend">
         <span><strong style="color:var(--green)">● Disponível (1,0):</strong> Dado aberto</span>
         <span><strong style="color:#b8740e">● Parcial (0,5):</strong> Sem desagregação</span>
-        <span><strong style="color:var(--red)">● Lacuna (0,0):</strong> Ausente nos painéis</span>
+        <span><strong style="color:var(--red)">● Não localizado (0,0):</strong> Ausente nas fontes públicas</span>
+        <span><strong style="color:var(--slate)">● N/A:</strong> Excluído do denominador</span>
         <span style="margin-left:auto" class="ux-hint">👆 Clique em qualquer elo acima para abrir o diagnóstico</span>
       </div>
       <div class="ref-note">
@@ -646,20 +750,24 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
       <div class="card-header">
         <div>
           <h2 class="card-title">Auditabilidade Individual do Indicador</h2>
-          <p class="card-subtitle" id="donutSubtitle">Proporção dos 8 elos do indicador selecionado na trilha</p>
+          <p class="card-subtitle" id="donutSubtitle">Proporção dos elos aplicáveis do indicador selecionado na trilha</p>
         </div>
         <span class="badge-info" id="donutBadge">Indicador ativo</span>
       </div>
       <div class="donut-box">
         <div style="position:relative;width:155px;height:155px;flex-shrink:0">
-          <canvas id="donutChart" class="canvas-donut"></canvas>
+          <canvas id="donutChart" class="canvas-donut" role="img" aria-label="Distribuição dos estados dos oito elos"></canvas>
           <div id="donutCenter" style="position:absolute;inset:0;display:grid;place-items:center;font-size:22px;font-weight:800;color:var(--navy);pointer-events:none">63%</div>
         </div>
         <div class="legend-list">
-          <div class="legend-row"><span class="dot" style="background:var(--green)"></span><span><strong id="legOkCount">4</strong> <strong>Disponível integralmente</strong> (Fórmula, Fonte, Meta, Resultado)</span></div>
-          <div class="legend-row"><span class="dot" style="background:var(--amber)"></span><span><strong id="legPartCount">2</strong> <strong>Disponível parcialmente</strong> (Numerador / Filtros)</span></div>
-          <div class="legend-row"><span class="dot" style="background:var(--red)"></span><span><strong id="legMissCount">2</strong> <strong>Lacuna pública</strong> (Denominador / Memória de cálculo)</span></div>
+          <div class="legend-row"><span class="dot" style="background:var(--green)"></span><span><strong id="legOkCount">4</strong> <strong>Disponível integralmente</strong></span></div>
+          <div class="legend-row"><span class="dot" style="background:var(--amber)"></span><span><strong id="legPartCount">2</strong> <strong>Disponível parcialmente</strong></span></div>
+          <div class="legend-row"><span class="dot" style="background:var(--red)"></span><span><strong id="legMissCount">2</strong> <strong>Não localizado (lacuna pública)</strong></span></div>
+          <div class="legend-row"><span class="dot" style="background:var(--slate)"></span><span><strong id="legNaCount">0</strong> <strong>Não aplicável (N/A)</strong></span></div>
         </div>
+      </div>
+      <div class="proto-foot" style="margin-top:auto">
+        <span>Estado <strong>N/A</strong> é excluído do denominador, evitando penalizar indicadores de contagem simples sem razão matemática.</span>
       </div>
       <div class="ref-note">
         <span><strong>Base metodológica:</strong> CGU ([s. d.]); Bahia (2021); Tallens Junior <em>et al.</em> (2025) — completude documental e validação metodológica.</span>
@@ -669,6 +777,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
   </section>
 
   <section class="card">
+    <span id="catalogo"></span>
     <div class="catalog-toolbar">
       <div>
         <h2 class="card-title">Catálogo Integrado de Indicadores e Fichas Metodológicas (Portaria nº 571/2026)</h2>
@@ -680,13 +789,14 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
       <table class="table-clean interactive-table">
         <thead>
           <tr>
-            <th>Indicador</th>
-            <th>Atividade-Fim</th>
-            <th>Meta</th>
-            <th>Apurado</th>
-            <th>Atingimento</th>
-            <th>Reprodutibilidade</th>
-            <th>Ações</th>
+            <th scope="col">Indicador</th>
+            <th scope="col">Atividade-Fim</th>
+            <th scope="col">Meta</th>
+            <th scope="col">Apurado</th>
+            <th scope="col">Atingimento</th>
+            <th scope="col">IAI</th>
+            <th scope="col">Reprodutibilidade</th>
+            <th scope="col">Ações</th>
           </tr>
         </thead>
         <tbody id="catalogBody"></tbody>
@@ -700,12 +810,12 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
 </main>
 
 <!-- Modal de Mitigação Metodológica: 8 Elos, Validação e Implantação na Fiocruz -->
-<div class="modal" id="pttModal">
+<div class="modal" id="pttModal" role="dialog" aria-modal="true" aria-labelledby="pttModalTitle">
   <div class="modal-dialog">
     <div class="modal-header">
       <div>
         <span style="font-size:10px;font-weight:800;letter-spacing:1.2px;color:var(--cyan)">GOVERNANÇA METODOLÓGICA DO PTT · MESTRADO ACADÊMICO (PPGA/UnP)</span>
-        <h2>Arquitetura dos 8 Elos, Protocolo de Validação e Implantação na Fiocruz</h2>
+        <h2 id="pttModalTitle">Arquitetura dos 8 Elos, Protocolo de Validação e Implantação na Fiocruz</h2>
       </div>
       <button type="button" class="modal-close" onclick="closePttModal()">Fechar ✕</button>
     </div>
@@ -721,7 +831,12 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
         <div class="m-grid">
           <div class="m-box full solution-box">
             <label>Lógica da Decomposição em 8 Elos (Condição Mínima de Reexecutabilidade)</label>
-            <p>Os 8 elos não constituem uma contagem arbitrária: representam a <strong>decomposição operacional mínima</strong> necessária para que um indicador institucional seja <strong>auditado e recalculado de forma independente</strong> por órgãos de controle, gestores ou cidadãos, cruzando os atributos de ficha técnica da literatura (Neely <em>et al.</em>, 1997; RIPSA, 2008; Bahia, 2021; Fiocruz, 2025; Tallens Junior <em>et al.</em>, 2025) com a estrutura formal de cálculo ($I = \frac{N}{D}$ aplicado sobre filtros $F$ e documentado em memória $M$).</p>
+            <p>Os 8 elos não constituem uma contagem arbitrária: representam a <strong>decomposição operacional mínima</strong> necessária para que um indicador institucional seja <strong>auditado e recalculado de forma independente</strong> por órgãos de controle, gestores ou cidadãos, cruzando os atributos de ficha técnica da literatura (Neely <em>et al.</em>, 1997; RIPSA, 2008; Bahia, 2021; Fiocruz, 2025; Tallens Junior <em>et al.</em>, 2025) com a estrutura formal de cálculo (<em>I = N ÷ D</em>, aplicado sobre filtros <em>F</em> e documentado em memória <em>M</em>).</p>
+          </div>
+          <div class="m-box full">
+            <label>Fórmula do Índice de Auditabilidade Institucional (IAI) e Regra de Pesos</label>
+            <div class="formula-code">IAI = [Σ escores válidos ÷ número de elos aplicáveis] × 100</div>
+            <p style="margin-top:8px"><strong>Escores:</strong> 1,0 = Disponível; 0,5 = Parcial; 0,0 = Não localizado; <strong>N/A</strong> = Não aplicável (excluído do denominador para não penalizar indicadores de contagem simples). Adotam-se <strong>pesos iguais por parcimônia e transparência</strong>, evitando ponderações subjetivas não validadas; recomenda-se análise de sensibilidade com maior peso para a Camada II.</p>
           </div>
           <div class="m-box">
             <label>Camada I · Publicidade Normativa (Elos 1 a 4)</label>
@@ -729,7 +844,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
           </div>
           <div class="m-box">
             <label>Camada II · Reexecutabilidade Empírica (Elos 5 a 8)</label>
-            <p><strong>5. Numerador</strong> (entregas/eventos realizados)<br><strong>6. Denominador</strong> (base de referência/demanda)<br><strong>7. Filtros</strong> (critérios de elegibilidade e corte)<br><strong>8. Memória</strong> (trilha de cálculo / base aberta)<br><br><em>Função:</em> Sem qualquer um desses 4 elos, torna-se impossível reproduzir o resultado oficial.</p>
+            <p><strong>5. Numerador / Valor</strong> (entregas/eventos realizados)<br><strong>6. Base de Referência</strong> (denominador/demanda)<br><strong>7. Filtros e Parâmetros</strong> (critérios de elegibilidade e corte)<br><strong>8. Memória</strong> (trilha de cálculo / base aberta)<br><br><em>Função:</em> Sem qualquer um desses elos aplicáveis, torna-se impossível reproduzir o resultado oficial.</p>
           </div>
         </div>
       </div>
@@ -740,9 +855,9 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
           <table class="table-clean">
             <thead>
               <tr>
-                <th>Nível de Validação</th>
-                <th>Procedimento Metodológico</th>
-                <th>Evidência no Protótipo</th>
+                <th scope="col">Nível de Validação</th>
+                <th scope="col">Procedimento Metodológico</th>
+                <th scope="col">Evidência / Encaminhamento</th>
               </tr>
             </thead>
             <tbody>
@@ -752,14 +867,14 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
                 <td>Cada um dos 8 elos exibe no painel sua fundamentação bibliográfica específica e sua correspondência na ficha de metadados.</td>
               </tr>
               <tr>
-                <td><strong>2. Validação Empírico-Documental (Censo)</strong></td>
-                <td>Aplicação da matriz de verificação aos <strong>15 indicadores da Portaria nº 571/2026</strong> (Seção 3.2 do projeto), utilizando escore objetivo determinístico: <strong>1,0</strong> (Disponível), <strong>0,5</strong> (Parcial) e <strong>0,0</strong> (Lacuna), consolidado no <strong>Índice de Auditabilidade Institucional</strong> (&gt;80% Alta; 60–80% Parcial; &lt;60% Baixa).</td>
-                <td>Elimina subjetividade na classificação: os 120 pontos de verificação (15 indicadores × 8 elos) são auditáveis linha a linha no painel.</td>
+                <td><strong>2. Validação Empírico-Documental e Concordância</strong></td>
+                <td>Aplicação censitária aos <strong>15 indicadores da Portaria nº 571/2026</strong> (Seção 3.2), com escore padronizado (1,0 / 0,5 / 0,0 / N/A). Recomenda-se dupla codificação independente em amostra com cálculo de percentual de concordância e <strong>Kappa ponderado</strong>.</td>
+                <td>Os 120 pontos de verificação (15 × 8 elos) são auditáveis linha a linha. Faixas interpretativas do IAI (&gt;80% Alta*; 60–80% Parcial*; &lt;60% Baixa*) são <strong>provisórias</strong>.</td>
               </tr>
               <tr>
-                <td><strong>3. Delimitação e Validação com Especialistas (Etapa Futura)</strong></td>
-                <td>Conforme Seção 3.2 da dissertação, esta pesquisa utiliza exclusivamente dados secundários públicos, sem coleta com sujeitos humanos.</td>
-                <td>A validação semântica e de usabilidade junto a gestores da <strong>Cogeplan/ICICT</strong> constitui etapa subsequente de transferência tecnológica.</td>
+                <td><strong>3. Validade de Conteúdo e Usabilidade (Etapa Futura)</strong></td>
+                <td>Como a pesquisa atual utiliza apenas dados secundários públicos (Seção 3.2), a etapa subsequente de transferência tecnológica prevê avaliação dos 8 elos por especialistas (clareza, pertinência, representatividade e utilidade) e teste de usabilidade via <strong>System Usability Scale (SUS)</strong>.</td>
+                <td>Permite calibrar os pontos de corte do IAI e validar a adoção gerencial junto a equipes da <strong>Cogeplan/ICICT</strong>.</td>
               </tr>
             </tbody>
           </table>
@@ -770,12 +885,20 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
       <div class="ptt-tab-panel" id="tabPanel-implantacao">
         <div class="m-grid" style="margin-bottom:12px">
           <div class="m-box">
-            <label>Barreiras Identificadas no Diagnóstico (As-Is)</label>
-            <p>• <strong>Silos entre sistemas finalísticos:</strong> prontuários eletrônicos distintos (INI/IFF), sistemas laboratoriais (LIS), pautas do MS e registros das plataformas/coleções.<br>• <strong>Opacidade de denominadores:</strong> bases funcionais e previsões pactuadas não exportáveis nos mesmos filtros.<br>• <strong>Consolidação manual:</strong> apuração periódica dependente de planilhas setoriais para publicação em portaria.</p>
+            <label>Camada Pública (Transparência Ativa · LGPD)</label>
+            <p>• Dados agregados, dicionário de metadados, fórmulas, critérios de extração e bases abertas (<code>.CSV</code> / <code>.JSON</code>).<br>• Anonimização prévia de cadastros funcionais e registros assistenciais em conformidade com a <strong>LGPD</strong>.<br>• Versionamento de série histórica e data de corte explícita.</p>
           </div>
           <div class="m-box">
-            <label>Arquitetura de Implantação Proposta (To-Be)</label>
-            <p>• <strong>Fase 1 (Governança):</strong> Incorporar a Ficha Padronizada de 8 Elos ao Guia de Monitoramento da Cogeplan.<br>• <strong>Fase 2 (APIs Institucionais):</strong> Conectar bases já estruturadas (API do Repositório ARCA, Compras.net/SISPP, e-Ouv e Rede BLH).<br>• <strong>Fase 3 (ETL / Power BI):</strong> Automatizar extração e anonimização de denominadores sensíveis.<br>• <strong>Fase 4 (Observatório Fiocruz):</strong> Publicar dados abertos (.CSV/.JSON) integrados aos painéis oficiais.</p>
+            <label>Camada Interna (Governança Cogeplan / Unidades)</label>
+            <p>• Trilhas completas de auditoria, responsáveis pela apuração, logs de extração e rotinas de validação.<br>• Acesso controlado a bases sensíveis (prontuários INI/IFF, sistemas LIS laboratoriais e pautas do MS).</p>
+          </div>
+          <div class="m-box">
+            <label>Barreiras Identificadas no Diagnóstico (As-Is)</label>
+            <p>• <strong>Silos entre sistemas finalísticos:</strong> prontuários eletrônicos distintos, sistemas LIS, pautas do MS e registros das plataformas/coleções.<br>• <strong>Opacidade de denominadores:</strong> bases funcionais e previsões pactuadas não exportáveis nos mesmos filtros.<br>• <strong>Consolidação manual:</strong> apuração periódica dependente de planilhas setoriais.</p>
+          </div>
+          <div class="m-box">
+            <label>Arquitetura de Implantação em 4 Fases (To-Be)</label>
+            <p>• <strong>Fase 1 (Governança):</strong> Incorporar a Ficha Padronizada de 8 Elos ao Guia de Monitoramento da Cogeplan.<br>• <strong>Fase 2 (APIs Institucionais):</strong> Conectar bases estruturadas (API ARCA, Compras.gov.br/SISPP, Fala.BR e Rede BLH).<br>• <strong>Fase 3 (ETL / Power BI):</strong> Automatizar extração e anonimização de denominadores sensíveis.<br>• <strong>Fase 4 (Observatório Fiocruz):</strong> Publicar dados abertos integrados aos painéis oficiais.</p>
           </div>
         </div>
         <div class="ptt-note">
@@ -787,22 +910,22 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
 </div>
 
 <!-- Modal da Base Normativa (Portaria nº 571/2026) -->
-<div class="modal" id="portariaModal">
+<div class="modal" id="portariaModal" role="dialog" aria-modal="true" aria-labelledby="portariaModalTitle">
   <div class="modal-dialog">
     <div class="modal-header">
       <div>
         <span style="font-size:10px;font-weight:800;letter-spacing:1.2px;color:var(--cyan)">ESCOPO DOCUMENTAL E NORMATIVO · CICLO AVALIATIVO 2025</span>
-        <h2>Base Oficial: Portaria Fiocruz nº 571/2026</h2>
+        <h2 id="portariaModalTitle">Base Oficial: Portaria Fiocruz nº 571/2026</h2>
       </div>
       <button type="button" class="modal-close" onclick="closePortariaModal()">Fechar ✕</button>
     </div>
     <div class="modal-content">
       <div class="m-grid">
         <div class="m-box"><label>Ato Normativo de Referência</label><p><strong>Portaria nº 571/2026 (Fiocruz)</strong> — Divulgação oficial dos resultados dos indicadores institucionais de desempenho referentes ao Ciclo 2025.</p></div>
-        <div class="m-box"><label>Cobertura do Painel</label><p><strong>15 indicadores institucionais</strong> distribuídos nas 6 atividades-fim / eixos estratégicos da Fundação Oswaldo Cruz (levantamento censitário do instrumento).</p></div>
-        <div class="m-box full"><label>Critério Metodológico de Tratamento</label><p>As metas, os resultados apurados e os percentuais de atingimento reproduzem estritamente os valores publicados na Portaria nº 571/2026 e no Relatório de Gestão 2025. Quando numeradores, denominadores, filtros ou memórias de cálculo não estão abertos nos painéis públicos do Observatório da Fiocruz, as lacunas são registradas explicitamente nos 8 elos, sem imputação ou simulação de dados.</p></div>
-        <div class="m-box"><label>Desempenho Quantitativo (Ciclo 2025)</label><p>Atingimento médio reconstruído de <strong>127,48%</strong> frente às metas pactuadas.</p></div>
-        <div class="m-box"><label>Índice de Auditabilidade Institucional</label><p><strong>65%</strong> (faixa amarela · 60%–80%): <strong>1</strong> integralmente disponível (100%), <strong>12</strong> parcialmente reproduzíveis e <strong>2</strong> não reproduzíveis externamente.</p></div>
+        <div class="m-box"><label>Cobertura e Data de Corte</label><p><strong>15 indicadores institucionais</strong> nas 6 atividades-fim da Fiocruz (levantamento censitário). Data de corte documental: <strong>21/11/2026</strong>.</p></div>
+        <div class="m-box full"><label>Critério Metodológico e Cautela Interpretativa</label><p>As metas, os resultados apurados e os percentuais de atingimento reproduzem estritamente os valores publicados na Portaria nº 571/2026 e no Relatório de Gestão 2025. A marcação de <em>Não localizado / Lacuna</em> representa a disponibilidade pública observada na data de corte — não implica inexistência no ambiente interno da Fiocruz e pode ser reclassificada diante de nova evidência documental.</p></div>
+        <div class="m-box"><label>Desempenho Quantitativo (Ciclo 2025)</label><p>Atingimento médio aritmético de <strong>127,28%</strong> frente às metas pactuadas.</p></div>
+        <div class="m-box"><label>Índice de Auditabilidade Institucional (IAI)</label><p><strong>65%</strong> (faixa provisória parcial · 60%–80%): <strong>1</strong> integralmente disponível (100% sobre 7 elos aplicáveis), <strong>12</strong> parcialmente reproduzíveis e <strong>2</strong> não reproduzíveis externamente.</p></div>
       </div>
       <div class="modal-actions-row">
         <a class="btn-modal-action" href="https://observatorio.fiocruz.br/indicators" target="_blank" rel="noopener">Abrir Observatório da Fiocruz ↗</a>
@@ -815,12 +938,12 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
 </div>
 
 <!-- Modal de Status de Atualização e Rastreabilidade IA -->
-<div class="modal" id="syncModal">
+<div class="modal" id="syncModal" role="dialog" aria-modal="true" aria-labelledby="syncModalTitle">
   <div class="modal-dialog">
     <div class="modal-header">
       <div>
         <span style="font-size:10px;font-weight:800;letter-spacing:1.2px;color:var(--cyan)">INTEGRIDADE DE DADOS E AUDITORIA AUTOMATIZADA</span>
-        <h2>Status de Atualização e Sincronização do Painel</h2>
+        <h2 id="syncModalTitle">Status de Atualização e Sincronização do Painel</h2>
       </div>
       <button type="button" class="modal-close" onclick="closeSyncModal()">Fechar ✕</button>
     </div>
@@ -829,7 +952,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
         <div class="m-box"><label>Camada 1 · Dados Estruturados (Base Fixa)</label><p><strong>Portaria nº 571/2026 (Ciclo 2025)</strong> — Metas, resultados oficiais e matriz de 8 elos auditados documentalmente no âmbito da dissertação (PPGA/UnP).</p></div>
         <div class="m-box"><label>Camada 2 · Parecer IA (parecer_ia.json)</label><p id="syncModalStatus">Carregado a partir da régua teórico-empírica integrada ao painel.</p></div>
         <div class="m-box"><label>Data/Hora da Última Auditoria IA</label><p id="syncModalDate">Dados estruturados locais (sem sincronização remota ativa)</p></div>
-        <div class="m-box"><label>Motor e Critério de Julgamento</label><p id="syncModalModel">Régua Teórico-Empírica (PTT/UnP) · Temperatura controlada (auditoria determinística)</p></div>
+        <div class="m-box"><label>Motor e Critério de Julgamento</label><p id="syncModalModel">Régua Teórico-Empírica (PTT/UnP) · apoio de IAG, revisão do pesquisador (Seção 3.8)</p></div>
         <div class="m-box full solution-box"><label>Governança e Uso Responsável de IA (Seção 3.8 do Projeto)</label><p>A Inteligência Artificial atua exclusivamente como apoio analítico na síntese diagnóstica e na formulação de recomendações incrementais, operando sob restrição estrita aos metadados verificados e sujeita à validação crítica do pesquisador.</p></div>
       </div>
       <div class="modal-actions-row">
@@ -841,7 +964,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
 </div>
 
 <!-- Modal da Ficha Metodológica -->
-<div class="modal" id="methodModal">
+<div class="modal" id="methodModal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
   <div class="modal-dialog">
     <div class="modal-header">
       <div>
@@ -855,12 +978,12 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
 </div>
 
 <!-- Modal de Referências em Padrão ABNT -->
-<div class="modal" id="refModal">
+<div class="modal" id="refModal" role="dialog" aria-modal="true" aria-labelledby="refModalTitle">
   <div class="modal-dialog">
     <div class="modal-header">
       <div>
         <span style="font-size:10px;font-weight:800;letter-spacing:1.2px;color:var(--cyan)">FUNDAMENTAÇÃO TEÓRICO-METODOLÓGICA · PADRÃO ABNT</span>
-        <h2>Referências do Painel e Arquitetura de Rastreabilidade</h2>
+        <h2 id="refModalTitle">Referências do Painel e Arquitetura de Rastreabilidade</h2>
       </div>
       <button type="button" class="modal-close" onclick="closeRefModal()">Fechar ✕</button>
     </div>
@@ -870,9 +993,9 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
         <table class="table-clean">
           <thead>
             <tr>
-              <th>Seção / Componente do Painel</th>
-              <th>Referências Principais</th>
-              <th>Aplicação no Protótipo (PTT)</th>
+              <th scope="col">Seção / Componente do Painel</th>
+              <th scope="col">Referências Principais</th>
+              <th scope="col">Aplicação no Protótipo (PTT)</th>
             </tr>
           </thead>
           <tbody>
@@ -882,9 +1005,9 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
               <td>Recorte normativo dos 15 indicadores da Portaria nº 571/2026 e distinção entre medidas dispersas e KPIs ligados aos fatores críticos de sucesso.</td>
             </tr>
             <tr>
-              <td><strong>KPIs, Atingimento (100%) e Índice de Auditabilidade</strong></td>
+              <td><strong>KPIs, Atingimento (100%) e Índice de Auditabilidade (IAI)</strong></td>
               <td>TCU (2011); Mury (2019); Gonzaga <em>et al.</em> (2019); Lapuente e Van de Walle (2020)</td>
-              <td>Confronto entre eficácia numérica formal (meta pactuada) e o Índice de Auditabilidade Institucional (&gt;80% Alta; 60–80% Parcial; &lt;60% Baixa).</td>
+              <td>Confronto entre eficácia numérica formal (meta pactuada) e o IAI com faixas interpretativas provisórias (&gt;80% Alta*; 60–80% Parcial*; &lt;60% Baixa*).</td>
             </tr>
             <tr>
               <td><strong>Inovação do Produto (8 Elos) e Síntese Diagnóstica (IA)</strong></td>
@@ -894,7 +1017,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
             <tr>
               <td><strong>Trilha Pública de Rastreabilidade (8 Elos) e Completude</strong></td>
               <td>Neely <em>et al.</em> (1997); RIPSA (2008); Bahia (2021); Fiocruz (2025); Tallens Junior <em>et al.</em> (2025); CGU ([s. d.])</td>
-              <td>Operacionalização analítica (PTT) dos atributos de clareza, fonte, periodicidade, numerador, denominador, filtros e memória de cálculo.</td>
+              <td>Operacionalização analítica (PTT) dos atributos de clareza, fonte, periodicidade, numerador, base de referência, filtros e memória de cálculo.</td>
             </tr>
             <tr>
               <td><strong>Catálogo, Visualização e Ficha Metodológica</strong></td>
@@ -936,7 +1059,7 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
       </ul>
 
       <div class="ptt-note">
-        <strong>Nota de autoria do PTT:</strong> A decomposição específica da <em>Trilha Pública de Rastreabilidade</em> em 8 elos sequenciais (Fórmula, Fonte, Meta, Resultado, Numerador, Denominador, Filtros e Memória) constitui proposição analítica desenvolvida no âmbito da dissertação de Mestrado Acadêmico em Administração (PPGA/UnP), fundamentada nos critérios de qualidade técnica, completude metodológica, aderência estratégica e utilidade gerencial potencial dos referenciais listados acima.
+        <strong>Nota de autoria do PTT:</strong> A decomposição específica da <em>Trilha Pública de Rastreabilidade</em> em 8 elos sequenciais (Fórmula, Fonte, Meta, Resultado, Numerador/Valor, Base de Referência, Filtros e Memória) constitui proposição analítica desenvolvida no âmbito da dissertação de Mestrado Acadêmico em Administração (PPGA/UnP), fundamentada nos critérios de qualidade técnica, completude metodológica, aderência estratégica e utilidade gerencial potencial dos referenciais listados acima.
       </div>
     </div>
   </div>
@@ -944,10 +1067,13 @@ footer{max-width:1540px;margin:0 auto;padding:0 26px 28px;font-size:11px;color:v
 
 <footer>
   <strong>Fontes documentais e metodológicas:</strong> Portaria nº 571/2026 (Fiocruz), Guia de Monitoramento (Fiocruz, 2025), Observatório da Fiocruz (2026), RIPSA (2008), TCU (2011), CGU ([s. d.]), Bahia (2021), Parmenter (2015), Neely <em>et al.</em> (1997), Bourne <em>et al.</em> (2000, 2003), Ohayon e Rosenberg (2014), Gonzaga <em>et al.</em> (2019), Lapuente e Van de Walle (2020) e Tallens Junior <em>et al.</em> (2025). Este painel integra o Produto Técnico-Tecnológico da dissertação de Mestrado Acadêmico em Administração (PPGA/UnP). <button type="button" class="ref-link" onclick="openRefModal()">Consultar referências completas (ABNT)</button><br>
-  <span><strong>Métricas de acesso:</strong> Este painel utiliza medição anônima de visitas e interações (Google Analytics 4, com anonimização de IP) exclusivamente para avaliação de uso do Produto Técnico-Tecnológico.</span>
+  <span><strong>Cautela metodológica e métricas de acesso:</strong> “Não localizado” indica ausência nas fontes públicas examinadas na data de corte (21/11/2026) e não implica inexistência interna. As faixas do IAI são provisórias. Este painel utiliza medição anônima de visitas e interações (Google Analytics 4, com anonimização de IP) exclusivamente para avaliação de uso do PTT.</span>
 </footer>
 
 <script>
+const VERSAO = '0.4';
+const CORTE = '21/11/2026';
+
 const INDICATORS_DATA = [
   {
     id: 'pesquisa',
@@ -968,7 +1094,7 @@ const INDICATORS_DATA = [
     numerator: 'Artigos publicados em revistas indexadas.',
     denominator: 'Servidores públicos com função de pesquisa (quadriênio).',
     filters: 'Período de 4 anos e bases bibliográficas oficiais.',
-    memory: 'Não centralizada publicamente.',
+    memory: 'Não localizada em base pública centralizada.',
     responsible: 'Área de pesquisa / Cogeplan.',
     periodicity: 'Anual (média rolante)',
     polarity: 'Maior melhor',
@@ -994,7 +1120,7 @@ const INDICATORS_DATA = [
     numerator: 'Total de serviços atendidos.',
     denominator: 'Total de serviços demandados.',
     filters: 'Não divulgados de forma reexecutável.',
-    memory: 'Não centralizada publicamente.',
+    memory: 'Não localizada publicamente.',
     responsible: 'Plataformas tecnológicas e Cogeplan.',
     periodicity: 'Anual.',
     polarity: 'Maior melhor',
@@ -1020,7 +1146,7 @@ const INDICATORS_DATA = [
     numerator: 'Total de serviços atendidos pelas Coleções.',
     denominator: 'Total de serviços demandados.',
     filters: 'Não divulgados de forma reexecutável.',
-    memory: 'Não centralizada publicamente.',
+    memory: 'Não localizada publicamente.',
     responsible: 'Coleções biológicas e Cogeplan.',
     periodicity: 'Anual.',
     polarity: 'Maior melhor',
@@ -1046,7 +1172,7 @@ const INDICATORS_DATA = [
     numerator: 'Demanda atendida de biofármacos no ano.',
     denominator: 'Demanda programada de biofármacos no ano.',
     filters: 'Produto e período.',
-    memory: 'Não centralizada publicamente.',
+    memory: 'Não localizada publicamente.',
     responsible: 'Área de produção / Cogeplan.',
     periodicity: 'Anual.',
     polarity: 'Maior melhor',
@@ -1072,7 +1198,7 @@ const INDICATORS_DATA = [
     numerator: 'Unidades fornecidas no ano.',
     denominator: 'Unidades requisitadas nas pautas.',
     filters: 'Parcial por programa.',
-    memory: 'Não centralizada publicamente.',
+    memory: 'Não localizada publicamente.',
     responsible: 'Farmanguinhos / Cogeplan.',
     periodicity: 'Anual.',
     polarity: 'Maior melhor',
@@ -1098,7 +1224,7 @@ const INDICATORS_DATA = [
     numerator: 'Unidades fornecidas aos Programas do MS.',
     denominator: 'Unidades requisitadas por pautas.',
     filters: 'Parcial por programa.',
-    memory: 'Não centralizada publicamente.',
+    memory: 'Não localizada publicamente.',
     responsible: 'Área de produção / Cogeplan.',
     periodicity: 'Anual.',
     polarity: 'Maior melhor',
@@ -1124,7 +1250,7 @@ const INDICATORS_DATA = [
     numerator: 'Matrículas registradas.',
     denominator: 'Matrículas previstas.',
     filters: 'Por modalidade de ensino.',
-    memory: 'Não centralizada publicamente.',
+    memory: 'Não localizada publicamente.',
     responsible: 'Vice-Presidência de Educação / Cogeplan.',
     periodicity: 'Anual.',
     polarity: 'Maior melhor',
@@ -1173,15 +1299,15 @@ const INDICATORS_DATA = [
     purpose: 'Avaliar o volume de difusão audiovisual de conteúdos de saúde pública.',
     interpretation: 'Cumprimento integral da grade pactuada.',
     limitations: 'O indicador mede o tempo de veiculação, mas não o alcance ou engajamento do público.',
-    numerator: 'Total de horas veiculadas.',
-    denominator: 'Meta de grade horária.',
+    numerator: 'Total de horas veiculadas (6.205 h).',
+    denominator: 'Não aplicável (indicador de contagem simples, sem denominador de razão).',
     filters: 'Canal e período.',
     memory: 'Relatórios de grade.',
     responsible: 'VideoSaúde Distribuidora / ICICT.',
     periodicity: 'Anual.',
     polarity: 'Maior melhor',
-    states: ['ok', 'ok', 'ok', 'ok', 'ok', 'ok', 'ok', 'ok'],
-    iaRecomendacao: '[Etapa 4: Atende plenamente] Único indicador integralmente reproduzível nos 8 elos (100,00%), atendendo aos atributos de clareza, fonte e memória de cálculo (Tallens Junior et al., 2025). Contudo, sob a lente de efetividade (Mury, 2019; Ohayon; Rosenberg, 2014), recomenda-se indicador incremental de alcance e engajamento público dos conteúdos audiovisuais.'
+    states: ['ok', 'ok', 'ok', 'ok', 'ok', 'na', 'ok', 'ok'],
+    iaRecomendacao: '[Etapa 4: Atende plenamente] Único indicador integralmente reproduzível em todos os elos aplicáveis (100,00% sobre 7 elos, com Elo 6 N/A por ser contagem simples), atendendo aos atributos de clareza, fonte e memória de cálculo (Tallens Junior et al., 2025). Contudo, sob a lente de efetividade (Mury, 2019; Ohayon; Rosenberg, 2014), recomenda-se indicador incremental de alcance e engajamento público dos conteúdos audiovisuais.'
   },
   {
     id: 'museu',
@@ -1299,14 +1425,14 @@ const INDICATORS_DATA = [
     repro: 'Parcial',
     bottleneck: 'Tramitação interna nas unidades',
     formula: '(Total de manifestações respondidas no prazo legal de 30 dias ÷ Total de manifestações respondidas) x 100',
-    source: 'Plataforma Integrada de Ouvidoria e Acesso à Informação (e-Fals/e-Ouv); Portaria nº 571/2026.',
+    source: 'Plataforma Integrada de Ouvidoria e Acesso à Informação (Fala.BR / e-Ouv); Portaria nº 571/2026.',
     purpose: 'Assegurar o direito de resposta ao cidadão e o cumprimento do Decreto nº 9.492/2018.',
     interpretation: 'Índice de 85% reflete cumprimento satisfatório, mas aponta margem de melhoria na capilaridade.',
     limitations: 'O prazo depende da agilidade das áreas técnicas na apuração das demandas.',
     numerator: 'Manifestações respondidas no prazo legal.',
     denominator: 'Total de manifestações respondidas.',
     filters: 'Tipo de manifestação (exceto denúncias sigilosas).',
-    memory: 'Base federal e-Ouv.',
+    memory: 'Base federal Fala.BR / e-Ouv.',
     responsible: 'Ouvidoria Geral da Fiocruz.',
     periodicity: 'Anual.',
     polarity: 'Maior melhor',
@@ -1325,14 +1451,14 @@ const INDICATORS_DATA = [
     repro: 'Parcial',
     bottleneck: 'Estimativas de preço e mercado',
     formula: '{[(Valor Estimado - Cancelados/Desertos) - Valor Homologado] / (Valor Estimado - Cancelados/Desertos)} x 100',
-    source: 'Coordenação-Geral de Administração (CogeAD); Portaria nº 571/2026.',
+    source: 'Coordenação-Geral de Administração (CogeAD) / Compras.gov.br; Portaria nº 571/2026.',
     purpose: 'Mensurar a economicidade e a eficiência nas contratações públicas de materiais, equipamentos e serviços.',
     interpretation: 'Economia de 24,24% representa alta competitividade nas licitações e otimização orçamentária.',
     limitations: 'A oscilação de preços de mercado afeta a precisão do valor estimado inicial.',
     numerator: 'Diferença entre valor estimado e valor homologado.',
     denominator: 'Valor total estimado descontados itens desertos/cancelados.',
     filters: 'Modalidade Pregão Eletrônico SISPP.',
-    memory: 'Sistema Compras.net / CogeAD.',
+    memory: 'Sistema Compras.gov.br / CogeAD.',
     responsible: 'CogeAD / Presidência da Fiocruz.',
     periodicity: 'Anual.',
     polarity: 'Maior melhor',
@@ -1343,13 +1469,8 @@ const INDICATORS_DATA = [
 
 const CHAIN_STEPS = [
   '1. Fórmula', '2. Fonte', '3. Meta', '4. Resultado',
-  '5. Numerador', '6. Denominador', '7. Filtros', '8. Memória'
+  '5. Numerador', '6. Base ref.', '7. Filtros', '8. Memória'
 ];
-
-let donutInstance = null;
-let focusedIndicatorId = 'pesquisa';
-let selectedEloIndex = 5;
-let lastAuditPayload = null;
 
 const ELO_META = [
   {
@@ -1381,16 +1502,16 @@ const ELO_META = [
     ref: 'TCU (2011); Mury (2019); Fiocruz (2026) — aferição oficial dos resultados e confrontação com a efetividade institucional.'
   },
   {
-    sub: 'Entregas / eventos',
+    sub: 'Entregas / valor',
     field: 'numerator',
-    impactoOk: 'Numerador aberto e verificável.',
+    impactoOk: 'Numerador / valor observado aberto e verificável.',
     impactoBad: 'Restringe a conferência granular do volume realizado.',
     ref: 'RIPSA (2008); Bahia (2021); Tallens Junior et al. (2025) — clareza, publicidade e verificabilidade do componente superior.'
   },
   {
-    sub: 'Base de referência',
+    sub: 'Denominador / base',
     field: 'denominator',
-    impactoOk: 'Denominador aberto nos mesmos filtros.',
+    impactoOk: 'Base de referência aberta nos mesmos filtros.',
     impactoBad: 'Impede recalcular o indicador de forma independente.',
     ref: 'Bahia (2021); Ohayon e Rosenberg (2014); Tallens Junior et al. (2025) — abertura da base de referência como condição de reprodutibilidade.'
   },
@@ -1404,14 +1525,29 @@ const ELO_META = [
   {
     sub: 'Memória / base aberta',
     field: 'memory',
-    impactoOk: 'Memória de cálculo e microdados disponíveis.',
+    impactoOk: 'Memória de cálculo e dados de suporte disponíveis.',
     impactoBad: 'Exige reconstrução manual por fontes secundárias.',
     ref: 'Bourne et al. (2003); Alves e Martins (2026); Fiocruz (2025) — trilha de auditoria, memória de cálculo e accountability.'
   }
 ];
 
+let donutInstance = null;
+let focusedIndicatorId = 'pesquisa';
+let selectedEloIndex = 5;
+let lastAuditPayload = null;
+let _ultimoFoco = null;
+
+const CUR = (() => {
+  try { return JSON.parse(localStorage.getItem('ptt_cur')) || {}; } catch (e) { return {}; }
+})();
+const salvaCur = () => {
+  try { localStorage.setItem('ptt_cur', JSON.stringify(CUR)); } catch (e) {}
+};
+
 const el = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>'"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[c]));
 const fmtPct = v => v == null ? '—' : v.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '%';
+const etapa4 = d => d.repro === 'Disponível' ? 'Atende plenamente' : (d.repro === 'Parcial' ? 'Atende parcialmente' : 'Não atende à auditabilidade');
 
 function trackEvent(eventName, params = {}) {
   if (typeof gtag === 'function') {
@@ -1458,15 +1594,31 @@ function jumpToEloFromInno(eloIdx) {
   }
 }
 
+function openDialog(modalEl) {
+  if (!modalEl) return;
+  _ultimoFoco = document.activeElement;
+  modalEl.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  const closeBtn = modalEl.querySelector('.modal-close');
+  if (closeBtn) setTimeout(() => closeBtn.focus(), 0);
+}
+
+function closeDialog(modalEl) {
+  if (!modalEl || !modalEl.classList.contains('open')) return;
+  modalEl.classList.remove('open');
+  document.body.style.overflow = '';
+  if (_ultimoFoco && typeof _ultimoFoco.focus === 'function') {
+    _ultimoFoco.focus();
+    _ultimoFoco = null;
+  }
+}
+
 function openPttModal(tab = 'elos') {
   trackEvent('consultar_arquitetura_validacao_ptt', { aba: tab });
   switchPttTab(tab);
-  el('pttModal').classList.add('open');
+  openDialog(el('pttModal'));
 }
-
-function closePttModal() {
-  el('pttModal').classList.remove('open');
-}
+function closePttModal() { closeDialog(el('pttModal')); }
 
 function switchPttTab(tab) {
   ['elos', 'validacao', 'implantacao'].forEach(t => {
@@ -1479,12 +1631,9 @@ function switchPttTab(tab) {
 
 function openPortariaModal() {
   trackEvent('consultar_base_portaria');
-  el('portariaModal').classList.add('open');
+  openDialog(el('portariaModal'));
 }
-
-function closePortariaModal() {
-  el('portariaModal').classList.remove('open');
-}
+function closePortariaModal() { closeDialog(el('portariaModal')); }
 
 function openSyncModal() {
   trackEvent('consultar_status_atualizacao');
@@ -1494,15 +1643,12 @@ function openSyncModal() {
     el('syncModalModel').textContent = lastAuditPayload.modelo || 'Régua Teórico-Empírica (PTT/UnP)';
   } else {
     el('syncModalStatus').innerHTML = '<strong>Modo estruturado local</strong> — utilizando o parecer teórico-empírico embutido no painel.';
-    el('syncModalDate').textContent = 'Ciclo 2025 · Portaria nº 571/2026';
-    el('syncModalModel').textContent = 'Régua Teórico-Empírica (PTT/UnP)';
+    el('syncModalDate').textContent = `Ciclo 2025 · Corte ${CORTE}`;
+    el('syncModalModel').textContent = 'Régua Teórico-Empírica (PTT/UnP) · apoio de IAG, revisão do pesquisador (Seção 3.8)';
   }
-  el('syncModal').classList.add('open');
+  openDialog(el('syncModal'));
 }
-
-function closeSyncModal() {
-  el('syncModal').classList.remove('open');
-}
+function closeSyncModal() { closeDialog(el('syncModal')); }
 
 async function recarregarParecerManual() {
   const btn = el('btnRecarregarIA');
@@ -1536,7 +1682,7 @@ function updateIndicatorOptions() {
 
   el('fIndicator').innerHTML =
     '<option value="">Todos os indicadores</option>' +
-    filteredInds.map(i => `<option value="${i.id}">${i.name}</option>`).join('');
+    filteredInds.map(i => `<option value="${esc(i.id)}">${esc(i.name)}</option>`).join('');
 
   if (filteredInds.some(i => i.id === currentInd)) {
     el('fIndicator').value = currentInd;
@@ -1545,31 +1691,7 @@ function updateIndicatorOptions() {
   }
 }
 
-function initControls() {
-  const activities = [...new Set(INDICATORS_DATA.map(d => d.activity))];
-  el('fActivity').innerHTML =
-    '<option value="">Todas as atividades-fim</option>' +
-    activities.map(a => `<option value="${a}">${a}</option>`).join('');
-
-  updateIndicatorOptions();
-
-  el('fActivity').addEventListener('change', () => {
-    const act = el('fActivity').value;
-    updateIndicatorOptions();
-    syncAxisPills(act);
-    trackEvent('filtrar_eixo_estrategico', { eixo: act || 'todos' });
-    renderAll();
-  });
-
-  ['fIndicator', 'fRepro', 'fPolarity'].forEach(id => {
-    el(id).addEventListener('change', () => renderAll());
-  });
-
-  carregarParecerIA();
-  renderAll();
-}
-
-function filtrarPorEixo(atividadeFim, targetEl) {
+function filtrarPorEixo(atividadeFim) {
   el('fActivity').value = atividadeFim;
   updateIndicatorOptions();
   syncAxisPills(atividadeFim);
@@ -1593,13 +1715,17 @@ function getFilteredData() {
   );
 }
 
+// IAI = [Σ escores válidos / número de elos aplicáveis] × 100 (N/A excluído do denominador)
 function calcCompleteness(item) {
   let score = 0;
+  let valid = 0;
   item.states.forEach(s => {
+    if (s === 'na') return;
+    valid += 1;
     if (s === 'ok') score += 1;
     else if (s === 'part') score += 0.5;
   });
-  return (score / 8) * 100;
+  return valid ? (score / valid) * 100 : 0;
 }
 
 function updateAuditabilityCard(avgComp, totalItems) {
@@ -1624,22 +1750,97 @@ function updateAuditabilityCard(avgComp, totalItems) {
   if (avgComp > 80) {
     card.classList.add('good');
     badge.classList.add('good');
-    badge.textContent = 'ALTA (>80%)';
+    badge.textContent = 'ALTA* (>80%)';
     val.style.color = 'var(--green)';
-    sub.textContent = 'Alta reprodutibilidade pública';
+    sub.textContent = 'Alta reprodutibilidade (faixa provisória)';
   } else if (avgComp >= 60) {
     card.classList.add('warn');
     badge.classList.add('warn');
-    badge.textContent = 'PARCIAL (60–80%)';
+    badge.textContent = 'PARCIAL* (60–80%)';
     val.style.color = '#b8740e';
-    sub.textContent = 'Auditabilidade moderada / parcial';
+    sub.textContent = 'Auditabilidade parcial (faixa provisória)';
   } else {
     card.classList.add('bad');
     badge.classList.add('bad');
-    badge.textContent = 'BAIXA (<60%)';
+    badge.textContent = 'BAIXA* (<60%)';
     val.style.color = 'var(--red)';
-    sub.textContent = 'Risco de opacidade documental';
+    sub.textContent = 'Baixa auditabilidade (faixa provisória)';
   }
+}
+
+function renderProtocolo() {
+  const D = INDICATORS_DATA;
+  const N = D.length;
+  const ax = new Set(D.map(d => d.activity)).size;
+  const iai = Math.round(D.reduce((a, d) => a + calcCompleteness(d), 0) / N);
+  const c = k => D.filter(d => etapa4(d) === k).length;
+  const obj = D.filter(d => (CUR[d.id] || {}).obj && CUR[d.id].obj.trim()).length;
+  const doc = D.filter(d => {
+    const x = CUR[d.id] || {};
+    return x.doc && x.doc.trim() && x.pag && x.pag.trim() && x.data && x.data.trim();
+  }).length;
+  const box = (t, v, st, ok) => `
+    <div class="elo-detail-col" style="border-left:4px solid ${ok ? 'var(--green)' : 'var(--amber)'}">
+      <strong>${t}</strong>
+      <span>${v}</span><br>
+      <small style="color:var(--muted)">${st}</small>
+    </div>`;
+
+  el('protoBody').innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px">
+      ${box('1. Identificação e classificação', `${N} indicadores em ${ax} atividades-fim`, 'Concluída (censo da Portaria nº 571/2026)', true)}
+      ${box('2. Completude metodológica', `IAI institucional de ${iai}% (8 elos, N/A excluído)`, 'Concluída; sujeita a dupla codificação (Kappa)', true)}
+      ${box('3. Aderência estratégica', `${obj}/${N} com objetivo estratégico vinculado`, obj === N ? 'Concluída na curadoria local' : 'Pendente: preencher na Ficha metodológica', obj === N)}
+      ${box('4. Seleção para o dashboard', `${c('Atende plenamente')} plenamente · ${c('Atende parcialmente')} parcialmente · ${c('Não atende à auditabilidade')} não atendem`, 'Derivada da reprodutibilidade; seleção final exige etapa 3', false)}
+    </div>
+    <div class="proto-foot">
+      <span><strong>Status documental do PTT (v${VERSAO}):</strong> fontes curadas (documento, página e data): <strong>${doc}/${N}</strong> · série histórica: pendente (item 3.7) · data de corte: <strong>${CORTE}</strong></span>
+      <button type="button" class="ref-link" onclick="openPttModal('validacao')">Ver protocolo de validação</button>
+    </div>`;
+}
+
+function atualizaContexto(filteredCount) {
+  const box = el('contexto');
+  if (!box) return;
+  box.textContent = '';
+  const s = document.createElement('strong');
+  s.textContent = `Mostrando ${filteredCount} de ${INDICATORS_DATA.length} indicadores`;
+  box.append(s);
+
+  [['fActivity', 'Eixo'], ['fIndicator', 'Indicador'], ['fRepro', 'Reprodutibilidade'], ['fPolarity', 'Polaridade'], ['searchInput', 'Busca']].forEach(([id, label]) => {
+    const ctrl = el(id);
+    const val = ctrl && ctrl.value;
+    if (!val) return;
+    let txt = id === 'fIndicator' ? ((INDICATORS_DATA.find(d => d.id === val) || {}).name || val) : val;
+    if (txt.length > 40) txt = txt.slice(0, 38) + '…';
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'chip';
+    b.title = 'Remover este filtro';
+    b.textContent = `${label}: ${txt} ✕`;
+    b.onclick = () => {
+      ctrl.value = '';
+      if (id === 'fActivity') {
+        updateIndicatorOptions();
+        syncAxisPills('');
+      }
+      renderAll();
+    };
+    box.append(b);
+  });
+
+  if (!filteredCount) {
+    const m = document.createElement('span');
+    m.textContent = 'Nenhum resultado: remova um filtro.';
+    box.append(m);
+  }
+}
+
+function applyKeyboardA11y() {
+  document.querySelectorAll('.bullet-item,.interactive-table tbody tr,.chain-step,.axis-pill').forEach(node => {
+    node.tabIndex = 0;
+    if (node.tagName !== 'TR') node.setAttribute('role', 'button');
+  });
 }
 
 function renderAll() {
@@ -1664,24 +1865,24 @@ function renderAll() {
     const barColor = d.repro === 'Disponível' ? 'var(--green)' : (d.repro === 'Parcial' ? 'var(--teal)' : 'var(--blue)');
     const activeBullet = targetItem && d.id === targetItem.id ? ' active-bullet' : '';
     return `
-      <div class="bullet-item${activeBullet}" onclick="selectChain('${d.id}', true)" title="Clique para ver a trilha de 8 elos deste indicador">
-        <div class="bullet-label">${d.name}<small>${d.activity}</small></div>
+      <div class="bullet-item${activeBullet}" onclick="selectChain('${esc(d.id)}', true)" title="Clique para ver a trilha de 8 elos deste indicador">
+        <div class="bullet-label">${esc(d.name)}<small>${esc(d.activity)}</small></div>
         <div class="bullet-track">
           <div class="bullet-fill" style="width:${pctWidth}%;background:${barColor}"></div>
           <div class="bullet-target" title="Meta pactuada: 100%"></div>
         </div>
         <div class="bullet-val">${fmtPct(d.att)}</div>
       </div>`;
-  }).join('') : '<div style="padding:20px;color:var(--muted);font-size:12px">Nenhum indicador numérico no filtro atual.</div>';
+  }).join('') : '<div style="padding:20px;color:var(--muted);font-size:13px">Nenhum indicador numérico no filtro atual.</div>';
 
   el('matrixBody').innerHTML = data.length ? data.map(d => {
     const pillClass = d.repro === 'Disponível' ? 'yes' : (d.repro === 'Parcial' ? 'partial' : 'no');
     const isSelected = targetItem && d.id === targetItem.id;
     return `
-      <tr class="${isSelected ? 'active-row' : ''}" onclick="selectChain('${d.id}', true)" title="Clique para carregar os 8 elos na Trilha abaixo">
-        <td><strong>${d.name}</strong></td>
-        <td><span class="pill ${pillClass}">${d.repro}</span></td>
-        <td>${d.bottleneck}</td>
+      <tr class="${isSelected ? 'active-row' : ''}" onclick="selectChain('${esc(d.id)}', true)" title="Clique para carregar os 8 elos na Trilha abaixo">
+        <td><strong>${esc(d.name)}</strong></td>
+        <td><span class="pill ${pillClass}">${esc(d.repro)}</span></td>
+        <td>${esc(d.bottleneck)}</td>
         <td style="text-align:right"><span class="track-btn">${isSelected ? '● Na trilha' : 'Ver trilha →'}</span></td>
       </tr>
     `;
@@ -1691,31 +1892,35 @@ function renderAll() {
     const pillClass = d.repro === 'Disponível' ? 'yes' : (d.repro === 'Parcial' ? 'partial' : 'no');
     const isSelected = targetItem && d.id === targetItem.id;
     return `
-      <tr class="${isSelected ? 'active-row' : ''}" onclick="selectChain('${d.id}', true)" title="Clique na linha para ver a trilha deste indicador">
-        <td><strong>${d.name}</strong></td>
-        <td>${d.activity}</td>
-        <td>${d.metaLabel}</td>
-        <td>${d.actualLabel}</td>
+      <tr class="${isSelected ? 'active-row' : ''}" onclick="selectChain('${esc(d.id)}', true)" title="Clique na linha para ver a trilha deste indicador">
+        <td><strong>${esc(d.name)}</strong></td>
+        <td>${esc(d.activity)}</td>
+        <td>${esc(d.metaLabel)}</td>
+        <td>${esc(d.actualLabel)}</td>
         <td><strong>${fmtPct(d.att)}</strong></td>
-        <td><span class="pill ${pillClass}">${d.repro}</span></td>
+        <td><strong>${Math.round(calcCompleteness(d))}%</strong></td>
+        <td><span class="pill ${pillClass}">${esc(d.repro)}</span></td>
         <td style="display:flex;gap:6px;align-items:center">
           <span class="track-btn">${isSelected ? '● Na trilha' : 'Ver trilha'}</span>
-          <button type="button" class="btn-ficha" onclick="event.stopPropagation();openModal('${d.id}')">Ficha metodológica</button>
+          <button type="button" class="btn-ficha" onclick="event.stopPropagation();openModal('${esc(d.id)}')">Ficha metodológica</button>
         </td>
       </tr>
     `;
-  }).join('') : '<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--muted)">Nenhum registro encontrado.</td></tr>';
+  }).join('') : '<tr><td colspan="8" style="text-align:center;padding:20px;color:var(--muted)">Nenhum registro encontrado.</td></tr>';
 
   const quickSel = el('chainQuickSelect');
   if (quickSel) {
     quickSel.innerHTML = data.length
-      ? data.map(d => `<option value="${d.id}">${d.name}</option>`).join('')
+      ? data.map(d => `<option value="${esc(d.id)}">${esc(d.name)}</option>`).join('')
       : '<option value="">Nenhum indicador</option>';
     if (targetItem) quickSel.value = targetItem.id;
   }
 
   renderChain(targetItem);
   renderDonut(targetItem, avgComp);
+  renderProtocolo();
+  atualizaContexto(data.length);
+  applyKeyboardA11y();
 }
 
 function selectChain(id, scrollToChain = false) {
@@ -1756,18 +1961,20 @@ function renderChain(item) {
   const okC = item.states.filter(s => s === 'ok').length;
   const partC = item.states.filter(s => s === 'part').length;
   const missC = item.states.filter(s => s === 'miss').length;
-  const pctItem = Math.round(((okC + partC * 0.5) / 8) * 100);
+  const naC = item.states.filter(s => s === 'na').length;
+  const pctItem = Math.round(calcCompleteness(item));
+  const naTxt = naC ? ` · ${naC} N/A` : '';
 
   el('chainFocusName').textContent = item.name;
-  el('chainSubtitle').innerHTML = `${item.activity} · <strong>${pctItem}% auditável</strong> (${okC} disponíveis, ${partC} parciais, ${missC} lacunas)`;
+  el('chainSubtitle').innerHTML = `${esc(item.activity)} · <strong>${pctItem}% auditável</strong> (${okC} disponíveis, ${partC} parciais, ${missC} não localizados${naTxt})`;
 
-  const labels = { ok: 'Disponível', part: 'Parcial', miss: 'Lacuna' };
+  const labels = { ok: 'Disponível', part: 'Parcial', miss: 'Não localizado', na: 'N/A' };
   el('chainContainer').innerHTML = CHAIN_STEPS.map((step, idx) => {
     const st = item.states[idx];
     const activeCls = idx === selectedEloIndex ? ' active-elo' : '';
     const ctaText = idx === selectedEloIndex ? '▲ Em inspeção' : 'Detalhar ▾';
     return `
-      <div class="chain-step ${st}${activeCls}" onclick="inspectElo('${item.id}', ${idx})" title="Clique para ver a evidência e recomendação do Elo ${idx + 1}">
+      <div class="chain-step ${st}${activeCls}" onclick="inspectElo('${esc(item.id)}', ${idx})" title="Clique para ver a evidência e recomendação do Elo ${idx + 1}">
         <div>
           <div class="st-num">ELO ${idx + 1}</div>
           <div class="st-name">${step.split('. ')[1]}</div>
@@ -1805,22 +2012,25 @@ function inspectElo(indId, idx, rerenderCards = true) {
   const statusMap = {
     ok: { label: 'Elo Disponível (1,0)', color: 'var(--green)' },
     part: { label: 'Restrição / Parcial (0,5)', color: '#b8740e' },
-    miss: { label: 'Lacuna Documental (0,0)', color: 'var(--red)' }
+    miss: { label: 'Não Localizado (0,0)', color: 'var(--red)' },
+    na: { label: 'Não Aplicável (N/A)', color: 'var(--slate)' }
   };
 
   let evidencia = item[meta.field] || 'Informação registrada na Portaria nº 571/2026.';
   if (idx === 2) evidencia = `Meta pactuada: ${item.metaLabel} (publicada no instrumento oficial).`;
   if (idx === 3) evidencia = `Valor oficial apurado: ${item.actualLabel} (Atingimento: ${fmtPct(item.att)}).`;
 
-  const impacto = st === 'ok' ? meta.impactoOk : meta.impactoBad;
+  const impacto = st === 'na'
+    ? 'O componente não se aplica à estrutura matemática deste indicador e foi excluído do denominador do IAI.'
+    : (st === 'ok' ? meta.impactoOk : meta.impactoBad);
 
   const recomendacoesPorEloOk = {
     0: 'Manter a fórmula oficial publicada de forma clara e padronizada nas fichas técnicas (Neely et al., 1997; Fiocruz, 2025).',
     1: 'Preservar a identificação explícita da fonte e do instrumento normativo de referência (RIPSA, 2008; Tallens Junior et al., 2025).',
     2: 'Manter a meta pactuada publicada e associada ao ciclo avaliativo vigente (Bourne et al., 2000; Fiocruz, 2025).',
     3: 'Manter o resultado oficial apurado vinculado ao ato normativo de publicação (TCU, 2011; Fiocruz, 2026).',
-    4: 'Manter a disponibilização pública do numerador com documentação do recorte (Bahia, 2021; Tallens Junior et al., 2025).',
-    5: 'Manter o denominador aberto e acessível para conferência independente (Bahia, 2021; Tallens Junior et al., 2025).',
+    4: 'Manter a disponibilização pública do numerador/valor observado com documentação do recorte (Bahia, 2021; Tallens Junior et al., 2025).',
+    5: 'Manter a base de referência aberta e acessível para conferência independente (Bahia, 2021; Tallens Junior et al., 2025).',
     6: 'Preservar a documentação dos filtros e parâmetros de extração utilizados (Fiocruz, 2025; CGU, [s. d.]).',
     7: 'Manter a memória de cálculo e os dados de suporte em formato aberto e acessível (Bourne et al., 2003; Alves; Martins, 2026).'
   };
@@ -1830,37 +2040,37 @@ function inspectElo(indId, idx, rerenderCards = true) {
     1: 'Registrar explicitamente o sistema de origem e a fonte documental primária do indicador (RIPSA, 2008; Tallens Junior et al., 2025).',
     2: 'Publicar a meta pactuada, inclusive quando houver metas desagregadas por modalidade ou recorte (Bourne et al., 2000; Parmenter, 2015).',
     3: 'Divulgar o resultado apurado de forma estruturada junto ao atingimento correspondente (TCU, 2011; Fiocruz, 2026).',
-    4: 'Abrir o numerador (entregas, atendimentos ou registros apurados) em base estruturada e verificável (RIPSA, 2008; Bahia, 2021).',
+    4: 'Abrir o numerador/valor observado (entregas, atendimentos ou registros) em base estruturada e verificável (RIPSA, 2008; Bahia, 2021).',
     5: item.iaRecomendacao
       ? item.iaRecomendacao
-      : 'Publicar o denominador (base de referência ou demanda pactuada) sob os mesmos critérios do cálculo oficial (Bahia, 2021; Tallens Junior et al., 2025).',
+      : 'Publicar a base de referência/denominador sob os mesmos critérios do cálculo oficial (Bahia, 2021; Tallens Junior et al., 2025).',
     6: 'Documentar e publicar os filtros, critérios de elegibilidade e recortes temporais ou espaciais aplicados (Fiocruz, 2025; CGU, [s. d.]).',
     7: 'Disponibilizar a memória de cálculo e os microdados/planilhas de suporte em formato aberto para auditoria e accountability (Alves; Martins, 2026).'
   };
 
-  const recomendacao = st === 'ok'
-    ? recomendacoesPorEloOk[idx]
-    : recomendacoesPorEloLacuna[idx];
+  const recomendacao = st === 'na'
+    ? 'Registrar expressamente na ficha técnica a não aplicabilidade do denominador e a justificativa matemática (indicador de contagem simples).'
+    : (st === 'ok' ? recomendacoesPorEloOk[idx] : recomendacoesPorEloLacuna[idx]);
 
   detailBox.style.display = 'block';
   detailBox.style.borderLeftColor = statusMap[st].color;
   detailBox.innerHTML = `
     <div class="elo-detail-head">
-      <strong>Diagnóstico do Elo ${idx + 1} — ${stepName} (${meta.sub}) · <span style="color:var(--blue)">${item.name}</span></strong>
-      <span style="font-size:10px;font-weight:800;color:${statusMap[st].color};text-transform:uppercase">${statusMap[st].label}</span>
+      <strong>Diagnóstico do Elo ${idx + 1} — ${stepName} (${meta.sub}) · <span style="color:var(--blue)">${esc(item.name)}</span></strong>
+      <span style="font-size:10.5px;font-weight:800;color:${statusMap[st].color};text-transform:uppercase">${statusMap[st].label}</span>
     </div>
     <div class="elo-detail-grid">
       <div class="elo-detail-col">
         <strong>Evidência Documental</strong>
-        <span>${evidencia}</span>
+        <span>${esc(evidencia)}</span>
       </div>
       <div class="elo-detail-col">
         <strong>Impacto na Reprodutibilidade</strong>
-        <span>${impacto}</span>
+        <span>${esc(impacto)}</span>
       </div>
       <div class="elo-detail-col">
-        <strong>Parecer Técnico-Acadêmico (IA / PTT)</strong>
-        <span>${recomendacao}</span>
+        <strong>Parecer analítico (apoio de IAG · revisão do pesquisador)</strong>
+        <span>${esc(recomendacao)}</span>
       </div>
     </div>
     <div class="elo-ref-line">
@@ -1871,38 +2081,42 @@ function inspectElo(indId, idx, rerenderCards = true) {
 }
 
 function renderDonut(item, fallbackComp) {
-  let okCount = 0, partCount = 0, missCount = 0;
+  let okCount = 0, partCount = 0, missCount = 0, naCount = 0;
 
   if (item) {
     item.states.forEach(s => {
       if (s === 'ok') okCount++;
       else if (s === 'part') partCount++;
+      else if (s === 'na') naCount++;
       else missCount++;
     });
+    const applicable = 8 - naCount;
     const compPct = Math.round(calcCompleteness(item));
     el('donutCenter').textContent = compPct + '%';
-    el('donutSubtitle').innerHTML = `Indicador na trilha: <strong>${item.name}</strong>`;
-    el('donutBadge').textContent = `${okCount + partCount}/8 elos`;
+    el('donutSubtitle').innerHTML = `Indicador na trilha: <strong>${esc(item.name)}</strong>`;
+    el('donutBadge').textContent = `${okCount + partCount}/${applicable} aplicáveis`;
   } else {
     el('donutCenter').textContent = fallbackComp + '%';
     el('donutSubtitle').textContent = 'Nenhum indicador selecionado no filtro atual';
     el('donutBadge').textContent = '0/8 elos';
   }
 
-  el('legOkCount').textContent = `${okCount}/8`;
-  el('legPartCount').textContent = `${partCount}/8`;
-  el('legMissCount').textContent = `${missCount}/8`;
+  el('legOkCount').textContent = `${okCount}`;
+  el('legPartCount').textContent = `${partCount}`;
+  el('legMissCount').textContent = `${missCount}`;
+  el('legNaCount').textContent = `${naCount}`;
 
   const ctx = el('donutChart').getContext('2d');
-  if (donutInstance) donutInstance.destroy();
+  if (donutInstance) { donutInstance.destroy(); donutInstance = null; }
+  if (!window.Chart) return;
 
   donutInstance = new Chart(ctx, {
     type: 'doughnut',
     data: {
-      labels: ['Disponível', 'Parcial', 'Lacuna'],
+      labels: ['Disponível', 'Parcial', 'Não localizado', 'N/A'],
       datasets: [{
-        data: item ? [okCount, partCount, missCount] : [0, 0, 1],
-        backgroundColor: ['#2f8f6f', '#e69b28', '#c95244'],
+        data: item ? [okCount, partCount, missCount, naCount] : [0, 0, 1, 0],
+        backgroundColor: ['#2f8f6f', '#e69b28', '#c95244', '#6e7f87'],
         borderWidth: 2,
         borderColor: '#ffffff'
       }]
@@ -1919,44 +2133,65 @@ function openModal(id) {
   const x = INDICATORS_DATA.find(d => d.id === id);
   if (!x) return;
   trackEvent('abrir_ficha_metodologica', { indicador: id });
+
+  const c = CUR[id] || {};
+  const calc = x.id !== 'edu' ? (x.actual / x.meta) * 100 : null;
+  const conf = calc == null
+    ? 'Não aplicável (metas específicas por modalidade de ensino).'
+    : `Publicado: ${fmtPct(x.att)} · recalculado dos valores exibidos: ${fmtPct(calc)}` +
+      (Math.abs(calc - x.att) > 0.05 ? ' (diferença provavelmente de arredondamento; confirmar nos valores brutos)' : ' (confere)');
+
+  const campos = [
+    ['obj', 'Objetivo estratégico vinculado (Etapa 3)'],
+    ['doc', 'Documento de origem'],
+    ['pag', 'Página / seção'],
+    ['data', 'Data de consulta']
+  ].map(([k, label]) => `
+    <div class="m-box">
+      <label for="cur_${k}">${label}</label>
+      <input id="cur_${k}" data-id="${esc(id)}" data-k="${k}" value="${esc(c[k] || '')}" placeholder="Preencher para curadoria..." style="width:100%;height:34px;border:1px solid #c5d5dc;border-radius:6px;padding:0 9px;font-size:13px">
+    </div>`).join('');
+
   el('mTitle').textContent = x.name;
   el('mContent').innerHTML = `
     <div class="m-grid">
-      <div class="m-box"><label>Atividade-Fim</label><p>${x.activity}</p></div>
-      <div class="m-box"><label>Polaridade e Periodicidade</label><p>${x.polarity} · ${x.periodicity}</p></div>
-      <div class="m-box full"><label>Propósito do Indicador</label><p>${x.purpose}</p></div>
-      <div class="m-box full"><label>Interpretação Gerencial</label><p>${x.interpretation}</p></div>
-      <div class="m-box full"><label>Fórmula de Cálculo</label><div class="formula-code">${x.formula}</div></div>
-      <div class="m-box"><label>Meta Pactuada (Portaria nº 571/2026)</label><p><strong>${x.metaLabel}</strong></p></div>
-      <div class="m-box"><label>Resultado Apurado</label><p><strong>${x.actualLabel}</strong> (Atingimento: ${fmtPct(x.att)})</p></div>
-      <div class="m-box"><label>Numerador (Disponibilidade)</label><p>${x.numerator}</p></div>
-      <div class="m-box"><label>Denominador (Disponibilidade)</label><p>${x.denominator}</p></div>
-      <div class="m-box"><label>Filtros e Regras de Negócio</label><p>${x.filters}</p></div>
-      <div class="m-box"><label>Memória de Cálculo</label><p>${x.memory}</p></div>
-      <div class="m-box full"><label>Limitações de Reprodutibilidade</label><p>${x.limitations}</p></div>
-      <div class="m-box full"><label>Fontes Documentais</label><p>${x.source}</p></div>
-      <div class="m-box full solution-box"><label>Julgamento Teórico-Empírico e Proposição Incremental (IA / PTT)</label><p>${x.iaRecomendacao || 'Publicar, em repositório aberto integrado ao Observatório, a base processável (.CSV/.JSON), numerador, denominador, dicionário de filtros e memória de cálculo.'}</p></div>
+      <div class="m-box"><label>Atividade-Fim</label><p>${esc(x.activity)}</p></div>
+      <div class="m-box"><label>Polaridade, Periodicidade e IAI</label><p>${esc(x.polarity)} · ${esc(x.periodicity)} · <strong>IAI: ${Math.round(calcCompleteness(x))}%</strong></p></div>
+      <div class="m-box full"><label>Propósito do Indicador</label><p>${esc(x.purpose)}</p></div>
+      <div class="m-box full"><label>Interpretação Gerencial</label><p>${esc(x.interpretation)}</p></div>
+      <div class="m-box full"><label>Fórmula de Cálculo</label><div class="formula-code">${esc(x.formula)}</div></div>
+      <div class="m-box"><label>Meta Pactuada (Portaria nº 571/2026)</label><p><strong>${esc(x.metaLabel)}</strong></p></div>
+      <div class="m-box"><label>Resultado Apurado</label><p><strong>${esc(x.actualLabel)}</strong> (Atingimento: ${fmtPct(x.att)})</p></div>
+      <div class="m-box"><label>Numerador / Valor Observado</label><p>${esc(x.numerator)}</p></div>
+      <div class="m-box"><label>Base de Referência (Denominador)</label><p>${esc(x.denominator)}</p></div>
+      <div class="m-box"><label>Filtros e Regras de Negócio</label><p>${esc(x.filters)}</p></div>
+      <div class="m-box"><label>Memória de Cálculo</label><p>${esc(x.memory)}</p></div>
+      <div class="m-box full"><label>Limitações de Reprodutibilidade</label><p>${esc(x.limitations)}</p></div>
+      <div class="m-box full"><label>Fontes Documentais</label><p>${esc(x.source)}</p></div>
+      <div class="m-box full solution-box"><label>Parecer analítico e proposição incremental (apoio de IAG · revisão do pesquisador)</label><p>${esc(x.iaRecomendacao || 'Publicar, em repositório aberto integrado ao Observatório, a base processável (.CSV/.JSON), numerador, base de referência, dicionário de filtros e memória de cálculo.')}</p></div>
+      <div class="m-box full"><label>Conferência do Atingimento</label><p>${esc(conf)}</p></div>
+      <div class="m-box full"><label>Série Histórica</label><p>Não carregada nesta versão. O projeto (item 3.7) prevê séries históricas e tendências no PTT.</p></div>
+      ${campos}
+      <div class="m-box full" style="background:#f8fbfc">
+        <label>Nota sobre a Curadoria Local</label>
+        <p style="font-size:12px;color:var(--muted)">Os 4 campos acima atualizam o card <em>Protocolo de análise</em> e são incluídos automaticamente no arquivo <code>.CSV</code> exportado (salvos localmente neste navegador via <code>localStorage</code>).</p>
+      </div>
     </div>
     <div class="ref-note ref-note-spaced">
       <span><strong>Padronização da ficha:</strong> Ficha de metadados conforme Neely <em>et al.</em> (1997), RIPSA (2008), Bahia (2021), Fiocruz (2025) e Tallens Junior <em>et al.</em> (2025).</span>
       <button type="button" class="ref-link" onclick="closeModal();openRefModal()">Ver referências ABNT</button>
     </div>
   `;
-  el('methodModal').classList.add('open');
+  openDialog(el('methodModal'));
 }
 
-function closeModal() {
-  el('methodModal').classList.remove('open');
-}
+function closeModal() { closeDialog(el('methodModal')); }
 
 function openRefModal() {
   trackEvent('consultar_referencias_abnt');
-  el('refModal').classList.add('open');
+  openDialog(el('refModal'));
 }
-
-function closeRefModal() {
-  el('refModal').classList.remove('open');
-}
+function closeRefModal() { closeDialog(el('refModal')); }
 
 function resetFilters() {
   ['fActivity', 'fIndicator', 'fRepro', 'fPolarity'].forEach(id => el(id).value = '');
@@ -1969,37 +2204,107 @@ function resetFilters() {
 
 function exportCSV() {
   trackEvent('exportar_base_csv', { total_registros: getFilteredData().length });
-  const headers = ['ID', 'Indicador', 'Atividade_Fim', 'Meta', 'Apurado', 'Atingimento_Pct', 'Auditabilidade_Pct', 'Reprodutibilidade', 'Gargalo', 'Formula'];
-  const rows = getFilteredData().map(d => [
-    d.id, `"${d.name}"`, `"${d.activity}"`, `"${d.metaLabel}"`, `"${d.actualLabel}"`,
-    d.att != null ? d.att.toFixed(2) : '', Math.round(calcCompleteness(d)), `"${d.repro}"`, `"${d.bottleneck}"`, `"${d.formula}"`
-  ]);
-  const csvContent = "data:text/csv;charset=utf-8,\uFEFF" + [headers.join(';'), ...rows.map(r => r.join(';'))].join('\n');
-  const encodedUri = encodeURI(csvContent);
-  const link = document.createElement("a");
-  link.setAttribute("href", encodedUri);
-  link.setAttribute("download", "indicadores_fiocruz_portaria571.csv");
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+  const cs = v => '"' + String(v ?? '').replace(/"/g, '""') + '"';
+  const LB = { ok: 'Disponível', part: 'Parcial', miss: 'Não localizado', na: 'N/A' };
+  const elos = CHAIN_STEPS.map((c, i) => 'Elo' + (i + 1) + '_' + c.split('. ')[1].replace(/\s+/g, '_'));
+  const headers = [
+    'ID', 'Indicador', 'Atividade_Fim', 'Meta', 'Apurado', 'Atingimento_Pct', 'IAI_Pct',
+    'Reprodutibilidade', 'Etapa4', 'Gargalo', 'Polaridade', 'Periodicidade', 'Formula', 'Fonte',
+    ...elos, 'Objetivo_Estrategico', 'Doc_Origem', 'Pagina', 'Data_Consulta', 'Versao', 'Data_Corte'
+  ];
+  const rows = getFilteredData().map(d => {
+    const c = CUR[d.id] || {};
+    return [
+      d.id, d.name, d.activity, d.metaLabel, d.actualLabel,
+      d.att != null ? d.att.toFixed(2) : '',
+      Math.round(calcCompleteness(d)),
+      d.repro, etapa4(d), d.bottleneck, d.polarity, d.periodicity, d.formula, d.source,
+      ...d.states.map(s => LB[s] || s),
+      c.obj || '', c.doc || '', c.pag || '', c.data || '', VERSAO, CORTE
+    ];
+  });
+  const blob = new Blob(['\uFEFF' + [headers, ...rows].map(r => r.map(cs).join(';')).join('\r\n')], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'indicadores_fiocruz_portaria571.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 500);
 }
 
-window.onclick = e => {
-  if (e.target === el('methodModal')) closeModal();
-  if (e.target === el('refModal')) closeRefModal();
-  if (e.target === el('portariaModal')) closePortariaModal();
-  if (e.target === el('syncModal')) closeSyncModal();
-  if (e.target === el('pttModal')) closePttModal();
-};
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
-    closeModal();
-    closeRefModal();
-    closePortariaModal();
-    closeSyncModal();
-    closePttModal();
-  }
-});
+function initControls() {
+  const activities = [...new Set(INDICATORS_DATA.map(d => d.activity))];
+  el('fActivity').innerHTML =
+    '<option value="">Todas as atividades-fim</option>' +
+    activities.map(a => `<option value="${esc(a)}">${esc(a)}</option>`).join('');
+
+  updateIndicatorOptions();
+
+  el('fActivity').addEventListener('change', () => {
+    const act = el('fActivity').value;
+    updateIndicatorOptions();
+    syncAxisPills(act);
+    trackEvent('filtrar_eixo_estrategico', { eixo: act || 'todos' });
+    renderAll();
+  });
+
+  ['fIndicator', 'fRepro', 'fPolarity'].forEach(id => {
+    el(id).addEventListener('change', () => renderAll());
+  });
+
+  // Botão Mostrar / Ocultar fundamentação bibliográfica nos cards
+  const btnBase = el('btnBase');
+  const setBase = v => {
+    document.body.classList.toggle('mostrar-base', v);
+    btnBase.setAttribute('aria-pressed', String(v));
+    btnBase.textContent = v ? '📚 Ocultar fundamentação' : '📚 Mostrar fundamentação';
+  };
+  btnBase.onclick = () => setBase(!document.body.classList.contains('mostrar-base'));
+
+  // Guia rápido dispensável
+  const dica = el('dica');
+  try { if (localStorage.getItem('ptt_dica')) dica.hidden = true; } catch (e) {}
+  el('dicaOk').onclick = () => {
+    dica.hidden = true;
+    try { localStorage.setItem('ptt_dica', '1'); } catch (e) {}
+  };
+
+  // Botão voltar ao topo
+  const topo = el('topo');
+  window.addEventListener('scroll', () => topo.classList.toggle('on', window.scrollY > 600), { passive: true });
+  topo.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Curadoria local nas fichas
+  document.addEventListener('change', e => {
+    const t = e.target;
+    if (t.dataset && t.dataset.k && t.dataset.id) {
+      (CUR[t.dataset.id] = CUR[t.dataset.id] || {})[t.dataset.k] = t.value;
+      salvaCur();
+      renderProtocolo();
+    }
+  });
+
+  // Fechar modais por clique fora ou tecla Escape + ativação por teclado
+  window.addEventListener('click', e => {
+    ['methodModal', 'refModal', 'portariaModal', 'syncModal', 'pttModal'].forEach(id => {
+      if (e.target === el(id)) closeDialog(el(id));
+    });
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.modal.open').forEach(m => closeDialog(m));
+    } else if ((e.key === 'Enter' || e.key === ' ') && e.target.matches && e.target.matches('.bullet-item,.interactive-table tbody tr,.chain-step,.axis-pill')) {
+      e.preventDefault();
+      e.target.click();
+    }
+  });
+
+  carregarParecerIA();
+  renderAll();
+}
 
 initControls();
 </script>
